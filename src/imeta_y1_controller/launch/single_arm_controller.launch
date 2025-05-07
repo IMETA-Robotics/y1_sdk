@@ -1,0 +1,16 @@
+<launch>
+
+  <node pkg="imeta_y1_controller" type="y1_controller" name="y1_arm" output="screen"> 
+    <!-- CAN ID -->
+    <param name="arm_can_id" value="can1"/>
+    <!-- arm feedback frequency (HZ) -->
+    <param name="arm_feedback_rate" value="200"/>
+
+    <!-- end pose or joint position control arm -->
+    <param name="arm_control_topic" value="/y1_controller/arm_control"/>
+    <!-- end pose and joint position feedback -->
+    <param name="arm_feedback_topic" value="/y1_controller/arm_state"/>
+    
+  </node>
+
+</launch>
