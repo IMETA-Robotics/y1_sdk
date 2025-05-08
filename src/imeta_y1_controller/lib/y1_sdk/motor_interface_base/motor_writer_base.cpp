@@ -4,7 +4,7 @@ namespace imeta {
 namespace controller {
 
 bool MotorWriterBase::Init(const MotorInfo& motor_info) {
-  
+  motor_info_ = motor_info;
 
   return true;
 }

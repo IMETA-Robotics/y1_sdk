@@ -25,8 +25,8 @@ int main(int argc, char** argv) {
   //       return -1;
   //     }
   //   } catch (const boost::filesystem::filesystem_error& e) {
-  //     AERROR << "Failed to create directories " << log_dir << ": " << e.what();
-  //     return -1;
+  //     AERROR << "Failed to create directories " << log_dir << ": " <<
+  //     e.what(); return -1;
   //   }
   // }
   // FLAGS_log_dir = log_dir;

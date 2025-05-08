@@ -22,55 +22,67 @@ class Y1SDKInterface::Impl {
    * @brief must be initialize the SDK interface.
    * @return if the SDK interface is initialized successfully.
    */
-  bool Init() {
-    return can_manager_->Init();
-  }
+  bool Init() { return can_manager_->Init(); }
 
   /**
    * @brief the interface of joint position.
    * @return 6 or 7(include gripper) joint position.
    */
-  std::vector<double> GetJointPosition();
+  std::vector<double> GetJointPosition() {
+    return can_manager_->GetJointPosition();
+  }
 
   /**
    * @brief the interface of joint velocity.
    * @return 6 or 7(include gripper) joint velocity.
    */
-  std::vector<double> GetJointVelocity();
+  std::vector<double> GetJointVelocity() {
+    return can_manager_->GetJointVelocity();
+  }
 
   /**
    * @brief the interface of joint toruqe.
    * @return 6 or 7(include gripper) joint toruqe.
    */
-  std::vector<double> GetJointEffort();
+  std::vector<double> GetJointEffort() {
+    return can_manager_->GetJointEffort();
+  }
 
   /**
    * @brief the interface of arm end pose.
    * @return 6 size (x y z roll pitch yaw)
    */
-  std::vector<double> GetArmEndPose();
+  std::array<double, 6> GetArmEndPose() {
+    return can_manager_->GetArmEndPose();
+  }
 
   /**
    * @brief set arm control mode. (1:joint position control, 2:end pose control,
    * 3: gravity compensation)
    */
-  void SetArmControlMode(int mode);
+  void SetArmControlMode(int mode) { can_manager_->SetArmControlMode(mode); }
 
   /**
    * @brief set arm joint position control command.
    */
-  void SetArmJointPosition(const std::vector<double>& arm_joint_position);
+  void SetArmJointPosition(const std::array<double, 6>& arm_joint_position) {
+    can_manager_->SetArmJointPosition(arm_joint_position);
+  }
 
   /**
    * @brief set arm end pose control command. (x y z roll pitch yaw)
    */
   // TODO: std::vector to std::array?
-  void SetArmEndPose(const std::vector<double>& arm_end_pose);
+  void SetArmEndPose(const std::array<double, 6>& arm_end_pose) {
+    can_manager_->SetArmEndPose(arm_end_pose);
+  }
 
   /**
    * @brief set gripper joint position control command.
    */
-  void SetGripperJointPosition(double gripper_joint_position);
+  void SetGripperJointPosition(double gripper_joint_position) {
+    can_manager_->SetGripperJointPosition(gripper_joint_position);
+  }
 
  private:
   std::string can_id_;
@@ -103,7 +115,7 @@ std::vector<double> Y1SDKInterface::GetJointEffort() {
   return pimpl_->GetJointEffort();
 }
 
-std::vector<double> Y1SDKInterface::GetArmEndPose() {
+std::array<double, 6> Y1SDKInterface::GetArmEndPose() {
   return pimpl_->GetArmEndPose();
 }
 
@@ -112,12 +124,11 @@ void Y1SDKInterface::SetArmControlMode(const ControlMode& mode) {
 }
 
 void Y1SDKInterface::SetArmJointPosition(
-    const std::vector<double>& arm_joint_position) {
+    const std::array<double, 6>& arm_joint_position) {
   pimpl_->SetArmJointPosition(arm_joint_position);
 }
 
-// TODO: std::vector to std::array?
-void Y1SDKInterface::SetArmEndPose(const std::vector<double>& arm_end_pose) {
+void Y1SDKInterface::SetArmEndPose(const std::array<double, 6>& arm_end_pose) {
   pimpl_->SetArmEndPose(arm_end_pose);
 }
 

@@ -4,8 +4,8 @@
 
 #include <string>
 
-#include "config/motor_config.h"
 #include "common/motor_state.h"
+#include "config/motor_config.h"
 
 namespace imeta {
 namespace controller {

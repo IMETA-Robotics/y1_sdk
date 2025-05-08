@@ -27,9 +27,9 @@ bool Y1Controller::Init() {
   std::string package_path = ros::package::getPath("imeta_y1_controller");
   std::string urdf_path;
   if (arm_end_type == 0) {
-    // only load robotic arm 
+    // only load robotic arm
     urdf_path = package_path + "/urdf/y1_arm_no_gripper.urdf";
-  } else if(arm_end_type == 1) {
+  } else if (arm_end_type == 1) {
     urdf_path = package_path + "/urdf/piper_description.urdf";
   } else if (arm_end_type == 2) {
     urdf_path = package_path + "/urdf/y1_arm_with_teaching_pendant.urdf";
@@ -37,9 +37,10 @@ bool Y1Controller::Init() {
     ROS_ERROR("arm_end_type is %d , not supported", arm_end_type);
     return false;
   }
-   
+
   // TODO: init Y1 SDK Interface
-  y1_interface_ = std::make_unique<Y1SDKInterface>(can_id, urdf_path, arm_end_type);
+  y1_interface_ =
+      std::make_unique<Y1SDKInterface>(can_id, urdf_path, arm_end_type);
   if (!y1_interface_->Init()) {
     ROS_ERROR("Init Y1 SDK Interface failed.");
     return false;
@@ -47,15 +48,17 @@ bool Y1Controller::Init() {
 
   if (arm_control_type == "leader_arm") {
     // leader arm need gravity compensation
-    y1_interface_->SetArmControlMode(Y1SDKInterface::ControlMode::GRAVITY_COMPENSATION); 
+    y1_interface_->SetArmControlMode(
+        Y1SDKInterface::ControlMode::GRAVITY_COMPENSATION);
 
   } else if (arm_control_type == "follower_arm") {
     // subscriber. follower arm receive control command.
     arm_control_sub_ = nh_.subscribe(arm_control_topic, 1,
-                                   &Y1Controller::ArmControlCallback, this);
+                                     &Y1Controller::ArmControlCallback, this);
 
   } else {
-    ROS_ERROR("arm_control_type is %s , not supported", arm_control_type.c_str());
+    ROS_ERROR("arm_control_type is %s , not supported",
+              arm_control_type.c_str());
     return false;
   }
 

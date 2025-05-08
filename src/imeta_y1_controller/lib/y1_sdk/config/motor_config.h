@@ -1,8 +1,9 @@
 #pragma once
 
+#include <linux/can.h>
+
 #include <string>
 #include <vector>
-#include <linux/can.h>
 
 namespace imeta {
 namespace controller {

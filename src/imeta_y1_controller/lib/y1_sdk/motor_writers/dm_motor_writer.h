@@ -13,12 +13,14 @@ class DmMotorWriter : public MotorWriterBase {
 
   bool Init(const MotorInfo& motor_info) override;
 
-  bool WriteCanFrame(can_frame& frame,
-                     const MitControlMode& control_command) override;
+  void MitControl(can_frame& frame,
+                  const MitControlMode& control_command) override;
 
   void Enable(can_frame& frame) override;
 
   void Disable(can_frame& frame) override;
+
+  void SetZeroPosition(can_frame& frame) override;
 
  private:
   int float_to_uint(float x, float x_min, float x_max, int bits) const;

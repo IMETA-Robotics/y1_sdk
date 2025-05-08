@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <memory>
 #include <string>
 #include <vector>
@@ -9,7 +10,8 @@ namespace controller {
 
 class Y1SDKInterface {
  public:
-  Y1SDKInterface(const std::string& can_id, const std::string& urdf_path, int arm_end_type);
+  Y1SDKInterface(const std::string& can_id, const std::string& urdf_path,
+                 int arm_end_type);
   ~Y1SDKInterface() = default;
 
   /**
@@ -47,7 +49,7 @@ class Y1SDKInterface {
    * @brief the interface of arm end pose.
    * @return 6 size (x y z roll pitch yaw)
    */
-  std::vector<double> GetArmEndPose();
+  std::array<double, 6> GetArmEndPose();
 
   /**
    * @brief set arm control mode. (1:joint position control, 2:end pose control,
@@ -58,13 +60,12 @@ class Y1SDKInterface {
   /**
    * @brief set arm joint position control command.
    */
-  void SetArmJointPosition(const std::vector<double>& arm_joint_position);
+  void SetArmJointPosition(const std::array<double, 6>& arm_joint_position);
 
   /**
    * @brief set arm end pose control command. (x y z roll pitch yaw)
    */
-  // TODO: std::vector to std::array?
-  void SetArmEndPose(const std::vector<double>& arm_end_pose);
+  void SetArmEndPose(const std::array<double, 6>& arm_end_pose);
 
   /**
    * @brief set gripper joint position control command.

@@ -2,6 +2,7 @@
 
 #include <glog/logging.h>
 #include <glog/raw_logging.h>
+
 #include <cstdarg>
 #include <string>
 

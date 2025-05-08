@@ -11,6 +11,7 @@
 
 #include "common/log.h"
 #include "config/motor_config.h"
+#include "motor_interface_base/motor_writer_base.h"
 #include "motor_readers/dm_motor_reader.h"
 #include "motor_writers/dm_motor_writer.h"
 
@@ -26,19 +27,17 @@ CanManager::~CanManager() {
 
   // Disable motor
   can_frame frame;
-  for (int i = 0; i < can_writers_.size(); i++) {
-    can_writers_.at(i)->Disable(frame);
-    if (!WriteCanFrame(frame, can_writers_.at(i)->socket())) {
-      AERROR << "Failed to disable device: " << can_writers_.at(i)->name();
+  for (int i = 0; i < motor_writers_.size(); i++) {
+    motor_writers_.at(i)->Disable(frame);
+    if (!WriteCanFrame(frame, socket_.load())) {
+      AERROR << "Failed to disable motor: " << motor_writers_.at(i)->name();
     }
   }
 
-  // wait for all threads finish
-  for (auto& thread : reader_threads_) {
-    if (thread.joinable()) {
-      AINFO << std::this_thread::get_id() << " thread join";
-      thread.join();
-    }
+  // wait for reader thread finish
+  if (reader_thread_.joinable()) {
+    AINFO << std::this_thread::get_id() << " thread join";
+    reader_thread_.join();
   }
 }
 
@@ -67,7 +66,9 @@ bool CanManager::Init() {
     return false;
   }
 
-  for (int i = 0; i < kMotorInfos.size(); i++) {
+  int motor_size = load_end_motor ? kMotorInfos.size() : kMotorInfos.size() - 1;
+  motor_states_.resize(motor_size);
+  for (int i = 0; i < motor_size; i++) {
     // reader
     auto motor_info = kMotorInfos.at(i);
     if (motor_info.motor_read_info.class_type == "DmMotorReader") {
@@ -96,7 +97,9 @@ bool CanManager::Init() {
   }
 
   // generate one thread for can read data
-  reader_thread_ = std::thread(&CanManager::GenerateThread);
+  reader_thread_ = std::thread(&CanManager::GenerateReaderThread);
+  // generate one thread for control motor and save motor state
+  control_thread_ = std::thread(&CanManager::GenerateControlThread);
 
   // motor enable
   can_frame frame;
@@ -109,44 +112,142 @@ bool CanManager::Init() {
   }
 
   return true;
-}  // namespace controller
-
-void CanManager::RunOnce(const ControlCommandVector& control_command,
-                         MotorStateVector& motor_states_info) {
-  // writer
-  // control command number can bigger than motor device number
-  ACHECK(control_command.size() >= can_writers_.size())
-      << "Control Command size < Motor Writer size ";
-
-  can_frame frame;
-  for (int i = 0; i < can_writers_.size(); i++) {
-    can_writers_.at(i)->WriteCanFrame(frame, control_command.at(i));
-    if (!WriteCanFrame(frame, can_writers_.at(i)->socket())) {
-      AERROR << "Failed to write can frame to device: "
-             << can_writers_.at(i)->name();
-      count_fail_ += 1;
-    } else {
-      count_success_ += 1;
-    }
-  }
-
-  // reader
-  for (int i = 0; i < can_readers_.size(); i++) {
-    {
-      // protect socket
-      std::lock_guard<std::mutex> lock(*readers_mutux_.at(i));
-      auto readers = can_readers_.at(i);
-      for (int j = 0; j < readers.size(); j++) {
-        motor_states_info.emplace_back(readers.at(j)->motor_state());
-      }
-    }
-  }
-
-  // AINFO << "count_fail_ : " << count_fail_ << " ,count_success_ : " <<
-  // count_success_;
 }
 
-bool CanManager::OpenCanDevice(const std::string& can_device_id, int& socket) {
+std::vector<double> CanManager::GetJointPosition() {
+  std::vector<double> joint_position;
+  {
+    std::lock_guard<std::mutex> lock(reader_mutux_);
+    for (int i = 0; i < motor_states_.size(); i++) {
+      joint_position.emplace_back(motor_states_.at(i).position);
+    }
+  }
+
+  return joint_position;
+}
+
+std::vector<double> CanManager::GetJointVelocity() {
+  std::vector<double> joint_velocity;
+  {
+    std::lock_guard<std::mutex> lock(reader_mutux_);
+    for (int i = 0; i < motor_states_.size(); i++) {
+      joint_velocity.emplace_back(motor_states_.at(i).velocity);
+    }
+  }
+
+  return joint_velocity;
+}
+
+std::vector<double> CanManager::GetJointEffort() {
+  std::vector<double> joint_effort;
+  {
+    std::lock_guard<std::mutex> lock(reader_mutux_);
+    for (int i = 0; i < motor_states_.size(); i++) {
+      joint_effort.emplace_back(motor_states_.at(i).torque);
+    }
+  }
+
+  return joint_effort;
+}
+
+std::array<double, 6> CanManager::GetArmEndPose() {
+  std::array<double, 6> end_pose;
+  // {
+  //   std::lock_guard<std::mutex> lock(reader_mutux_);
+  //   for (int i = 0; i < motor_states_.size(); i++) {
+  //     joint_effort.emplace_back(motor_states_.at(i).torque);
+  //   }
+  // }
+
+  return end_pose;
+}
+
+void CanManager::SetArmControlMode(int mode) {
+  arm_control_mode_ = mode;
+  // if (arm_control_mode_ == 0) {
+  //   // set arm 6 joint position and gripper position to zero
+  //   for (auto& position : target_joint_position_) {
+  //     position = 0;
+  //   }
+  //   target_gripper_joint_position_ = 0;
+  // }
+}
+
+void CanManager::SetArmJointPosition(
+    const std::array<double, 6>& arm_joint_position) {
+  target_joint_position_ = arm_joint_position;
+}
+
+void CanManager::SetArmEndPose(const std::array<double, 6>& arm_end_pose) {
+  // TODO: Inverse Kinematics compute joint position.
+
+  // target_joint_position_  =
+}
+
+void CanManager::SetGripperJointPosition(double gripper_joint_position) {
+  target_gripper_joint_position_ = gripper_joint_position;
+}
+
+void CanManager::GenerateControlThread() {
+  while (!stop_flag_.load()) {
+    can_frame write_frame;
+    // writer
+    if (arm_control_mode_ == 3) {
+      // go to zero joint position
+    } else if (arm_control_mode_ == 1) {
+      // joint position control
+
+      for (int i = 0; i < motor_writers_.size(); i++) {
+        MitControlMode control_command;
+        // position
+        if (i < 6) {
+          control_command.position = target_joint_position_.at(i);
+        } else {
+          control_command.position = target_gripper_joint_position_;
+        }
+        // velocity
+        control_command.velocity = 0.0;
+        // kp
+        control_command.kp = 15;
+        // kd
+        control_command.kd = 1;
+        // torque
+        control_command.torque = 0;
+        motor_writers_.at(i)->MitControl(write_frame, control_command);
+        if (!WriteCanFrame(write_frame, socket_.load())) {
+          AERROR << "Failed to write can frame to device: "
+                 << motor_writers_.at(i)->name();
+          count_fail_ += 1;
+        } else {
+          count_success_ += 1;
+        }
+      }
+
+    } else if (arm_control_mode_ == 2) {
+      // end pose control
+
+    } else if (arm_control_mode_ == 3) {
+      // grivaty compensation
+    }
+
+    // AINFO << "count_fail_ : " << count_fail_ << " ,count_success_ : " <<
+    // count_success_;
+
+    {
+      // read motor state data
+      std::lock_guard<std::mutex> lock(reader_mutux_);
+      for (int i = 0; i < motor_readers_.size(); i++) {
+        motor_states_.at(i) = motor_readers_.at(i)->motor_state();
+      }
+    }
+
+    // TODO: kinematics compute arm end pose.
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(4));
+  }
+}
+
+bool CanManager::OpenCanDevice(const std::string& can_id, int& socket) {
   // create socket
   int s = ::socket(PF_CAN, SOCK_RAW, CAN_RAW);
   if (s < 0) {
@@ -156,7 +257,7 @@ bool CanManager::OpenCanDevice(const std::string& can_device_id, int& socket) {
 
   // specifying the can device id
   struct ifreq ifr;
-  ::strcpy(ifr.ifr_name, can_device_id.c_str());
+  ::strcpy(ifr.ifr_name, can_id.c_str());
   if (ioctl(s, SIOCGIFINDEX, &ifr) < 0) {
     AERROR << "Failed to ioctrl";
     return false;
@@ -179,14 +280,12 @@ bool CanManager::OpenCanDevice(const std::string& can_device_id, int& socket) {
   timeout.tv_usec = 0;
   setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
 
-  // save socket
-  // socket_can_map_.emplace(can_device_id, s);
   socket = s;
 
   return true;
 }
 
-void CanManager::GenerateThread() {
+void CanManager::GenerateReaderThread() {
   // for debug reader data count
   std::vector<int> data_counts(motor_readers_.size(), 0);
   auto start_time = std::chrono::steady_clock::now();
@@ -212,7 +311,7 @@ void CanManager::GenerateThread() {
       std::lock_guard<std::mutex> lock(reader_mutux_);
       for (int i = 0; i < motor_readers_.size(); i++) {
         if (motor_readers_.at(i)->id() == frame.can_id) {
-          if (!readers.at(i)->ReadCanFrame(frame)) {
+          if (!motor_readers_.at(i)->ReadCanFrame(frame)) {
             AERROR << "Failed to parse can frame";
           }
           data_counts.at(i)++;
@@ -298,5 +397,5 @@ bool CanManager::WriteCanFrame(const can_frame& frame, int socket) const {
   return true;
 }
 
-}  // namespace imeta
+}  // namespace controller
 }  // namespace imeta
