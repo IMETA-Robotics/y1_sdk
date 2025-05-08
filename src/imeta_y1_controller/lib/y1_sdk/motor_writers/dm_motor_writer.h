@@ -1,19 +1,17 @@
 #pragma once
 
-#include "can_interface_base/can_writer_base.h"
+#include "motor_interface_base/motor_writer_base.h"
 
-namespace humanoid {
-namespace can_driver {
+namespace imeta {
+namespace controller {
 
-class DmMotorWriter : public CanWriterBase {
+class DmMotorWriter : public MotorWriterBase {
  public:
   DmMotorWriter() = default;
 
-  explicit DmMotorWriter(const DeviceInfo& device_info);
-
   ~DmMotorWriter() = default;
 
-  bool Init(const std::string& name, canid_t id, int socket) override;
+  bool Init(const MotorInfo& motor_info) override;
 
   bool WriteCanFrame(can_frame& frame,
                      const MitControlMode& control_command) override;
@@ -26,5 +24,5 @@ class DmMotorWriter : public CanWriterBase {
   int float_to_uint(float x, float x_min, float x_max, int bits) const;
 };
 
-}  // namespace can_driver
-}  // namespace humanoid
+}  // namespace controller
+}  // namespace imeta

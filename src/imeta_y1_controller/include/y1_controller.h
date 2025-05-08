@@ -7,7 +7,7 @@
 
 #include "imeta_y1_msg/ArmControl.h"
 #include "imeta_y1_msg/ArmState.h"
-#include "ros/subscriber.h"
+#include "y1_sdk/y1_sdk_interface.h"
 
 namespace imeta {
 namespace controller {
@@ -33,12 +33,12 @@ class Y1Controller {
    * @brief init all related class of y1 controller.
    * @result must be true to run normally.
    */
-  bool InitParams();
+  // bool InitParams();
 
   /**
    * @brief init all publishers and subscribers.
    */
-  void InitTopic();
+  // void InitTopic();
 
   /**
    * @brief receive arm control command. support end pose or joint position
@@ -57,6 +57,8 @@ class Y1Controller {
   ros::Subscriber arm_control_sub_;
 
   ros::Timer arm_state_timer_;
+
+  std::unique_ptr<Y1SDKInterface> y1_interface_;
 };
 
 }  // namespace controller

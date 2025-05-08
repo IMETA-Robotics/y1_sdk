@@ -1,32 +1,21 @@
-#include "can_writers/dm_motor_writer.h"
+#include "motor_writers/dm_motor_writer.h"
+
+#include <cmath>
 
 #include "common/log.h"
 #include "common/motor_parameters.h"
 
-#include <cmath>
+namespace imeta {
+namespace controller {
 
-namespace humanoid {
-namespace can_driver {
-
-DmMotorWriter::DmMotorWriter(const DeviceInfo& device_info)
-    : CanWriterBase(device_info) {}
-
-bool DmMotorWriter::Init(const std::string& name, canid_t id, int socket) {
-  if (!CanWriterBase::Init(name, id, socket)) {
+bool DmMotorWriter::Init(const MotorInfo& motor_info) {
+  if (!MotorWriterBase::Init(motor_info)) {
     AERROR << "Failed to CanWriterBase::Init";
     return false;
   }
 
-  if (!device_info_.has_position_min() || !device_info_.has_position_max()) {
-    AERROR << name_ << " have not position limit";
-    return false;
-  }
-
-  position_min_ = double(device_info_.position_min() / 180.0) * M_PI;
-  position_max_ = double(device_info_.position_max() / 180.0) * M_PI;
-
-  AINFO << name_ << " position min is " << position_min_
-        << " , position max is " << position_max_;
+  AINFO << name() << " min position limit: " << motor_info_.position_min
+        << " , max position limit: " << motor_info_.position_max;
 
   return true;
 }
@@ -93,5 +82,5 @@ void DmMotorWriter::Disable(can_frame& frame) {
   frame.data[7] = 0xFD;
 }
 
-}  // namespace can_driver
-}  // namespace humanoid
+}  // namespace controller
+}  // namespace imeta

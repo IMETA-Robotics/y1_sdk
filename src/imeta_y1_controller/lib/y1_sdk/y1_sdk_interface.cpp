@@ -3,20 +3,28 @@
 #include <memory>
 #include <string>
 
+#include "can_manager.h"
+
 namespace imeta {
 namespace controller {
 
 class Y1SDKInterface::Impl {
  public:
-  explicit Impl(const std::string& can_id, const std::string& urdf_path)
-      : can_id_(can_id), urdf_path_(urdf_path) {}
+  explicit Impl(const std::string& can_id, const std::string& urdf_path,
+                int arm_end_type)
+      : can_id_(can_id),
+        urdf_path_(urdf_path),
+        can_manager_(
+            std::make_unique<CanManager>(can_id, urdf_path, arm_end_type)) {}
   ~Impl() = default;
 
   /**
    * @brief must be initialize the SDK interface.
    * @return if the SDK interface is initialized successfully.
    */
-  bool Init();
+  bool Init() {
+    return can_manager_->Init();
+  }
 
   /**
    * @brief the interface of joint position.
@@ -67,11 +75,13 @@ class Y1SDKInterface::Impl {
  private:
   std::string can_id_;
   std::string urdf_path_;
+
+  std::unique_ptr<CanManager> can_manager_;
 };
 
 Y1SDKInterface::Y1SDKInterface(const std::string& can_id,
-                               const std::string& urdf_path)
-    : pimpl_(std::make_unique<Impl>(can_id, urdf_path)) {}
+                               const std::string& urdf_path, int arm_end_type)
+    : pimpl_(std::make_unique<Impl>(can_id, urdf_path, arm_end_type)) {}
 
 bool Y1SDKInterface::Init() {
   if (!pimpl_->Init()) {

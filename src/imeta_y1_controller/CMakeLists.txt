@@ -46,6 +46,7 @@ endif()
 catkin_package()
 
 include_directories(
+  ${PROJECT_SOURCE_DIR}/lib/
   ${PROJECT_SOURCE_DIR}/include/
   ${catkin_INCLUDE_DIRS}
 )
@@ -53,9 +54,9 @@ include_directories(
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/y1_sdk)
 
 # Creating an Import Library Target
-add_library(y1_sdk SHARED IMPORTED)
+add_library(y1_sdk_1 SHARED IMPORTED)
 # Set the properties of the imported library
-set_target_properties(y1_sdk PROPERTIES
+set_target_properties(y1_sdk_1 PROPERTIES
   IMPORTED_LOCATION ${LIB_PATH}
   INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/lib/y1_sdk/"
 )
@@ -65,7 +66,7 @@ add_executable(y1_controller
                src/y1_controller_node.cpp)
 
 target_link_libraries(y1_controller
-                      PUBLIC ${catkin_LIBRARIES} y1_sdk glog gflags)        
+                      PUBLIC ${catkin_LIBRARIES} y1_sdk_1 glog gflags)        
 
 # install(DIRECTORY ${PROJECT_SOURCE_DIR}/
 #   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}

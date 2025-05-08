@@ -7,15 +7,19 @@
 
 #include <chrono>
 #include <cstring>
+#include <thread>
 
-#include "can_readers/dm_motor_reader.h"
-#include "can_writers/dm_motor_writer.h"
 #include "common/log.h"
+#include "config/motor_config.h"
+#include "motor_readers/dm_motor_reader.h"
+#include "motor_writers/dm_motor_writer.h"
 
-namespace humanoid {
-namespace can_driver {
+namespace imeta {
+namespace controller {
 
-CanManager::CanManager(const CanDriverConfig& config) : config_(config) {}
+CanManager::CanManager(const std::string& can_id, const std::string& urdf_path,
+                       int arm_end_type)
+    : can_id_(can_id), arm_end_type_(arm_end_type) {}
 
 CanManager::~CanManager() {
   stop_flag_.store(true);
@@ -39,76 +43,73 @@ CanManager::~CanManager() {
 }
 
 bool CanManager::Init() {
-  if (config_.can_size() == 0) {
-    AERROR << "can device number is 0 in can_driver_config";
+  // open can device
+  int socket;
+  if (!OpenCanDevice(can_id_, socket)) {
+    AERROR << "Failed to open can device:" << can_id_;
+    return false;
+  }
+  socket_.store(socket);
+
+  // if load end motor
+  bool load_end_motor;
+  if (arm_end_type_ == 0) {
+    load_end_motor = false;
+  } else if (arm_end_type_ == 1 || arm_end_type_ == 2) {
+    load_end_motor = true;
+  } else {
+    AERROR << "arm_end_type is error: " << arm_end_type_;
     return false;
   }
 
-  // open can device
-  for (int i = 0; i < config_.can_size(); i++) {
-    auto can_device = config_.can(i);
-    int socket;
-    if (!OpenCanDevice(can_device.can_device_id(), socket)) {
-      AERROR << "Failed to open can device:" << can_device.can_device_id();
-      return false;
-    }
-
-    if (can_device.device_info_size() == 0) {
-      AERROR << can_device.can_device_id() << " 's device number is 0";
-      return false;
-    }
-
-    std::vector<std::shared_ptr<CanReaderBase>> readers;
-    for (int i = 0; i < can_device.device_info_size(); i++) {
-      // readers
-      auto device_read_info = can_device.device_info(i).device_read_info();
-      if (device_read_info.type() == "DmMotorReader") {
-        std::shared_ptr<CanReaderBase> reader =
-            std::make_shared<DmMotorReader>();
-        reader->Init(device_read_info.name(), device_read_info.id());
-
-        readers.emplace_back(reader);
-      } else {
-        AERROR << "Failed create " << device_read_info.type();
-        return false;
-      }
-
-      // writers
-      auto device_write_info = can_device.device_info(i).device_write_info();
-      if (device_write_info.type() == "DmMotorWriter") {
-        std::unique_ptr<CanWriterBase> writer =
-            std::make_unique<DmMotorWriter>(can_device.device_info(i));
-        writer->Init(device_read_info.name(), device_write_info.id(), socket);
-
-        can_writers_.emplace_back(std::move(writer));
-      } else {
-        AERROR << "Failed create " << device_write_info.type();
-        return false;
-      }
-    }
-
-    // save readers every can
-    can_readers_.emplace_back(readers);
-
-    // generate one thread for every can
-    auto mtx = std::make_shared<std::mutex>();
-    readers_mutux_.emplace_back(mtx);
-    reader_threads_.emplace_back(&CanManager::GenerateThread, this, readers,
-                                 socket, mtx);
+  if (kMotorInfos.size() != 7) {
+    AERROR << "motor config size != 7";
+    return false;
   }
+
+  for (int i = 0; i < kMotorInfos.size(); i++) {
+    // reader
+    auto motor_info = kMotorInfos.at(i);
+    if (motor_info.motor_read_info.class_type == "DmMotorReader") {
+      std::shared_ptr<MotorReaderBase> reader =
+          std::make_shared<DmMotorReader>();
+      reader->Init(motor_info);
+
+      motor_readers_.emplace_back(reader);
+    } else {
+      AERROR << "Failed create " << motor_info.motor_read_info.class_type;
+      return false;
+    }
+
+    // writer
+    // auto device_write_info = can_device.device_info(i).device_write_info();
+    if (motor_info.motor_write_info.class_type == "DmMotorWriter") {
+      std::unique_ptr<MotorWriterBase> writer =
+          std::make_unique<DmMotorWriter>();
+      writer->Init(motor_info);
+
+      motor_writers_.emplace_back(std::move(writer));
+    } else {
+      AERROR << "Failed create " << motor_info.motor_write_info.class_type;
+      return false;
+    }
+  }
+
+  // generate one thread for can read data
+  reader_thread_ = std::thread(&CanManager::GenerateThread);
 
   // motor enable
   can_frame frame;
-  for (int i = 0; i < can_writers_.size(); i++) {
-    can_writers_.at(i)->Enable(frame);
-    if (!WriteCanFrame(frame, can_writers_.at(i)->socket())) {
-      AERROR << "Failed to enable device: " << can_writers_.at(i)->name();
+  for (int i = 0; i < motor_writers_.size(); i++) {
+    motor_writers_.at(i)->Enable(frame);
+    if (!WriteCanFrame(frame, socket_.load())) {
+      AERROR << "Failed to enable device: " << motor_writers_.at(i)->name();
       return false;
     }
   }
 
   return true;
-}
+}  // namespace controller
 
 void CanManager::RunOnce(const ControlCommandVector& control_command,
                          MotorStateVector& motor_states_info) {
@@ -179,23 +180,21 @@ bool CanManager::OpenCanDevice(const std::string& can_device_id, int& socket) {
   setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
 
   // save socket
-  socket_can_map_.emplace(can_device_id, s);
+  // socket_can_map_.emplace(can_device_id, s);
   socket = s;
 
   return true;
 }
 
-void CanManager::GenerateThread(
-    const std::vector<std::shared_ptr<CanReaderBase>>& readers, int socket,
-    std::shared_ptr<std::mutex> mtx) {
+void CanManager::GenerateThread() {
   // for debug reader data count
-  std::vector<int> data_counts(readers.size(), 0);
+  std::vector<int> data_counts(motor_readers_.size(), 0);
   auto start_time = std::chrono::steady_clock::now();
 
   struct can_frame frame;
   while (!stop_flag_.load()) {
     // read can frame
-    int nbytes = ::read(socket, &frame, sizeof(struct can_frame));
+    int nbytes = ::read(socket_.load(), &frame, sizeof(struct can_frame));
     if (nbytes < 0) {
       AWARN << "read empty can frame";
       continue;
@@ -210,9 +209,9 @@ void CanManager::GenerateThread(
 
     // parse can frame
     {
-      std::lock_guard<std::mutex> lock(*mtx);
-      for (int i = 0; i < readers.size(); i++) {
-        if (readers.at(i)->id() == frame.can_id) {
+      std::lock_guard<std::mutex> lock(reader_mutux_);
+      for (int i = 0; i < motor_readers_.size(); i++) {
+        if (motor_readers_.at(i)->id() == frame.can_id) {
           if (!readers.at(i)->ReadCanFrame(frame)) {
             AERROR << "Failed to parse can frame";
           }
@@ -299,5 +298,5 @@ bool CanManager::WriteCanFrame(const can_frame& frame, int socket) const {
   return true;
 }
 
-}  // namespace can_driver
-}  // namespace humanoid
+}  // namespace imeta
+}  // namespace imeta

@@ -1,7 +1,14 @@
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${catkin_INCLUDE_DIRS})
 
 set(Y1_SDK_SRCS
-    traffic_decider.cpp)
+    config/motor_config.cpp
+    motor_interface_base/motor_reader_base.cpp
+    motor_interface_base/motor_writer_base.cpp
+    motor_readers/dm_motor_reader.cpp
+    motor_writers/dm_motor_writer.cpp
+    can_manager.cpp
+    y1_sdk_interface.cpp
+)
 
 add_library(y1_sdk SHARED ${Y1_SDK_SRCS})
 target_link_libraries(y1_sdk PUBLIC

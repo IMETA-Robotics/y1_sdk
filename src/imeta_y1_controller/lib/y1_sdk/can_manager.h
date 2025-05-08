@@ -8,54 +8,52 @@
 #include <unordered_map>
 #include <vector>
 
-#include "proto/can_driver_config.pb.h"
+#include "motor_interface_base/motor_reader_base.h"
+#include "motor_interface_base/motor_writer_base.h"
+// #include "common/motor_control_command.h"
+// #include "common/motor_states.h"
 
-#include "can_interface_base/can_reader_base.h"
-#include "can_interface_base/can_writer_base.h"
-#include "common/motor_control_command.h"
-#include "common/motor_states.h"
-
-namespace humanoid {
-namespace can_driver {
+namespace imeta {
+namespace controller {
 
 class CanManager {
  public:
   CanManager() = delete;
 
-  explicit CanManager(const CanDriverConfig& config);
+  explicit CanManager(const std::string& can_id, const std::string& urdf_path, int arm_end_type);
 
   ~CanManager();
 
   bool Init();
 
-  void RunOnce(const ControlCommandVector& control_command,
-               MotorStateVector& motor_states_info);
+  // void RunOnce(const ControlCommandVector& control_command,
+  //              MotorStateVector& motor_states_info);
 
  private:
   bool OpenCanDevice(const std::string& can_device_id, int& socket);
 
-  void GenerateThread(
-      const std::vector<std::shared_ptr<CanReaderBase>>& readers, int socket,
-      std::shared_ptr<std::mutex> mtx);
+  void GenerateThread();
 
   bool WriteCanFrame(const can_frame& frame, int socket) const;
 
  private:
   // socket can
-  std::unordered_map<std::string, int> socket_can_map_;
+  std::atomic<int> socket_;
+
+  // std::unordered_map<std::string, int> socket_can_map_;
 
   // reader threads
-  std::vector<std::thread> reader_threads_;
-  std::vector<std::shared_ptr<std::mutex>> readers_mutux_;
+  std::thread reader_thread_;
+  std::mutex reader_mutux_;
   std::atomic<bool> stop_flag_ = false;
 
   // readers and writers
-  std::vector<std::vector<std::shared_ptr<CanReaderBase>>> can_readers_;
-  std::vector<std::unique_ptr<CanWriterBase>> can_writers_;
+  std::vector<std::shared_ptr<MotorReaderBase>> motor_readers_;
+  std::vector<std::unique_ptr<MotorWriterBase>> motor_writers_;
 
   // config
-  CanDriverConfig config_;
-
+  std::string can_id_;
+  int arm_end_type_;
   // debug
   int count_success_ = 0;
   int count_fail_ = 0;
