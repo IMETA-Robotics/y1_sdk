@@ -1,13 +1,13 @@
 std_msgs/Header header
 
 # x y z roll pitch yaw
-float64[6] arm_end_pose
+float64[6] end_pose
 
 # joint position information
-float64[] arm_joint_position
+float64[] joint_position
 
 # joint velocity information
-float64[] arm_joint_velocity
+float64[] joint_velocity
 
 # joint effort information
-float64[] arm_joint_effort
+float64[] joint_effort

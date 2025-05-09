@@ -12,7 +12,8 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   DIRECTORY msg
   FILES
-  ArmControl.msg
+  ArmEndPoseControl.msg
+  ArmJointPositionControl.msg
   ArmState.msg
 )
 

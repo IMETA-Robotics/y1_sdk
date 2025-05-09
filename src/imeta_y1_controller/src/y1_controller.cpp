@@ -9,13 +9,20 @@ namespace imeta {
 namespace controller {
 bool Y1Controller::Init() {
   // init ros parameters
-  // InitParams();
   std::string can_id = nh_.param("arm_can_id", std::string("can1"));
   int arm_feedback_rate = nh_.param("arm_feedback_rate", 200);
-  std::string arm_control_topic =
-      nh_.param("arm_control_topic", std::string("/y1_controller/arm_control"));
+
+  // end pose control mode
+  std::string arm_end_pose_control_topic =
+      nh_.param("arm_end_pose_control_topic",
+                std::string("/y1_controller/arm_end_pose_control"));
+  // joint position mode
+  std::string arm_joint_position_control_topic =
+      nh_.param("arm_joint_position_control_topic",
+                std::string("/y1_controller/arm_joint_position_control_topic"));
   std::string arm_state_topic =
       nh_.param("arm_feedback_topic", std::string("/y1_controller/arm_state"));
+
   // leader_arm(master), follower_arm(slave), default is follower_arm
   std::string arm_control_type =
       nh_.param("arm_control_type", std::string("follower_arm"));
@@ -38,7 +45,7 @@ bool Y1Controller::Init() {
     return false;
   }
 
-  // TODO: init Y1 SDK Interface
+  // init Y1 SDK Interface
   y1_interface_ =
       std::make_unique<Y1SDKInterface>(can_id, urdf_path, arm_end_type);
   if (!y1_interface_->Init()) {
@@ -53,8 +60,12 @@ bool Y1Controller::Init() {
 
   } else if (arm_control_type == "follower_arm") {
     // subscriber. follower arm receive control command.
-    arm_control_sub_ = nh_.subscribe(arm_control_topic, 1,
-                                     &Y1Controller::ArmControlCallback, this);
+    arm_end_pose_control_sub_ =
+        nh_.subscribe(arm_end_pose_control_topic, 1,
+                      &Y1Controller::ArmEndPoseControlCallback, this);
+    arm_joint_position_control_sub_ =
+        nh_.subscribe(arm_joint_position_control_topic, 1,
+                      &Y1Controller::ArmJointPositionControlCallback, this);
 
   } else {
     ROS_ERROR("arm_control_type is %s , not supported",
@@ -62,7 +73,7 @@ bool Y1Controller::Init() {
     return false;
   }
 
-  // publisher
+  // joint states publisher
   arm_state_pub_ = nh_.advertise<imeta_y1_msg::ArmState>(arm_state_topic, 1);
 
   // publish arm joint states at a fixed frequency
@@ -75,14 +86,60 @@ bool Y1Controller::Init() {
   return true;
 }
 
-void Y1Controller::ArmControlCallback(
-    const imeta_y1_msg::ArmControl::ConstPtr& msg) {
-  // TODO: end pose or joint position control arm
+void Y1Controller::ArmEndPoseControlCallback(
+    const imeta_y1_msg::ArmEndPoseControl::ConstPtr& msg) {
+  // end pose
+  std::array<double, 6> arm_end_pose;
+  for (int i = 0; i < 6; i++) {
+    arm_end_pose[i] = msg->arm_end_pose[i];
+  }
+  y1_interface_->SetArmEndPose(arm_end_pose);
+
+  // gripper joint position
+  y1_interface_->SetGripperJointPosition(msg->gripper);
+}
+
+void Y1Controller::ArmJointPositionControlCallback(
+    const imeta_y1_msg::ArmJointPositionControl::ConstPtr& msg) {
+  // arm joint position
+  std::array<double, 6> arm_joint_position;
+  for (int i = 0; i < 6; i++) {
+    arm_joint_position[i] = msg->arm_joint_position[i];
+  }
+  y1_interface_->SetArmJointPosition(arm_joint_position);
+
+  // gripper joint position
+  y1_interface_->SetGripperJointPosition(msg->gripper);
 }
 
 void Y1Controller::ArmStateTimerCallback(const ros::TimerEvent&) {
   imeta_y1_msg::ArmState arm_state;
-  // TODO: publish arm state
+  arm_state.header.stamp = ros::Time::now();
+
+  // get arm end pose
+  std::array<double, 6> arm_end_pose = y1_interface_->GetArmEndPose();
+
+  // get 6 or 7(include gripper) joint position.
+  std::vector<double> joint_position = y1_interface_->GetJointPosition();
+
+  // get 6 or 7(include gripper) joint velocity.
+  std::vector<double> joint_velocity = y1_interface_->GetJointVelocity();
+
+  // get 6 or 7(include gripper) joint torque.
+  std::vector<double> joint_effort = y1_interface_->GetJointEffort();
+
+  for (int i = 0; i < joint_position.size(); i++) {
+    arm_state.joint_position.push_back(joint_position.at(i));
+    arm_state.joint_velocity.push_back(joint_velocity.at(i));
+    arm_state.joint_effort.push_back(joint_effort.at(i));
+  }
+
+  for (int i = 0; i < 6; i++) {
+    arm_state.end_pose.at(i) = arm_end_pose.at(i);
+  }
+
+  // publish arm state
+  arm_state_pub_.publish(arm_state);
 }
 
 }  // namespace controller

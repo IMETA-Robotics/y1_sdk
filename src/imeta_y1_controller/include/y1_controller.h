@@ -5,8 +5,10 @@
 #include <memory>
 #include <string>
 
-#include "imeta_y1_msg/ArmControl.h"
+#include "imeta_y1_msg/ArmEndPoseControl.h"
+#include "imeta_y1_msg/ArmJointPositionControl.h"
 #include "imeta_y1_msg/ArmState.h"
+#include "ros/subscriber.h"
 #include "y1_sdk/y1_sdk_interface.h"
 
 namespace imeta {
@@ -41,10 +43,16 @@ class Y1Controller {
   // void InitTopic();
 
   /**
-   * @brief receive arm control command. support end pose or joint position
-   * control mode.
+   * @brief receive arm end pose control command.
    */
-  void ArmControlCallback(const imeta_y1_msg::ArmControl::ConstPtr& msg);
+  void ArmEndPoseControlCallback(
+      const imeta_y1_msg::ArmEndPoseControl::ConstPtr& msg);
+
+  /**
+   * @brief receive arm joint position control command.
+   */
+  void ArmJointPositionControlCallback(
+      const imeta_y1_msg::ArmJointPositionControl::ConstPtr& msg);
 
   /**
    * @brief publish arm joint states at a fixed frequency
@@ -54,7 +62,8 @@ class Y1Controller {
  private:
   ros::NodeHandle nh_;
   ros::Publisher arm_state_pub_;
-  ros::Subscriber arm_control_sub_;
+  ros::Subscriber arm_end_pose_control_sub_;
+  ros::Subscriber arm_joint_position_control_sub_;
 
   ros::Timer arm_state_timer_;
 
