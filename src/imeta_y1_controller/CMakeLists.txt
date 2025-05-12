@@ -28,10 +28,7 @@ add_compile_options(-std=c++17)
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
-  rospy
-  std_msgs
-  geometry_msgs
-  sensor_msgs 
+  rospy 
   imeta_y1_msg
 )
 
@@ -47,7 +44,7 @@ catkin_package()
 
 include_directories(
   ${PROJECT_SOURCE_DIR}/lib/
-  ${PROJECT_SOURCE_DIR}/include/
+  ${PROJECT_SOURCE_DIR}
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -62,8 +59,8 @@ set_target_properties(y1_sdk_1 PROPERTIES
 )
 
 add_executable(y1_controller
-               src/y1_controller.cpp
-               src/y1_controller_node.cpp)
+               y1_controller.cpp
+               y1_controller_node.cpp)
 
 target_link_libraries(y1_controller
                       PUBLIC ${catkin_LIBRARIES} y1_sdk_1 glog gflags)        

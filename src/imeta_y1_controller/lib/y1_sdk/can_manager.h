@@ -9,7 +9,6 @@
 
 #include "motor_interface_base/motor_reader_base.h"
 #include "motor_interface_base/motor_writer_base.h"
-// #include "common/motor_states.h"
 
 namespace imeta {
 namespace controller {
@@ -69,11 +68,9 @@ class CanManager {
   int arm_end_type_;
 
   // data
-  MotorStateVector motor_states_;
-  int arm_control_mode_ = 1;  // default: joint position control
   std::array<double, 6> target_joint_position_;
   double target_gripper_joint_position_;
-  // std::vector<double> target_end_pose_;
+  bool drag_teaching_ = false;  // default: not drag teaching
 
   // debug
   int count_success_ = 0;

@@ -7,7 +7,6 @@
 
 #include "imeta_y1_msg/ArmEndPoseControl.h"
 #include "imeta_y1_msg/ArmJointPositionControl.h"
-#include "imeta_y1_msg/ArmState.h"
 #include "ros/subscriber.h"
 #include "y1_sdk/y1_sdk_interface.h"
 

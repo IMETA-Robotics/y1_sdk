@@ -2,7 +2,6 @@
 
 #include <ros/package.h>
 
-#include "imeta_y1_msg/ArmControl.h"
 #include "imeta_y1_msg/ArmState.h"
 
 namespace imeta {

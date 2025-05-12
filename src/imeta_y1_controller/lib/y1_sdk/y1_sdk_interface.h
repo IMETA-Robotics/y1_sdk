@@ -20,12 +20,7 @@ class Y1SDKInterface {
    */
   bool Init();
 
-  enum ControlMode {
-    GO_ZERO = 0,
-    JOINT_POSITION_CONTROL = 1,
-    END_POSE_CONTROL = 2,
-    GRAVITY_COMPENSATION = 3
-  };
+  enum ControlMode { GO_ZERO = 0, GRAVITY_COMPENSATION = 1 };
 
   /**
    * @brief the interface of joint position.

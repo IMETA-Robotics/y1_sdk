@@ -36,8 +36,13 @@ CanManager::~CanManager() {
 
   // wait for reader thread finish
   if (reader_thread_.joinable()) {
-    AINFO << std::this_thread::get_id() << " thread join";
+    AINFO << std::this_thread::get_id() << " reader_thread join";
     reader_thread_.join();
+  }
+
+  if (control_thread_.joinable()) {
+    AINFO << std::this_thread::get_id() << " control_thread join";
+    control_thread_.join();
   }
 }
 
@@ -67,7 +72,6 @@ bool CanManager::Init() {
   }
 
   int motor_size = load_end_motor ? kMotorInfos.size() : kMotorInfos.size() - 1;
-  motor_states_.resize(motor_size);
   for (int i = 0; i < motor_size; i++) {
     // reader
     auto motor_info = kMotorInfos.at(i);
@@ -83,7 +87,6 @@ bool CanManager::Init() {
     }
 
     // writer
-    // auto device_write_info = can_device.device_info(i).device_write_info();
     if (motor_info.motor_write_info.class_type == "DmMotorWriter") {
       std::unique_ptr<MotorWriterBase> writer =
           std::make_unique<DmMotorWriter>();
@@ -97,9 +100,9 @@ bool CanManager::Init() {
   }
 
   // generate one thread for can read data
-  reader_thread_ = std::thread(&CanManager::GenerateReaderThread);
+  reader_thread_ = std::thread(&CanManager::GenerateReaderThread, this);
   // generate one thread for control motor and save motor state
-  control_thread_ = std::thread(&CanManager::GenerateControlThread);
+  control_thread_ = std::thread(&CanManager::GenerateControlThread, this);
 
   // motor enable
   can_frame frame;
@@ -111,6 +114,29 @@ bool CanManager::Init() {
     }
   }
 
+  // The position at the time of arm power-on is taken as initial joint
+  // position.
+  std::this_thread::sleep_for(std::chrono::milliseconds(10));
+  std::vector<double> joint_position = GetJointPosition();
+  if (joint_position.size() < 6) {
+    AERROR << "ERROR: arm joint position size is " << joint_position.size();
+    return false;
+  }
+
+  for (int i = 0; i < 6; ++i) {
+    target_joint_position_.at(i) = joint_position.at(i);
+  }
+
+  if (load_end_motor) {
+    if (joint_position.size() == 7) {
+      target_gripper_joint_position_ = joint_position.back();
+    } else {
+      AERROR << "ERROR: need load end motor, but joint position size is "
+             << joint_position.size();
+      return false;
+    }
+  }
+
   return true;
 }
 
@@ -118,8 +144,8 @@ std::vector<double> CanManager::GetJointPosition() {
   std::vector<double> joint_position;
   {
     std::lock_guard<std::mutex> lock(reader_mutux_);
-    for (int i = 0; i < motor_states_.size(); i++) {
-      joint_position.emplace_back(motor_states_.at(i).position);
+    for (int i = 0; i < motor_readers_.size(); i++) {
+      joint_position.emplace_back(motor_readers_.at(i)->motor_state().position);
     }
   }
 
@@ -130,8 +156,8 @@ std::vector<double> CanManager::GetJointVelocity() {
   std::vector<double> joint_velocity;
   {
     std::lock_guard<std::mutex> lock(reader_mutux_);
-    for (int i = 0; i < motor_states_.size(); i++) {
-      joint_velocity.emplace_back(motor_states_.at(i).velocity);
+    for (int i = 0; i < motor_readers_.size(); i++) {
+      joint_velocity.emplace_back(motor_readers_.at(i)->motor_state().velocity);
     }
   }
 
@@ -142,8 +168,8 @@ std::vector<double> CanManager::GetJointEffort() {
   std::vector<double> joint_effort;
   {
     std::lock_guard<std::mutex> lock(reader_mutux_);
-    for (int i = 0; i < motor_states_.size(); i++) {
-      joint_effort.emplace_back(motor_states_.at(i).torque);
+    for (int i = 0; i < motor_readers_.size(); i++) {
+      joint_effort.emplace_back(motor_readers_.at(i)->motor_state().torque);
     }
   }
 
@@ -151,26 +177,35 @@ std::vector<double> CanManager::GetJointEffort() {
 }
 
 std::array<double, 6> CanManager::GetArmEndPose() {
+  std::array<double, 6> arm_joint_position;
+  {
+    std::lock_guard<std::mutex> lock(reader_mutux_);
+    for (int i = 0; i < 6; i++) {
+      arm_joint_position.at(i) = (motor_readers_.at(i)->motor_state().position);
+    }
+  }
+
   std::array<double, 6> end_pose;
-  // {
-  //   std::lock_guard<std::mutex> lock(reader_mutux_);
-  //   for (int i = 0; i < motor_states_.size(); i++) {
-  //     joint_effort.emplace_back(motor_states_.at(i).torque);
-  //   }
-  // }
+  // TODO: arm kinematics compute end pose
 
   return end_pose;
 }
 
 void CanManager::SetArmControlMode(int mode) {
-  arm_control_mode_ = mode;
-  // if (arm_control_mode_ == 0) {
-  //   // set arm 6 joint position and gripper position to zero
-  //   for (auto& position : target_joint_position_) {
-  //     position = 0;
-  //   }
-  //   target_gripper_joint_position_ = 0;
-  // }
+  // ControlMode
+  if (mode == 0) {
+    // GO_ZERO: set arm 6 joint position and gripper position to zero
+    target_joint_position_.fill(0);
+    target_gripper_joint_position_ = 0;
+    drag_teaching_ = false;
+  } else if (mode == 1) {
+    // GRAVITY_COMPENSATION: support drag teaching
+    drag_teaching_ = true;
+  } else {
+    // TODO: other control mode
+    AWARN << "Invalid control mode. Currently only support 0(GO_ZERO) and "
+             "1()GRAVITY_COMPENSATION.";
+  }
 }
 
 void CanManager::SetArmJointPosition(
@@ -179,7 +214,7 @@ void CanManager::SetArmJointPosition(
 }
 
 void CanManager::SetArmEndPose(const std::array<double, 6>& arm_end_pose) {
-  // TODO: Inverse Kinematics compute joint position.
+  // TODO: arm Inverse Kinematics compute joint position.
 
   // target_joint_position_  =
 }
@@ -191,12 +226,11 @@ void CanManager::SetGripperJointPosition(double gripper_joint_position) {
 void CanManager::GenerateControlThread() {
   while (!stop_flag_.load()) {
     can_frame write_frame;
-    // writer
-    if (arm_control_mode_ == 3) {
-      // go to zero joint position
-    } else if (arm_control_mode_ == 1) {
-      // joint position control
+    if (drag_teaching_) {
+      // TODO: // grivaty compensation(leader arm)
 
+    } else {
+      // arm normal control(follower arm)
       for (int i = 0; i < motor_writers_.size(); i++) {
         MitControlMode control_command;
         // position
@@ -207,12 +241,14 @@ void CanManager::GenerateControlThread() {
         }
         // velocity
         control_command.velocity = 0.0;
+        // TODO: need fix kp, kd
         // kp
         control_command.kp = 15;
         // kd
         control_command.kd = 1;
         // torque
         control_command.torque = 0;
+
         motor_writers_.at(i)->MitControl(write_frame, control_command);
         if (!WriteCanFrame(write_frame, socket_.load())) {
           AERROR << "Failed to write can frame to device: "
@@ -222,27 +258,10 @@ void CanManager::GenerateControlThread() {
           count_success_ += 1;
         }
       }
-
-    } else if (arm_control_mode_ == 2) {
-      // end pose control
-
-    } else if (arm_control_mode_ == 3) {
-      // grivaty compensation
     }
 
     // AINFO << "count_fail_ : " << count_fail_ << " ,count_success_ : " <<
     // count_success_;
-
-    {
-      // read motor state data
-      std::lock_guard<std::mutex> lock(reader_mutux_);
-      for (int i = 0; i < motor_readers_.size(); i++) {
-        motor_states_.at(i) = motor_readers_.at(i)->motor_state();
-      }
-    }
-
-    // TODO: kinematics compute arm end pose.
-
     std::this_thread::sleep_for(std::chrono::milliseconds(4));
   }
 }
@@ -303,8 +322,6 @@ void CanManager::GenerateReaderThread() {
       AWARN << "read incomplete can frame";
       continue;
     }
-
-    // AINFO << std::this_thread::get_id() << " thread : " << nbytes;
 
     // parse can frame
     {
