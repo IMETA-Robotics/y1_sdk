@@ -1,5 +1,6 @@
 #include "y1_controller.h"
 
+#include <memory>
 #include <ros/package.h>
 
 #include "imeta_y1_msg/ArmState.h"
@@ -46,7 +47,7 @@ bool Y1Controller::Init() {
 
   // init Y1 SDK Interface
   y1_interface_ =
-      std::make_unique<Y1SDKInterface>(can_id, urdf_path, arm_end_type);
+      std::make_shared<Y1SDKInterface>(can_id, urdf_path, arm_end_type);
   if (!y1_interface_->Init()) {
     ROS_ERROR("Init Y1 SDK Interface failed.");
     return false;

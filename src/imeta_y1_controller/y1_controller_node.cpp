@@ -1,7 +1,11 @@
-#include "y1_controller.h"
-// #include "gflags/planning_gflags.h"
 #include <glog/logging.h>
-// #include <boost/filesystem.hpp>
+#include <ros/package.h>
+
+#include <boost/filesystem.hpp>
+#include <iostream>
+
+#include "ros/init.h"
+#include "y1_controller.h"
 
 using namespace imeta::controller;
 
@@ -17,30 +21,31 @@ int main(int argc, char** argv) {
   FLAGS_colorlogtostderr = true;
   FLAGS_alsologtostderr = true;
 
-  // std::string log_dir = FLAGS_planning_log_dir;
-  // if (!boost::filesystem::exists(log_dir)) {
-  //   try {
-  //     if (!boost::filesystem::create_directories(log_dir)) {
-  //       AERROR << "Could not create directory " << log_dir;
-  //       return -1;
-  //     }
-  //   } catch (const boost::filesystem::filesystem_error& e) {
-  //     AERROR << "Failed to create directories " << log_dir << ": " <<
-  //     e.what(); return -1;
-  //   }
-  // }
-  // FLAGS_log_dir = log_dir;
-  // AINFO << "Planning log dir: " << FLAGS_log_dir;
+  std::string package_path = ros::package::getPath("imeta_y1_controller");
+  std::string log_dir = package_path + "/log";
+  if (!boost::filesystem::exists(log_dir)) {
+    try {
+      if (!boost::filesystem::create_directories(log_dir)) {
+        std::cout << "Could not create directory " << log_dir << std::endl;
+        return -1;
+      }
+    } catch (const boost::filesystem::filesystem_error& e) {
+      std::cout << "Failed to create directories " << log_dir << ": "
+                << e.what() << std::endl;
+      return -1;
+    }
+  }
+  FLAGS_log_dir = log_dir;
+  std::cout << "imeta_y1_controller log dir: " << FLAGS_log_dir << std::endl;
 
-  // planning
-  //  planning_ros;
-  // if (!planning_ros.Init()) {
-  //   AERROR << "Failed to init Planning module!";
+  Y1Controller y1_controller;
+  if (!y1_controller.Init()) {
+    std::cout << "Failed to init Planning module!" << std::endl;
 
-  //   return -1;
-  // }
+    return -1;
+  }
 
-  // planning_ros.Proc();
+  ros::spin();
 
   return 0;
 }

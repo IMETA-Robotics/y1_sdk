@@ -66,7 +66,7 @@ class Y1Controller {
 
   ros::Timer arm_state_timer_;
 
-  std::unique_ptr<Y1SDKInterface> y1_interface_;
+  std::shared_ptr<Y1SDKInterface> y1_interface_;
 };
 
 }  // namespace controller

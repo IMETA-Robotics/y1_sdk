@@ -8,27 +8,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_FLAGS "--std=c++17 -O0 -Og -ggdb")
 add_compile_options(-std=c++17)
 
-# find_package(catkin REQUIRED COMPONENTS
-#   roscpp
-#   urdf
-#   kdl_parser
-# )
-
-# find_package(orocos_kdl REQUIRED)
-
-# catkin_package()
-
-# include_directories(
-#   ${catkin_INCLUDE_DIRS}
-#   ${orocos_kdl_INCLUDE_DIRS}
-# )
-
-# add_executable(kdl_example src/kdl_example.cpp)
-# target_link_libraries(kdl_example ${catkin_LIBRARIES} ${orocos_kdl_LIBRARIES})
-
 find_package(catkin REQUIRED COMPONENTS
   roscpp
-  rospy 
+  roslib
   imeta_y1_msg
 )
 
@@ -48,12 +30,10 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_subdirectory(${PROJECT_SOURCE_DIR}/lib/y1_sdk)
-
 # Creating an Import Library Target
-add_library(y1_sdk_1 SHARED IMPORTED)
+add_library(y1_sdk SHARED IMPORTED)
 # Set the properties of the imported library
-set_target_properties(y1_sdk_1 PROPERTIES
+set_target_properties(y1_sdk PROPERTIES
   IMPORTED_LOCATION ${LIB_PATH}
   INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/lib/y1_sdk/"
 )
@@ -63,21 +43,22 @@ add_executable(y1_controller
                y1_controller_node.cpp)
 
 target_link_libraries(y1_controller
-                      PUBLIC ${catkin_LIBRARIES} y1_sdk_1 glog gflags)        
+                      PUBLIC ${catkin_LIBRARIES} y1_sdk glog gflags)        
 
-# install(DIRECTORY ${PROJECT_SOURCE_DIR}/
-#   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-#   FILES_MATCHING PATTERN "*.h"
-#   PATTERN ".svn" EXCLUDE
-# )
+# install include files
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/
+  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+  FILES_MATCHING PATTERN "*.h"
+  PATTERN ".svn" EXCLUDE
+)
 
-# # install executables ans libraries
-# install(TARGETS y1_controller
-#   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+# install executables ans libraries
+install(TARGETS y1_controller
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
-# # install launch and config
-# install(DIRECTORY launch
-#   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-# )
+# install launch and config
+install(DIRECTORY launch
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)

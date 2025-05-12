@@ -12,7 +12,7 @@ class Y1SDKInterface {
  public:
   Y1SDKInterface(const std::string& can_id, const std::string& urdf_path,
                  int arm_end_type);
-  ~Y1SDKInterface() = default;
+  ~Y1SDKInterface();
 
   /**
    * @brief must be initialize the SDK interface.
