@@ -25,7 +25,7 @@
 	args="-urdf -model arm -param robot_description"/>   
 
   <!-- load controllers -->
-  <rosparam file="$(find piper_gazebo)/config/piper_gazebo_control.yaml" command="load"/>
+  <rosparam file="$(find y1_gazebo)/config/y1_gazebo_control.yaml" command="load"/>
 
   <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
           output="screen" ns="/gazebo" args="joint_state_controller
@@ -33,14 +33,11 @@
                                           joint2_position_controller
                                           joint3_position_controller
                                           joint4_position_controller
-                                          joint5_position_controller
-                                          joint6_position_controller
-                                          joint7_position_controller
-                                          joint8_position_controller"/> 
+                                          joint5_position_controller"/> 
 
   <!-- 启动Gazebo controllers -->
   <!-- <include file="$(find piper_gazebo)/launch/piper_with_gripper/piper_gazebo_controller.launch" /> -->
   
-  <include file="$(find y1_description)/launch/display.launch" />
+  <!-- <include file="$(find y1_description)/launch/display.launch" /> -->
 
 </launch>

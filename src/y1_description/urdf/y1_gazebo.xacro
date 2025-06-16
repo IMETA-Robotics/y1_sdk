@@ -5,8 +5,8 @@
   <!-- world -->
   <link name="world"/>
   <joint name="fixed_base_joint" type="fixed">
-      <parent link="world"/>
-      <child link="base_link"/>
+    <parent link="world"/>
+    <child link="base_link"/>
   </joint>
   <!-- y1 -->
   <link
@@ -104,7 +104,7 @@
     <limit
       lower="-2.79"
       upper="2.79"
-      effort="9"
+      effort="100"
       velocity="5" />
   </joint>
   <link
@@ -162,8 +162,8 @@
     <limit
       lower="-3.14"
       upper="0"
-      effort="0"
-      velocity="0" />
+      effort="100"
+      velocity="5" />
   </joint>
   <link
     name="J3_Link">
@@ -220,8 +220,8 @@
     <limit
       lower="0"
       upper="3.14"
-      effort="0"
-      velocity="0" />
+      effort="100"
+      velocity="5" />
   </joint>
   <link
     name="J4_Link">
@@ -278,8 +278,8 @@
     <limit
       lower="-1.74"
       upper="1.74"
-      effort="0"
-      velocity="0" />
+      effort="100"
+      velocity="5" />
   </joint>
   <link
     name="J5_Link">
@@ -336,10 +336,10 @@
     <limit
       lower="-1.74"
       upper="1.74"
-      effort="0"
-      velocity="0" />
+      effort="100"
+      velocity="5" />
   </joint>
-  <link
+  <!-- <link
     name="J6_Link">
     <inertial>
       <origin
@@ -394,9 +394,9 @@
     <limit
       lower="-2.61"
       upper="2.61"
-      effort="0"
-      velocity="0" />
-  </joint>
+      effort="100"
+      velocity="5" />
+  </joint> -->
 
   <!-- controller -->
   <xacro:macro name="transmission_block" params="tran_name joint_name motor_name">
@@ -417,7 +417,7 @@
   <xacro:transmission_block tran_name="tran3" joint_name="J3_JOINT" motor_name="motor3"/>
   <xacro:transmission_block tran_name="tran4" joint_name="J4_JOINT" motor_name="motor4"/>
   <xacro:transmission_block tran_name="tran5" joint_name="J5_JOINT" motor_name="motor5"/>
-  <xacro:transmission_block tran_name="tran6" joint_name="J6_JOINT" motor_name="motor6"/>
+  <!-- <xacro:transmission_block tran_name="tran6" joint_name="J6_JOINT" motor_name="motor6"/> -->
   <!-- <xacro:transmission_block tran_name="tran7" joint_name="joint7" motor_name="motor7"/> -->
   <!-- <xacro:transmission_block tran_name="tran8" joint_name="joint8" motor_name="motor8"/> -->
   
@@ -429,7 +429,7 @@
     </plugin>
   </gazebo>
 
-  <gazebo reference="J1_JOINT">
+  <!-- <gazebo reference="J1_JOINT">
     <provideFeedback>true</provideFeedback>
   </gazebo>
 
@@ -486,9 +486,9 @@
       <topicName>/joint5_force_torque</topicName>
       <jointName>J5_JOINT</jointName>
     </plugin>
-  </gazebo>
+  </gazebo> -->
 
-  <gazebo reference="J6_JOINT">
+  <!-- <gazebo reference="J6_JOINT">
     <provideFeedback>true</provideFeedback>
   </gazebo>
 
@@ -498,6 +498,6 @@
       <topicName>/joint6_force_torque</topicName>
       <jointName>J6_JOINT</jointName>
     </plugin>
-  </gazebo>
+  </gazebo> -->
 
 </robot>
