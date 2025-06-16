@@ -2,8 +2,11 @@
 
 thread_num=$(($(nproc) - 1))
 
+# y1 arm urdf description
+catkin_make install --pkg y1_description -j${thread_num}
+
 # y1 arm ros msgs
-catkin_make install --only-pkg-with-deps imeta_y1_msg -j${thread_num}
+catkin_make install --pkg imeta_y1_msg -j${thread_num}
 
 # y1 arm ros1 driver
-catkin_make install --only-pkg-with-deps imeta_y1_controller -j${thread_num}
+catkin_make install --pkg imeta_y1_controller -j${thread_num}

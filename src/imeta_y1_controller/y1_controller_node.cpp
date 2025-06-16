@@ -4,7 +4,6 @@
 #include <boost/filesystem.hpp>
 #include <iostream>
 
-#include "ros/init.h"
 #include "y1_controller.h"
 
 using namespace imeta::controller;

@@ -1,6 +1,5 @@
 #include "y1_controller.h"
 
-#include <memory>
 #include <ros/package.h>
 
 #include "imeta_y1_msg/ArmState.h"
