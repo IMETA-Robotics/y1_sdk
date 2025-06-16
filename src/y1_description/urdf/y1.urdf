@@ -4,6 +4,11 @@
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 <robot
   name="y1">
+  <link name="world"/>
+  <joint name="fixed_base_joint" type="fixed">
+    <parent link="world"/>
+    <child link="base_link"/>
+  </joint>
   <link
     name="base_link">
     <inertial>
@@ -334,7 +339,7 @@
       effort="0"
       velocity="0" />
   </joint>
-  <link
+  <!-- <link
     name="J6_Link">
     <inertial>
       <origin
@@ -391,5 +396,5 @@
       upper="2.61"
       effort="0"
       velocity="0" />
-  </joint>
+  </joint> -->
 </robot>

@@ -5,35 +5,35 @@ gazebo:
 
   joint1_position_controller:
     type: position_controllers/JointPositionController
-    joint: joint1
-    # pid: {p: 100.0, i: 0.01, d: 5.0}
+    joint: J1_JOINT
+    pid: {p: 100.0, i: 0.01, d: 5.0}
   joint2_position_controller:
     type: position_controllers/JointPositionController
-    joint: joint2
-    # pid: {p: 100.0, i: 0.01, d: 5.0}
+    joint: J2_JOINT
+    pid: {p: 100.0, i: 0.01, d: 5.0}
   joint3_position_controller:
     type: position_controllers/JointPositionController
-    joint: joint3
-    # pid: {p: 100.0, i: 0.01, d: 5.0}
+    joint: J3_JOINT
+    pid: {p: 100.0, i: 0.01, d: 5.0}
   joint4_position_controller:
     type: position_controllers/JointPositionController
-    joint: joint4
-    # pid: {p: 100.0, i: 0.01, d: 5.0}
+    joint: J4_JOINT
+    pid: {p: 100.0, i: 0.01, d: 5.0}
   joint5_position_controller:
     type: position_controllers/JointPositionController
-    joint: joint5
+    joint: J5_JOINT
+    pid: {p: 100.0, i: 0.01, d: 5.0}
+  # joint6_position_controller:
+  #   type: position_controllers/JointPositionController
+  #   joint: J6_JOINT
     # pid: {p: 100.0, i: 0.01, d: 5.0}
-  joint6_position_controller:
-    type: position_controllers/JointPositionController
-    joint: joint6
-    # pid: {p: 100.0, i: 0.01, d: 5.0}
-  joint7_position_controller:
-    type: position_controllers/JointPositionController
-    joint: joint7
+  # joint7_position_controller:
+  #   type: position_controllers/JointPositionController
+  #   joint: J1_JOINT
     # pid: {p: 100, i: 0.001, d: 10.0}
-  joint8_position_controller:
-    type: position_controllers/JointPositionController
-    joint: joint8
+  # joint8_position_controller:
+  #   type: position_controllers/JointPositionController
+  #   joint: J1_JOINT
     # pid: {p: 100, i: 0.001, d: 10.0}
   # gazebo_ros_control:
   #   pid_gains:
