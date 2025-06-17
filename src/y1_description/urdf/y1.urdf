@@ -152,7 +152,7 @@
     type="revolute">
     <origin
       xyz="0 0 0.055"
-      rpy="-1.5707963267949 0 0" />
+      rpy="-1.5708 0 0" />
     <parent
       link="J1_Link" />
     <child
@@ -162,8 +162,8 @@
     <limit
       lower="-3.14"
       upper="0"
-      effort="0"
-      velocity="0" />
+      effort="9"
+      velocity="20" />
   </joint>
   <link
     name="J3_Link">
@@ -220,8 +220,8 @@
     <limit
       lower="0"
       upper="3.14"
-      effort="0"
-      velocity="0" />
+      effort="9"
+      velocity="20" />
   </joint>
   <link
     name="J4_Link">
@@ -267,7 +267,7 @@
     name="J4_JOINT"
     type="revolute">
     <origin
-      xyz="-0.2140106932061 -0.05098453876871 0"
+      xyz="-0.21401 -0.050985 0"
       rpy="0 0 0" />
     <parent
       link="J3_Link" />
@@ -278,23 +278,23 @@
     <limit
       lower="-1.74"
       upper="1.74"
-      effort="0"
-      velocity="0" />
+      effort="3"
+      velocity="5" />
   </joint>
   <link
     name="J5_Link">
     <inertial>
       <origin
-        xyz="-0.006836 3.7476E-05 -0.027245"
+        xyz="0.006836 3.7476E-05 0.027245"
         rpy="0 0 0" />
       <mass
         value="0.16994" />
       <inertia
         ixx="8.168E-05"
-        ixy="3.1597E-08"
+        ixy="-3.1597E-08"
         ixz="9.4321E-06"
         iyy="6.5589E-05"
-        iyz="1.5004E-08"
+        iyz="-1.5004E-08"
         izz="5.7856E-05" />
     </inertial>
     <visual>
@@ -325,28 +325,28 @@
     name="J5_JOINT"
     type="revolute">
     <origin
-      xyz="-0.0722997230374954 -0.0454899000967161 0"
-      rpy="1.5707963267949 0 0.0872664625997022" />
+      xyz="-0.0723 -0.04549 0"
+      rpy="1.5708 0 -3.0543" />
     <parent
       link="J4_Link" />
     <child
       link="J5_Link" />
     <axis
-      xyz="0 0 -1" />
+      xyz="0 0 1" />
     <limit
       lower="-1.74"
       upper="1.74"
-      effort="0"
-      velocity="0" />
+      effort="3"
+      velocity="5" />
   </joint>
-  <!-- <link
+  <link
     name="J6_Link">
     <inertial>
       <origin
         xyz="-0.074223 0.00078642 -0.099511"
         rpy="0 0 0" />
       <mass
-        value="0.8968" />
+        value="0.8" />
       <inertia
         ixx="0.051146"
         ixy="0.00029798"
@@ -383,18 +383,18 @@
     name="J6_JOINT"
     type="revolute">
     <origin
-      xyz="-0.0200325738541419 0 -0.0339137808775768"
-      rpy="3.14159263868863 -1.5707963267949 0" />
+      xyz="0.020033 0 0.033914"
+      rpy="1.5466 1.5708 1.5466" />
     <parent
       link="J5_Link" />
     <child
       link="J6_Link" />
     <axis
-      xyz="0 0 -1" />
+      xyz="0 0 1" />
     <limit
       lower="-2.61"
       upper="2.61"
-      effort="0"
-      velocity="0" />
-  </joint> -->
+      effort="3"
+      velocity="5" />
+  </joint>
 </robot>
