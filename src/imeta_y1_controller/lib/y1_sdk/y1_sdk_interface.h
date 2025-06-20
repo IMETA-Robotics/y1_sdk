@@ -11,7 +11,7 @@ namespace controller {
 class Y1SDKInterface {
  public:
   Y1SDKInterface(const std::string& can_id, const std::string& urdf_path,
-                 int arm_end_type);
+                 int arm_end_type, bool enable_arm);
   ~Y1SDKInterface();
 
   /**
@@ -47,8 +47,7 @@ class Y1SDKInterface {
   std::array<double, 6> GetArmEndPose();
 
   /**
-   * @brief set arm control mode. (1:joint position control, 2:end pose control,
-   * 3: gravity compensation)
+   * @brief set arm control mode. (0: go_zero, 1: gravity compensation)
    */
   void SetArmControlMode(const ControlMode& mode);
 
@@ -66,6 +65,24 @@ class Y1SDKInterface {
    * @brief set gripper joint position control command.
    */
   void SetGripperJointPosition(double gripper_joint_position);
+
+  /**
+   * @brief Enable or disable the motor of the robot arm.
+   * @param enable_arm true: enable the motor, false: disable the motor.
+  */
+  void SetEnableArm(bool enable_flag);
+
+  /**
+   * @brief Save all joint zero position.
+      J1 - J5 have been saved with zero point when leaving the factory.
+  */
+  // void SaveAllJointZeroPosition();
+
+  /**
+   * @brief Save J6 joint zero position. 
+      Each time you reinstall the end gripper or the teach pendant, you need to set the zero point of J6.
+  */
+  void SaveJ6ZeroPosition();
 
  private:
   class Impl;

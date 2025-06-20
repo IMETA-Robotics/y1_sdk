@@ -27,6 +27,8 @@ bool Y1Controller::Init() {
       nh_.param("arm_control_type", std::string("follower_arm"));
   // 0: nothing, 1: gripper, 2: teaching pendant, default is 0
   int arm_end_type = nh_.param("arm_end_type", 0);
+  // whether to enable robotic arm
+  bool auto_enable = nh_.param("auto_enable", true);
 
   // get urdf path
   // 暂时用松灵Piper的urdf测试
@@ -34,9 +36,9 @@ bool Y1Controller::Init() {
   std::string urdf_path;
   if (arm_end_type == 0) {
     // only load robotic arm
-    urdf_path = package_path + "/urdf/y1_arm_no_gripper.urdf";
+    urdf_path = package_path + "/urdf/y1.urdf";
   } else if (arm_end_type == 1) {
-    urdf_path = package_path + "/urdf/piper_description.urdf";
+    urdf_path = package_path + "/urdf/y1.urdf";
   } else if (arm_end_type == 2) {
     urdf_path = package_path + "/urdf/y1_arm_with_teaching_pendant.urdf";
   } else {
@@ -46,7 +48,7 @@ bool Y1Controller::Init() {
 
   // init Y1 SDK Interface
   y1_interface_ =
-      std::make_shared<Y1SDKInterface>(can_id, urdf_path, arm_end_type);
+      std::make_shared<Y1SDKInterface>(can_id, urdf_path, arm_end_type, auto_enable);
   if (!y1_interface_->Init()) {
     ROS_ERROR("Init Y1 SDK Interface failed.");
     return false;
