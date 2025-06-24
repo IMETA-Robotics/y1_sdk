@@ -10,7 +10,7 @@
     <!-- 0: nothing, 1: gripper, 2: teaching pendant -->
     <param name="arm_end_type" value="0"/>
     <!-- whether to enable robotic arm -->
-    <param name="auto_enable" value="false"/>
+    <param name="auto_enable" value="true"/>
 
     <!-- end pose control arm -->
     <param name="arm_end_pose_control_topic" value="/y1_controller/arm_end_pose_control"/>
