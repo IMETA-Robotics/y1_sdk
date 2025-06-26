@@ -51,7 +51,7 @@ bool Y1Controller::Init() {
       std::make_shared<Y1SDKInterface>(can_id, urdf_path, arm_end_type, auto_enable);
   if (!y1_interface_->Init()) {
     ROS_ERROR("Init Y1 SDK Interface failed.");
-    return false;
+    // return false;
   }
 
   if (arm_control_type == "leader_arm") {
@@ -108,6 +108,13 @@ void Y1Controller::ArmJointPositionControlCallback(
     arm_joint_position[i] = msg->arm_joint_position[i];
   }
   y1_interface_->SetArmJointPosition(arm_joint_position);
+
+  // arm joint velocity
+  std::array<double, 6> arm_joint_velocity;
+  for (int i = 0; i < 6; i++) {
+    arm_joint_velocity[i] = msg->arm_joint_velocity[i];
+  }
+  y1_interface_->SetArmJointVelocity(arm_joint_velocity);
 
   // gripper joint position
   y1_interface_->SetGripperJointPosition(msg->gripper);
