@@ -1,0 +1,25 @@
+<launch>
+
+  <node pkg="imeta_y1_controller" type="y1_controller" name="y1_arm"
+       output="screen" launch-prefix="gdb -ex run --args"> 
+    <!-- CAN ID -->
+    <param name="arm_can_id" value="can0"/>
+    <!-- arm feedback frequency (HZ) -->
+    <param name="arm_feedback_rate" value="200"/>
+    <!-- arm control type. leader_arm(remote master arm), follower_arm(remote slave arm) -->
+    <param name="arm_control_type" value="follower_arm"/>
+    <!-- 0: nothing, 1: gripper, 2: teaching pendant -->
+    <param name="arm_end_type" value="0"/>
+    <!-- whether to enable robotic arm -->
+    <param name="auto_enable" value="true"/>
+
+    <!-- end pose control arm -->
+    <param name="arm_end_pose_control_topic" value="/y1_controller/arm_end_pose_control"/>
+    <!-- joint position control arm -->
+    <param name="arm_joint_position_control_topic" value="/y1_controller/arm_joint_position_control"/>
+    <!-- end pose and joint position feedback -->
+    <param name="arm_feedback_topic" value="/y1_controller/arm_state"/>
+    
+  </node>
+
+</launch>

@@ -69,7 +69,7 @@ class Y1SDKInterface {
   /**
    * @brief Enable or disable the motor of the robot arm.
    * @param enable_arm true: enable the motor, false: disable the motor.
-  */
+   */
   void SetEnableArm(bool enable_flag);
 
   /**
@@ -79,8 +79,9 @@ class Y1SDKInterface {
   // void SaveAllJointZeroPosition();
 
   /**
-   * @brief Save J6 joint zero position. 
-      Each time you reinstall the end gripper or the teach pendant, you need to set the zero point of J6.
+   * @brief Save J6 joint zero position.
+      Each time you reinstall the end gripper or the teach pendant, you need to
+   set the zero point of J6.
   */
   void SaveJ6ZeroPosition();
 
