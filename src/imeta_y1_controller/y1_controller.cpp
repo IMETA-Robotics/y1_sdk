@@ -51,7 +51,7 @@ bool Y1Controller::Init() {
       std::make_shared<Y1SDKInterface>(can_id, urdf_path, arm_end_type, auto_enable);
   if (!y1_interface_->Init()) {
     ROS_ERROR("Init Y1 SDK Interface failed.");
-    // return false;
+    return false;
   }
 
   if (arm_control_type == "leader_arm") {
