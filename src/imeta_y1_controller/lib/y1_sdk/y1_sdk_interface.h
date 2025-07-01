@@ -57,11 +57,6 @@ class Y1SDKInterface {
   void SetArmJointPosition(const std::array<double, 6>& arm_joint_position);
 
   /**
-   * @brief set arm joint velocity control command.
-   */
-  void SetArmJointVelocity(const std::array<double, 6>& arm_joint_velocity);
-
-  /**
    * @brief set arm end pose control command. (x y z roll pitch yaw)
    */
   void SetArmEndPose(const std::array<double, 6>& arm_end_pose);
