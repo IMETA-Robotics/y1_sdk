@@ -55,15 +55,16 @@ class Y1Controller {
   /**
    * @brief publish arm joint states at a fixed frequency
    */
-  void ArmStateTimerCallback(const ros::TimerEvent&);
+  void ArmInformationTimerCallback(const ros::TimerEvent&);
 
  private:
   ros::NodeHandle nh_;
-  ros::Publisher arm_state_pub_;
+  ros::Publisher arm_joint_state_pub_;
+  ros::Publisher arm_status_pub_;
   ros::Subscriber arm_end_pose_control_sub_;
   ros::Subscriber arm_joint_position_control_sub_;
 
-  ros::Timer arm_state_timer_;
+  ros::Timer arm_information_timer_;
 
   std::shared_ptr<Y1SDKInterface> y1_interface_;
 };

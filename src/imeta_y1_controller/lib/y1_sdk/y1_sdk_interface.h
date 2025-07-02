@@ -23,6 +23,30 @@ class Y1SDKInterface {
   enum ControlMode { GO_ZERO = 0, GRAVITY_COMPENSATION = 1 };
 
   /**
+   * @brief the interface of arm all joint names.
+   * @return 6 or 7(include gripper) joint names.
+   */
+  std::vector<std::string> GetJointNames();
+
+  /**
+   * @brief the interface of all motor internal coil temperature
+   * @return 6 or 7(include gripper) joint rotor temperature.
+   */
+  std::vector<double> GetRotorTemperature();
+
+  /**
+   * @brief the interface of all joint error code.
+   * @return 6 or 7(include gripper) joint error code.
+   */
+  std::vector<int> GetJointErrorCode();
+
+  /**
+   * @brief the interface of all motor current.
+   * @return 6 or 7(include gripper) motor current.
+   */
+  std::vector<double> GetMotorCurrent();
+
+  /**
    * @brief the interface of joint position.
    * @return 6 or 7(include gripper) joint position.
    */

@@ -14,7 +14,8 @@ add_message_files(
   FILES
   ArmEndPoseControl.msg
   ArmJointPositionControl.msg
-  ArmState.msg
+  ArmJointState.msg
+  ArmStatus.msg
 )
 
 generate_messages(
