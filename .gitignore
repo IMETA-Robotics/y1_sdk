@@ -9,3 +9,4 @@ src/CMakeLists.txt
 log/*
 src/imeta_y1_controller/log/*
 data/*
+*bag

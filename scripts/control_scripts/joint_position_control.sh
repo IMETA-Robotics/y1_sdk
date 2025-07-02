@@ -16,6 +16,6 @@ rostopic pub /y1_controller/arm_joint_position_control imeta_y1_msg/ArmJointPosi
     secs: 0
     nsecs: 0
   frame_id: ''
-arm_joint_position: [-1.5, -1.5, 1.5, 0, 0, 0]
+arm_joint_position: [0, 0, 0, 0, 0, 0]
 arm_joint_velocity: [0.8, 0.8, 0.8, 0.8, 0.8, 0.8]
 gripper: 0.0"
