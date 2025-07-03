@@ -1,6 +1,6 @@
 #!/bin/sh
 
-rostopic pub /y1_controller/arm_joint_position_control imeta_y1_msg/ArmJointPositionControl "header:
+rostopic pub /y1/arm_joint_position_control imeta_y1_msg/ArmJointPositionControl "header:
   seq: 0
   stamp:
     secs: 0

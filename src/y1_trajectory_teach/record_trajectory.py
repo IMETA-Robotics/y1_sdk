@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 import rospy
 import json
 import os
@@ -25,7 +26,7 @@ def ArmStateCallBack(msg: ArmState):
 if __name__ == '__main__':
     rospy.init_node('record_trajectory', anonymous=True)
     # topic_name = rospy.get_param('~topic', '/joint_states')
-    topic_name = "/y1_controller/arm_state"
+    topic_name = "/y1/arm_joint_state"
     # output_file = rospy.get_param('~output', 'joint_states.jsonl')
     output_file = "data/arm_state.jsonl"
     os.makedirs(os.path.dirname(output_file), exist_ok=True)  # 自动创建 data 目录

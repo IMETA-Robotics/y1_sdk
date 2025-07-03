@@ -1,7 +1,7 @@
 std_msgs/Header header
 
 # joint names
-string[] name
+std_msgs/String[] name
 
 # joint error codes 
 uint8[] error_code

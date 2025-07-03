@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 import rospy
 import json
 from imeta_y1_msg.msg import ArmJointPositionControl
@@ -44,7 +45,7 @@ if __name__ == '__main__':
 
     jsonl_file = "/home/zxf/IMETA_LAB/Y1/data/arm_state.jsonl"
     
-    pub = rospy.Publisher('/y1_controller/arm_joint_position_control', ArmJointPositionControl, queue_size=1)
+    pub = rospy.Publisher('/y1/arm_joint_position_control', ArmJointPositionControl, queue_size=1)
 
     rospy.loginfo(f"Preparing to play back trajectory from {jsonl_file}...")
     playback_trajectory(jsonl_file, pub)
