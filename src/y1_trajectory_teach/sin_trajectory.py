@@ -33,27 +33,35 @@ if __name__ == '__main__':
     # 设置参数
     joint_count = 6
     amplitude = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]  # 每个关节的幅度
-    frequency = 1.0  # 频率 (Hz)
+    frequency = 1/4  # 频率 (Hz)
     phase_shift = [0.0, -math.pi/2, math.pi/2, 0, 0, 0]  # 每个关节的相位偏移
     duration = 10.0  # 轨迹持续时间
     rate_hz = 200  # 发送频率
 
     # 生成轨迹
     trajectory = generate_sinusoidal_trajectory(joint_count, amplitude, frequency, phase_shift, duration, rate_hz)
+    rospy.sleep(2.0)
 
     msg = ArmJointPositionControl()
     msg.header.frame_id = "base_link"
-    rospy.sleep(9.0)
+    msg.header.stamp = rospy.Time.now()
+    msg.arm_joint_position = trajectory[0]
+    msg.arm_joint_velocity = [0.8] * joint_count
+    pub.publish(msg)
+
+    rospy.loginfo("Publish start position, sleeping for 3 seconds go to start position.")
+    rospy.sleep(3.0)  # 给机械臂3秒时间移动到位
     
     rate = rospy.Rate(rate_hz)  # 设置循环频率
-    idx = 0
+    idx = 1
     print("trajectory length: ", len(trajectory))
     while not rospy.is_shutdown() and idx < len(trajectory):
         msg.header.stamp = rospy.Time.now()
         msg.arm_joint_position = trajectory[idx]
         
         # 如果需要固定速度，可以设定统一的速度值或再次计算
-        msg.arm_joint_velocity = [0.5] * joint_count
+        msg.arm_joint_velocity = [2.0] * joint_count
+        print("idx: ", idx)
         
         pub.publish(msg)
         idx += 1
