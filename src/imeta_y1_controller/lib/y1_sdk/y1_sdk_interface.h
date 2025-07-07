@@ -91,9 +91,9 @@ class Y1SDKInterface {
   void SetArmEndPose(const std::array<double, 6>& arm_end_pose);
 
   /**
-   * @brief set gripper joint position control command.
+   * @brief set gripper stroke control command. Unit: mm
    */
-  void SetGripperJointPosition(double gripper_joint_position);
+  void SetGripperStroke(double gripper_stroke);
 
   /**
    * @brief Enable or disable the motor of the robot arm.

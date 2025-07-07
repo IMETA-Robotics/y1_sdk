@@ -107,8 +107,8 @@ void Y1Controller::ArmEndPoseControlCallback(
   }
   y1_interface_->SetArmEndPose(arm_end_pose);
 
-  // gripper joint position
-  y1_interface_->SetGripperJointPosition(msg->gripper);
+  // gripper stroke (mm)
+  y1_interface_->SetGripperStroke(msg->gripper);
 }
 
 void Y1Controller::ArmJointPositionControlCallback(
@@ -127,8 +127,8 @@ void Y1Controller::ArmJointPositionControlCallback(
   }
   y1_interface_->SetArmJointVelocity(arm_joint_velocity);
 
-  // gripper joint position
-  y1_interface_->SetGripperJointPosition(msg->gripper);
+  // gripper stroke (mm)
+  y1_interface_->SetGripperStroke(msg->gripper);
 }
 
 void Y1Controller::ArmInformationTimerCallback(const ros::TimerEvent&) {
