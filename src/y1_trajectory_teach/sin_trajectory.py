@@ -57,10 +57,11 @@ if __name__ == '__main__':
     print("trajectory length: ", len(trajectory))
     while not rospy.is_shutdown() and idx < len(trajectory):
         msg.header.stamp = rospy.Time.now()
-        msg.arm_joint_position = trajectory[idx]
+        msg.arm_joint_position = trajectory[0]
+        msg.arm_joint_position[2] = trajectory[idx][2]
         
         # 如果需要固定速度，可以设定统一的速度值或再次计算
-        msg.arm_joint_velocity = [2.0] * joint_count
+        msg.arm_joint_velocity = [0.8] * joint_count
         print("idx: ", idx)
         
         pub.publish(msg)
