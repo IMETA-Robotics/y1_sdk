@@ -15,6 +15,7 @@ def generate_sinusoidal_trajectory(joint_count, amplitude, frequency, phase_shif
     - rate: 发布频率（Hz）
     """
     trajectory = []
+    velocities = []
     total_points = int(duration * rate)
     for i in range(total_points):
         t = i / rate  # 当前时间
@@ -22,8 +23,18 @@ def generate_sinusoidal_trajectory(joint_count, amplitude, frequency, phase_shif
             amplitude[j] * math.sin(2 * math.pi * frequency * t) + phase_shift[j]
             for j in range(joint_count)
         ]
+        
+        velocity = [
+            2 * math.pi * frequency * amplitude[j] * math.cos(2 * math.pi * frequency * t)
+            for j in range(joint_count)
+        ]
+        
+        print("positions: ", positions)
+        print("velocity: ", velocity)
+        
         trajectory.append(positions)
-    return trajectory
+        velocities.append(velocity)
+    return trajectory, velocities
 
 if __name__ == '__main__':
     rospy.init_node('sin_trajectory', anonymous=True)
@@ -39,7 +50,7 @@ if __name__ == '__main__':
     rate_hz = 200  # 发送频率
 
     # 生成轨迹
-    trajectory = generate_sinusoidal_trajectory(joint_count, amplitude, frequency, phase_shift, duration, rate_hz)
+    trajectory, velocity = generate_sinusoidal_trajectory(joint_count, amplitude, frequency, phase_shift, duration, rate_hz)
     rospy.sleep(2.0)
 
     msg = ArmJointPositionControl()
@@ -63,6 +74,7 @@ if __name__ == '__main__':
         # 如果需要固定速度，可以设定统一的速度值或再次计算
         msg.arm_joint_velocity = [0.8] * joint_count
         print("idx: ", idx)
+        print("deleta position: ", trajectory[idx][2] - trajectory[idx-1][2])
         
         pub.publish(msg)
         idx += 1
