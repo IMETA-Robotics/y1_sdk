@@ -29,8 +29,8 @@ def generate_sinusoidal_trajectory(joint_count, amplitude, frequency, phase_shif
             for j in range(joint_count)
         ]
         
-        print("positions: ", positions)
-        print("velocity: ", velocity)
+        # print("positions: ", positions)
+        # print("velocity: ", velocity)
         
         trajectory.append(positions)
         velocities.append(velocity)
@@ -43,10 +43,10 @@ if __name__ == '__main__':
 
     # 设置参数
     joint_count = 6
-    amplitude = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]  # 每个关节的幅度
-    frequency = 1/4  # 频率 (Hz)
+    amplitude = [1.0, 1.0, 0.8, 1.0, 1.0, 1.0]  # 每个关节的幅度
+    frequency = 1/6  # 频率 (Hz)
     phase_shift = [0.0, -math.pi/2, math.pi/2, 0, 0, 0]  # 每个关节的相位偏移
-    duration = 10.0  # 轨迹持续时间
+    duration = 10.0  # 轨迹持续时间 
     rate_hz = 200  # 发送频率
 
     # 生成轨迹
@@ -69,7 +69,11 @@ if __name__ == '__main__':
     while not rospy.is_shutdown() and idx < len(trajectory):
         msg.header.stamp = rospy.Time.now()
         msg.arm_joint_position = trajectory[0]
+        msg.arm_joint_position[0] = trajectory[idx][0]
         msg.arm_joint_position[2] = trajectory[idx][2]
+        # msg.arm_joint_position[3] = trajectory[idx][3]
+        msg.arm_joint_position[4] = trajectory[idx][4]
+        # msg.arm_joint_position[2] = trajectory[idx][2]
         
         # 如果需要固定速度，可以设定统一的速度值或再次计算
         msg.arm_joint_velocity = [0.8] * joint_count
