@@ -121,11 +121,7 @@ void Y1Controller::ArmJointPositionControlCallback(
   y1_interface_->SetArmJointPosition(arm_joint_position);
 
   // arm joint velocity
-  std::array<double, 6> arm_joint_velocity;
-  for (int i = 0; i < 6; i++) {
-    arm_joint_velocity[i] = msg->arm_joint_velocity[i];
-  }
-  y1_interface_->SetArmJointVelocity(arm_joint_velocity);
+  y1_interface_->SetArmJointVelocity(msg->arm_joint_velocity);
 
   // gripper stroke (mm)
   y1_interface_->SetGripperStroke(msg->gripper);

@@ -10,8 +10,10 @@ namespace controller {
 
 class Y1SDKInterface {
  public:
-  Y1SDKInterface(const std::string& can_id, const std::string& urdf_path,
-                 int arm_end_type, bool enable_arm);
+  Y1SDKInterface() = delete;
+  explicit Y1SDKInterface(const std::string& can_id,
+                          const std::string& urdf_path, int arm_end_type,
+                          bool enable_arm);
   ~Y1SDKInterface();
 
   /**
@@ -83,7 +85,7 @@ class Y1SDKInterface {
   /**
    * @brief set arm joint velocity control command.
    */
-  void SetArmJointVelocity(const std::array<double, 6>& arm_joint_velocity);
+  void SetArmJointVelocity(double arm_joint_velocity);
 
   /**
    * @brief set arm end pose control command. (x y z roll pitch yaw)
@@ -102,14 +104,8 @@ class Y1SDKInterface {
   void SetEnableArm(bool enable_flag);
 
   /**
-   * @brief Save all joint zero position.
-      J1 - J5 have been saved with zero point when leaving the factory.
-  */
-  // void SaveAllJointZeroPosition();
-
-  /**
    * @brief Save J6 joint zero position.
-      Each time you reinstall the end gripper or the teach pendant, you need to
+      Each time you reinstall the end flange adapter, you need to
    set the zero point of J6.
   */
   void SaveJ6ZeroPosition();
