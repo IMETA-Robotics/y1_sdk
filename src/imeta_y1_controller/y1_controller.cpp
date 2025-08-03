@@ -159,7 +159,7 @@ void Y1Controller::ArmInformationTimerCallback(const ros::TimerEvent&) {
   arm_status.header.stamp = ros::Time::now();
 
   // get joint names
-  std::vector<std::string> joint_names = y1_interface_->GetJointNames();
+  // std::vector<std::string> joint_names = y1_interface_->GetJointNames();
 
   // get motor current
   std::vector<double> motor_current = y1_interface_->GetMotorCurrent();
@@ -170,14 +170,17 @@ void Y1Controller::ArmInformationTimerCallback(const ros::TimerEvent&) {
   // get joint motor error code
   std::vector<int> joint_error_code = y1_interface_->GetJointErrorCode();
 
-  for (int i = 0; i < joint_names.size(); i++) {
-    std_msgs::String joint_name;
-    joint_name.data = joint_names.at(i);
-    arm_status.name.push_back(joint_name);
+  double total_current = 0;
+  for (int i = 0; i < motor_current.size(); i++) {
+    // std_msgs::String joint_name;
+    // joint_name.data = joint_names.at(i);
+    // arm_status.name.push_back(joint_name);
     arm_status.motor_current.push_back(motor_current.at(i));
     arm_status.rotor_temperature.push_back(rotor_temperature.at(i));
     arm_status.error_code.push_back(joint_error_code.at(i));
+    total_current += motor_current.at(i);
   }
+  arm_status.motor_current.push_back(total_current);
 
   // publish arm information
   arm_joint_state_pub_.publish(arm_joint_state);

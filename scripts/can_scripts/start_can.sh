@@ -15,6 +15,7 @@ start_can() {
 
     sudo slcand -o -f -s8 $CAN_DEVICE $CAN_INTERFACE
     sudo ifconfig $CAN_INTERFACE up
+    sudo ip link set $CAN_INTERFACE txqueuelen 1000
     
     if [ $? -ne 0 ]; then
         echo "启动 $CAN_INTERFACE 接口失败：RTNETLINK answers: Operation not supported"
