@@ -75,7 +75,7 @@ bool Y1Controller::Init() {
         arm_joint_position_control_topic, 1,
         &Y1Controller::FollowArmJointPositionControlCallback, this);
 
-  } else if (arm_control_type == "normal_control_arm") {
+  } else if (arm_control_type == "normal_arm") {
     y1_interface_->SetArmControlMode(
         Y1SDKInterface::ControlMode::NRT_JOINT_POSITION);
     // subscriber
