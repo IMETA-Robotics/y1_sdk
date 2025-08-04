@@ -13,17 +13,17 @@
     name="base_link">
     <inertial>
       <origin
-        xyz="-0.00052734 -6.0025E-06 0.026597"
+        xyz="-0.000441004287981071 3.02414936219764E-07 0.0312921630081568"
         rpy="0 0 0" />
       <mass
-        value="1.297" />
+        value="1.55068784468738" />
       <inertia
-        ixx="0.0034593"
-        ixy="3.9801E-08"
-        ixz="-2.7609E-06"
-        iyy="0.0011495"
-        iyz="7.38E-08"
-        izz="0.0042157" />
+        ixx="0.06792377"
+        ixy="2E-08"
+        ixz="0.007424"
+        iyy="0.06654524"
+        iyz="-6E-08"
+        izz="0.00516147" />
     </inertial>
     <visual>
       <origin
@@ -36,7 +36,7 @@
       <material
         name="">
         <color
-          rgba="0.75294 0.75294 0.75294 1" />
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
       </material>
     </visual>
     <collision>
@@ -53,17 +53,17 @@
     name="J1_Link">
     <inertial>
       <origin
-        xyz="3.9262E-05 -0.0010592 0.036782"
+        xyz="3.5964E-05 -0.00074706 0.044556"
         rpy="0 0 0" />
       <mass
-        value="0.34057" />
+        value="0.631" />
       <inertia
-        ixx="0.00012062"
-        ixy="5.3096E-08"
-        ixz="-1.3854E-09"
-        iyy="0.0001608"
-        iyz="1.6367E-08"
-        izz="0.00014358" />
+        ixx="0.00718383"
+        ixy="-6.54E-06"
+        ixz="0.00099856"
+        iyy="0.00725219"
+        iyz="4.248E-05"
+        izz="0.00051054" />
     </inertial>
     <visual>
       <origin
@@ -104,24 +104,24 @@
     <limit
       lower="-2.79"
       upper="2.79"
-      effort="9"
+      effort="20"
       velocity="5" />
   </joint>
   <link
     name="J2_Link">
     <inertial>
       <origin
-        xyz="0.14776 0.0015373 -6.263E-05"
+        xyz="0.17518 0.001209 -0.00031101"
         rpy="0 0 0" />
       <mass
-        value="0.94239" />
+        value="1.209" />
       <inertia
-        ixx="0.00033621"
-        ixy="-0.00010007"
-        ixz="-1.7885E-05"
-        iyy="0.0067903"
-        iyz="6.3442E-07"
-        izz="0.0068905" />
+        ixx="0.00885602"
+        ixy="-0.00014005"
+        ixz="0.01712048"
+        iyy="0.06321957"
+        iyz="2.203E-05"
+        izz="0.05550502" />
     </inertial>
     <visual>
       <origin
@@ -162,24 +162,24 @@
     <limit
       lower="-3.14"
       upper="0"
-      effort="9"
-      velocity="20" />
+      effort="20"
+      velocity="5" />
   </joint>
   <link
     name="J3_Link">
     <inertial>
       <origin
-        xyz="-0.095861 -0.041922 0.0019274"
+        xyz="-0.12313 -0.044023 0.0013381"
         rpy="0 0 0" />
       <mass
-        value="0.69617" />
+        value="0.916" />
       <inertia
-        ixx="0.00041963"
-        ixy="0.00040523"
-        ixz="4.3292E-06"
-        iyy="0.0020271"
-        iyz="-3.286E-08"
-        izz="0.0022409" />
+        ixx="0.00205217"
+        ixy="0.00015029"
+        ixz="0.00596664"
+        iyy="0.0021132"
+        iyz="-4.623E-05"
+        izz="0.03229582" />
     </inertial>
     <visual>
       <origin
@@ -220,24 +220,24 @@
     <limit
       lower="0"
       upper="3.14"
-      effort="9"
-      velocity="20" />
+      effort="20"
+      velocity="5" />
   </joint>
   <link
     name="J4_Link">
     <inertial>
       <origin
-        xyz="-0.047131 -0.039412 0.0066509"
+        xyz="-0.056876 -0.055037 0.0037784"
         rpy="0 0 0" />
       <mass
-        value="0.27357" />
+        value="0.483" />
       <inertia
-        ixx="0.00015259"
-        ixy="2.404E-05"
-        ixz="-3.9657E-07"
-        iyy="0.00013272"
-        iyz="1.3905E-06"
-        izz="0.00016094" />
+        ixx="0.00065278"
+        ixy="0.00010973"
+        ixz="0.00020965"
+        iyy="0.033464"
+        iyz="-6.852E-05"
+        izz="0.00058978" />
     </inertial>
     <visual>
       <origin
@@ -278,24 +278,24 @@
     <limit
       lower="-1.74"
       upper="1.74"
-      effort="3"
-      velocity="5" />
+      effort="10"
+      velocity="20" />
   </joint>
   <link
     name="J5_Link">
     <inertial>
       <origin
-        xyz="0.006836 3.7476E-05 0.027245"
+        xyz="0.00272134348699557 -1.25423697838919E-09 0.0320591095629187"
         rpy="0 0 0" />
       <mass
-        value="0.16994" />
+        value="0.378" />
       <inertia
-        ixx="8.168E-05"
-        ixy="-3.1597E-08"
-        ixz="9.4321E-06"
-        iyy="6.5589E-05"
-        iyz="-1.5004E-08"
-        izz="5.7856E-05" />
+        ixx="0.00056876"
+        ixy="0"
+        ixz="-2.39E-05"
+        iyy="0.00056937"
+        iyz="0"
+        izz="0.00015494" />
     </inertial>
     <visual>
       <origin
@@ -308,7 +308,7 @@
       <material
         name="">
         <color
-          rgba="0.75294 0.75294 0.75294 1" />
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
       </material>
     </visual>
     <collision>
@@ -333,27 +333,27 @@
       link="J5_Link" />
     <axis
       xyz="0 0 1" />
-    <limit
+   <limit
       lower="-1.74"
       upper="1.74"
-      effort="3"
-      velocity="5" />
+      effort="10"
+      velocity="20" />
   </joint>
   <link
     name="J6_Link">
     <inertial>
       <origin
-        xyz="-0.074223 0.00078642 -0.099511"
+        xyz="-0.067404 0.0004303 -0.10457"
         rpy="0 0 0" />
       <mass
-        value="0.8" />
+        value="0.0001" />
       <inertia
-        ixx="0.051146"
-        ixy="0.00029798"
-        ixz="-0.011966"
-        iyy="0.075493"
-        iyz="1.8184E-05"
-        izz="0.035212" />
+        ixx="0"
+        ixy="0"
+        ixz="0"
+        iyy="0"
+        iyz="0"
+        izz="0" />
     </inertial>
     <visual>
       <origin
@@ -394,7 +394,7 @@
     <limit
       lower="-2.61"
       upper="2.61"
-      effort="3"
-      velocity="5" />
+      effort="10"
+      velocity="20" />
   </joint>
 </robot>

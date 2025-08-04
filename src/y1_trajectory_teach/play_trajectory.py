@@ -18,22 +18,23 @@ def playback_trajectory(jsonl_file, control_pub):
     msg = ArmJointPositionControl()
     msg.header.stamp = rospy.Time.now()
     msg.header.frame_id = "base_link"
-    msg.arm_joint_position = data_lines[0]['position']
-    msg.arm_joint_velocity = data_lines[0]['velocity']
+    msg.arm_joint_position = data_lines[0]['position'][0:6]
+    # msg.arm_joint_velocity = data_lines[0]['velocity']
     
-    rospy.sleep(2.0) # TODO: 为什么要等待一会，第一个点才可以发送成功？
+    rospy.sleep(3) # TODO: 为什么要等待一会，第一个点才可以发送成功？
 
     control_pub.publish(msg)
     rospy.loginfo("Publish start position, sleeping for 3 seconds go to start position.")
-    rospy.sleep(3.0)  # 给机械臂3秒时间移动到位
+    rospy.sleep(3)  # 给机械臂3秒时间移动到位
     print("Playback started.")
     
-    rate = rospy.Rate(200)  # 200Hz
+    rate = rospy.Rate(30)  # 200Hz
     while not rospy.is_shutdown() and idx < data_len:
         msg.header.stamp = rospy.Time.now()
-        msg.arm_joint_position = data_lines[idx]['position']
+        msg.arm_joint_position = data_lines[idx]['position'][0:6]
         # msg.arm_joint_velocity = [3.0, 3.0, 3.0, 3, 3, 3]
-        msg.arm_joint_velocity = data_lines[idx]['velocity']
+        # msg.arm_joint_velocity = data_lines[idx]['velocity']
+        msg.gripper = data_lines[idx]['position'][6]
 
         control_pub.publish(msg)
         idx += 1
@@ -43,9 +44,9 @@ def playback_trajectory(jsonl_file, control_pub):
 if __name__ == '__main__':
     rospy.init_node('play_trajectory', anonymous=True)
 
-    jsonl_file = "/home/zxf/IMETA_LAB/Y1/data/arm_state.jsonl"
+    jsonl_file = "/home/ubuntu/IMETA_LAB/Y1/data/arm_state_30hz.jsonl"
     
-    pub = rospy.Publisher('/y1/arm_joint_position_control', ArmJointPositionControl, queue_size=1)
+    pub = rospy.Publisher('/joint_states', ArmJointPositionControl, queue_size=1)
 
     rospy.loginfo(f"Preparing to play back trajectory from {jsonl_file}...")
     playback_trajectory(jsonl_file, pub)

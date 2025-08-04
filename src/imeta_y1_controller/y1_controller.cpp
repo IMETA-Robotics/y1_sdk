@@ -4,7 +4,6 @@
 
 #include <vector>
 
-#include "imeta_y1_msg/ArmJointState.h"
 #include "imeta_y1_msg/ArmStatus.h"
 #include "std_msgs/String.h"
 
@@ -68,7 +67,19 @@ bool Y1Controller::Init() {
         Y1SDKInterface::ControlMode::GRAVITY_COMPENSATION);
 
   } else if (arm_control_type == "follower_arm") {
-    // subscriber. follower arm receive control command.
+    y1_interface_->SetArmControlMode(
+        Y1SDKInterface::ControlMode::RT_JOINT_POSITION);
+    // subscriber. follower arm receive leader arm joint state as control
+    // command.
+    arm_joint_position_control_sub_ = nh_.subscribe(
+        arm_joint_position_control_topic, 1,
+        &Y1Controller::FollowArmJointPositionControlCallback, this);
+
+  } else if (arm_control_type == "normal_control_arm") {
+    y1_interface_->SetArmControlMode(
+        Y1SDKInterface::ControlMode::NRT_JOINT_POSITION);
+    // subscriber
+    // normal control arm receive control command.
     arm_end_pose_control_sub_ =
         nh_.subscribe(arm_end_pose_control_topic, 1,
                       &Y1Controller::ArmEndPoseControlCallback, this);
@@ -109,6 +120,19 @@ void Y1Controller::ArmEndPoseControlCallback(
 
   // gripper stroke (mm)
   y1_interface_->SetGripperStroke(msg->gripper);
+}
+
+void Y1Controller::FollowArmJointPositionControlCallback(
+    const imeta_y1_msg::ArmJointState::ConstPtr& msg) {
+  if (msg->joint_position.size() >= 6 && msg->joint_velocity.size() >= 6) {
+    // arm joint position
+    y1_interface_->SetArmJointPosition(msg->joint_position);
+
+    // arm joint velocity
+    y1_interface_->SetArmJointVelocity(msg->joint_velocity);
+  } else {
+    ROS_ERROR("follow arm receive joint control size < 6");
+  }
 }
 
 void Y1Controller::ArmJointPositionControlCallback(
@@ -159,7 +183,7 @@ void Y1Controller::ArmInformationTimerCallback(const ros::TimerEvent&) {
   arm_status.header.stamp = ros::Time::now();
 
   // get joint names
-  // std::vector<std::string> joint_names = y1_interface_->GetJointNames();
+  std::vector<std::string> joint_names = y1_interface_->GetJointNames();
 
   // get motor current
   std::vector<double> motor_current = y1_interface_->GetMotorCurrent();
@@ -172,9 +196,9 @@ void Y1Controller::ArmInformationTimerCallback(const ros::TimerEvent&) {
 
   double total_current = 0;
   for (int i = 0; i < motor_current.size(); i++) {
-    // std_msgs::String joint_name;
-    // joint_name.data = joint_names.at(i);
-    // arm_status.name.push_back(joint_name);
+    std_msgs::String joint_name;
+    joint_name.data = joint_names.at(i);
+    arm_status.name.push_back(joint_name);
     arm_status.motor_current.push_back(motor_current.at(i));
     arm_status.rotor_temperature.push_back(rotor_temperature.at(i));
     arm_status.error_code.push_back(joint_error_code.at(i));

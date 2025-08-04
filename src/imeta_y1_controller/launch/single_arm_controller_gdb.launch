@@ -19,7 +19,6 @@
     <param name="arm_joint_position_control_topic" value="/y1/arm_joint_position_control"/>
     <!-- end pose and joint position feedback -->
     <param name="arm_feedback_topic" value="/y1/arm_state"/>
-    
   </node>
 
 </launch>

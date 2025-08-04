@@ -7,6 +7,8 @@
 
 #include "imeta_y1_msg/ArmEndPoseControl.h"
 #include "imeta_y1_msg/ArmJointPositionControl.h"
+#include "imeta_y1_msg/ArmJointState.h"
+#include "ros/subscriber.h"
 #include "y1_sdk/y1_sdk_interface.h"
 
 namespace imeta {
@@ -30,24 +32,19 @@ class Y1Controller {
 
  private:
   /**
-   * @brief init all related class of y1 controller.
-   * @result must be true to run normally.
+   * @brief follow arm receive leader arm joint state as control command.
    */
-  // bool InitParams();
+  void FollowArmJointPositionControlCallback(
+      const imeta_y1_msg::ArmJointState::ConstPtr& msg);
 
   /**
-   * @brief init all publishers and subscribers.
-   */
-  // void InitTopic();
-
-  /**
-   * @brief receive arm end pose control command.
+   * @brief normal control arm receive end pose control command.
    */
   void ArmEndPoseControlCallback(
       const imeta_y1_msg::ArmEndPoseControl::ConstPtr& msg);
 
   /**
-   * @brief receive arm joint position control command.
+   * @brief normal control arm receive joint position control command.
    */
   void ArmJointPositionControlCallback(
       const imeta_y1_msg::ArmJointPositionControl::ConstPtr& msg);

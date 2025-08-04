@@ -22,7 +22,11 @@ class Y1SDKInterface {
    */
   bool Init();
 
-  enum ControlMode { GO_ZERO = 0, GRAVITY_COMPENSATION = 1 };
+  enum ControlMode {
+    GRAVITY_COMPENSATION = 0,
+    RT_JOINT_POSITION = 1,
+    NRT_JOINT_POSITION
+  };
 
   /**
    * @brief the interface of arm all joint names.
@@ -78,14 +82,24 @@ class Y1SDKInterface {
   void SetArmControlMode(const ControlMode& mode);
 
   /**
-   * @brief set arm joint position control command.
+   * @brief set normal control arm joint position control command.
    */
   void SetArmJointPosition(const std::array<double, 6>& arm_joint_position);
 
   /**
-   * @brief set arm joint velocity control command.
+   * @brief set normal control arm joint velocity control command.
    */
   void SetArmJointVelocity(double arm_joint_velocity);
+
+  /**
+   * @brief set follow arm joint position control command.
+   */
+  void SetArmJointPosition(const std::vector<double>& arm_joint_position);
+
+  /**
+   * @brief set follow arm joint velocity control command.
+   */
+  void SetArmJointVelocity(const std::vector<double>& arm_joint_velocity);
 
   /**
    * @brief set arm end pose control command. (x y z roll pitch yaw)
