@@ -10,16 +10,17 @@ def state_callback(msg):
 if __name__ == "__main__":
     rospy.init_node('record_trajectory', anonymous=True)
     os.makedirs("data", exist_ok=True)
-    rospy.Subscriber("/puppet_arm_right/joint_states",
+    rospy.Subscriber("/master_arm_right/joint_states",
                      ArmJointState, state_callback, queue_size=1)
 
-    rate = rospy.Rate(30)  # 20Hz
-    with open("data/arm_state_30hz.jsonl", 'a') as f:
+    rate = rospy.Rate(200)  # 200Hz
+    with open("data/arm_state_200hz.jsonl", 'a') as f:
         while not rospy.is_shutdown():
             if latest is not None:
                 data = {
                     'position': list(latest.joint_position),
-                    'velocity': list(latest.joint_velocity)
+                    'velocity': list(latest.joint_velocity),
+                    'effort': list(latest.joint_effort),
                 }
                 f.write(json.dumps(data) + '\n')
                 rospy.loginfo("Saved snapshot")
