@@ -12,9 +12,11 @@ if __name__ == "__main__":
     os.makedirs("data", exist_ok=True)
     rospy.Subscriber("/master_arm_right/joint_states",
                      ArmJointState, state_callback, queue_size=1)
+    
+    input("enter anything to start recording")
 
-    rate = rospy.Rate(200)  # 200Hz
-    with open("data/arm_state_200hz.jsonl", 'a') as f:
+    rate = rospy.Rate(400)  # 400Hz
+    with open("data/arm_state_400hz.jsonl", 'a') as f:
         while not rospy.is_shutdown():
             if latest is not None:
                 data = {
