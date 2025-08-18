@@ -1,6 +1,8 @@
 #include "y1_controller.h"
 
+#include <iostream>
 #include <ros/package.h>
+#include <glog/logging.h>
 
 #include <vector>
 
@@ -142,13 +144,16 @@ void Y1Controller::ArmJointPositionControlCallback(
   for (int i = 0; i < 6; i++) {
     arm_joint_position[i] = msg->arm_joint_position[i];
   }
+  LOG(INFO) << "TETS1";
   y1_interface_->SetArmJointPosition(arm_joint_position);
+  LOG(INFO) << "TETS2";
 
   // arm joint velocity
   y1_interface_->SetArmJointVelocity(msg->arm_joint_velocity);
-
+  LOG(INFO) << "TETS3";
   // gripper stroke (mm)
   y1_interface_->SetGripperStroke(msg->gripper);
+  LOG(INFO) << "TETS4";
 }
 
 void Y1Controller::ArmInformationTimerCallback(const ros::TimerEvent&) {
@@ -156,18 +161,23 @@ void Y1Controller::ArmInformationTimerCallback(const ros::TimerEvent&) {
   imeta_y1_msg::ArmJointState arm_joint_state;
   arm_joint_state.header.stamp = ros::Time::now();
 
+  // LOG(INFO) << "TETS1";
   // get arm end pose
   std::array<double, 6> arm_end_pose = y1_interface_->GetArmEndPose();
 
+  // LOG(INFO) << "TETS2";
   // get 6 or 7(include gripper) joint position.
   std::vector<double> joint_position = y1_interface_->GetJointPosition();
 
+  // LOG(INFO) << "TETS3";
   // get 6 or 7(include gripper) joint velocity.
   std::vector<double> joint_velocity = y1_interface_->GetJointVelocity();
 
+  // LOG(INFO) << "TETS4";
   // get 6 or 7(include gripper) joint torque.
   std::vector<double> joint_effort = y1_interface_->GetJointEffort();
 
+  // LOG(INFO) << "TETS5";
   for (int i = 0; i < joint_position.size(); i++) {
     arm_joint_state.joint_position.push_back(joint_position.at(i));
     arm_joint_state.joint_velocity.push_back(joint_velocity.at(i));
@@ -177,24 +187,30 @@ void Y1Controller::ArmInformationTimerCallback(const ros::TimerEvent&) {
   for (int i = 0; i < 6; i++) {
     arm_joint_state.end_pose.at(i) = arm_end_pose.at(i);
   }
+  // LOG(INFO) << "TETS6";
 
   // joint motor status
   imeta_y1_msg::ArmStatus arm_status;
   arm_status.header.stamp = ros::Time::now();
 
+  // LOG(INFO) << "TETS7";
   // get joint names
   std::vector<std::string> joint_names = y1_interface_->GetJointNames();
 
+  // LOG(INFO) << "TETS8";
   // get motor current
   std::vector<double> motor_current = y1_interface_->GetMotorCurrent();
 
+  // LOG(INFO) << "TETS9";
   // get rotor temperature
   std::vector<double> rotor_temperature = y1_interface_->GetRotorTemperature();
 
+  // LOG(INFO) << "TETS10";
   // get joint motor error code
   std::vector<int> joint_error_code = y1_interface_->GetJointErrorCode();
 
   double total_current = 0;
+  // LOG(INFO) << "TETS11";
   for (int i = 0; i < motor_current.size(); i++) {
     std_msgs::String joint_name;
     joint_name.data = joint_names.at(i);
@@ -205,10 +221,12 @@ void Y1Controller::ArmInformationTimerCallback(const ros::TimerEvent&) {
     total_current += motor_current.at(i);
   }
   arm_status.motor_current.push_back(total_current);
+  // LOG(INFO) << "TETS12";
 
   // publish arm information
   arm_joint_state_pub_.publish(arm_joint_state);
   arm_status_pub_.publish(arm_status);
+  // LOG(INFO) << "TETS13";
 }
 
 }  // namespace controller

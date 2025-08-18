@@ -19,7 +19,8 @@ def playback_trajectory(jsonl_file, control_pub):
     msg.header.stamp = rospy.Time.now()
     msg.header.frame_id = "base_link"
     msg.arm_joint_position = data_lines[0]['position'][0:6]
-    msg.arm_joint_velocity = 0.8
+    msg.arm_joint_velocity = 0.4
+    input("enter anything to start recording")
     
     rospy.sleep(3) # TODO: 为什么要等待一会，第一个点才可以发送成功？
 
@@ -28,11 +29,11 @@ def playback_trajectory(jsonl_file, control_pub):
     rospy.sleep(3)  # 给机械臂3秒时间移动到位
     print("Playback started.")
     
-    rate = rospy.Rate(50)
+    rate = rospy.Rate(30)
     while not rospy.is_shutdown() and idx < data_len:
         msg.header.stamp = rospy.Time.now()
         msg.arm_joint_position = data_lines[idx]['position'][0:6]
-        msg.arm_joint_velocity = 0.8
+        msg.arm_joint_velocity = 0.4
         # msg.gripper = data_lines[idx]['position'][6]
 
         control_pub.publish(msg)
@@ -43,7 +44,7 @@ def playback_trajectory(jsonl_file, control_pub):
 if __name__ == '__main__':
     rospy.init_node('play_trajectory', anonymous=True)
 
-    jsonl_file = "/home/ubuntu/IMETA_LAB/Y1/data/arm_state_50hz.jsonl"
+    jsonl_file = "/home/zxf/IMETA_LAB/Y1/data/arm_state_30hz.jsonl"
     
     pub = rospy.Publisher('/y1/arm_joint_position_control', ArmJointPositionControl, queue_size=1)
 
