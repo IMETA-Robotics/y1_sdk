@@ -30,7 +30,7 @@ def playback_trajectory(jsonl_file, control_pub):
     rate = rospy.Rate(30)
     while not rospy.is_shutdown() and idx < data_len:
         msg.header.stamp = rospy.Time.now()
-        msg.arm_end_pose = data_lines[idx]['position'][0:6]
+        msg.arm_end_pose = data_lines[idx]['end_pose'][0:6]
         # msg.gripper = data_lines[idx]['position'][6]
 
         control_pub.publish(msg)
@@ -41,11 +41,9 @@ def playback_trajectory(jsonl_file, control_pub):
 if __name__ == '__main__':
     rospy.init_node('play_trajectory', anonymous=True)
 
-    jsonl_file = "/home/zxf/IMETA_LAB/Y1/data/arm_state_30hz.jsonl"
+    jsonl_file = "/home/zxf/IMETA_LAB/Y1/data/arm_state_400hz.jsonl"
     
     pub = rospy.Publisher('/y1/end_pose_control', ArmEndPoseControl, queue_size=1)
 
     rospy.loginfo(f"Preparing to play back trajectory from {jsonl_file}...")
     playback_trajectory(jsonl_file, pub)
-
-    rospy.spin()

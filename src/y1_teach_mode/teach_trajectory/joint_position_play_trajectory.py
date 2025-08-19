@@ -11,30 +11,26 @@ def playback_trajectory(jsonl_file, control_pub):
     if not data_lines:
         rospy.logerr("No data found in the file.")
         return
-
+    
+    rospy.sleep(3) # TODO: 为什么要等待一会，第一个点才可以发送成功？
     data_len  = len(data_lines)
     print("data size : ", data_len)
-    input("enter anything to start recording")
+    input("Press key [Enter] to start recording")
     
     idx = 1  # 第一个点已经发过了
     msg = ArmJointState()
     msg.header.stamp = rospy.Time.now()
-    msg.header.frame_id = "base_link"
-    msg.joint_position = data_lines[0]['position'][0:7]
-    msg.joint_velocity = data_lines[0]['velocity'][0:7]
-    
-    rospy.sleep(3) # TODO: 为什么要等待一会，第一个点才可以发送成功？
-
+    msg.joint_position = data_lines[0]['position'][0:6]
+    msg.joint_velocity = data_lines[0]['velocity'][0:6]
     control_pub.publish(msg)
     rospy.loginfo("Publish start position, sleeping for 3 seconds go to start position.")
     rospy.sleep(3)  # 给机械臂3秒时间移动到位
-    print("Playback started.")
     
     rate = rospy.Rate(400)  # high frequency
     while not rospy.is_shutdown() and idx < data_len:
         msg.header.stamp = rospy.Time.now()
-        msg.joint_position = data_lines[idx]['position'][0:7]
-        msg.joint_velocity = data_lines[idx]['velocity'][0:7]
+        msg.joint_position = data_lines[idx]['position'][0:6]
+        msg.joint_velocity = data_lines[idx]['velocity'][0:6]
 
         control_pub.publish(msg)
         idx += 1
@@ -50,5 +46,3 @@ if __name__ == '__main__':
 
     rospy.loginfo(f"Preparing to play back trajectory from {jsonl_file}...")
     playback_trajectory(jsonl_file, pub)
-
-    # rospy.spin()
