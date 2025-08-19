@@ -118,10 +118,12 @@ void Y1Controller::ArmEndPoseControlCallback(
   for (int i = 0; i < 6; i++) {
     arm_end_pose[i] = msg->arm_end_pose[i];
   }
+  LOG(INFO) << "TETS1";
   y1_interface_->SetArmEndPose(arm_end_pose);
-
+  LOG(INFO) << "TETS2";
   // gripper stroke (mm)
   y1_interface_->SetGripperStroke(msg->gripper);
+  LOG(INFO) << "TETS3";
 }
 
 void Y1Controller::FollowArmJointPositionControlCallback(

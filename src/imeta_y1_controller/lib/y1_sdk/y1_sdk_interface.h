@@ -77,7 +77,8 @@ class Y1SDKInterface {
   std::array<double, 6> GetArmEndPose();
 
   /**
-   * @brief set arm control mode. (0: go_zero, 1: gravity compensation)
+   * @brief set arm control mode. (0: GRAVITY_COMPENSATION, 1:
+   * RT_JOINT_POSITION, 2: NRT_JOINT_POSITION)
    */
   void SetArmControlMode(const ControlMode& mode);
 
@@ -90,6 +91,12 @@ class Y1SDKInterface {
    * @brief set normal control arm joint velocity control command.
    */
   void SetArmJointVelocity(double arm_joint_velocity);
+
+  /**
+   * @brief set normal control arm joint position and velocity control command.
+   */
+  void ControlArmJoint(const std::array<double, 6>& arm_joint_position,
+                       double velocity);
 
   /**
    * @brief set follow arm joint position control command.
@@ -110,6 +117,13 @@ class Y1SDKInterface {
    * @brief set gripper stroke control command. Unit: mm
    */
   void SetGripperStroke(double gripper_stroke);
+
+  /**
+   * @brief set gripper stroke and velocity control command.
+   * @param gripper_stroke Unit: mm
+   * @param velocity Unit: rad/s
+   */
+  void ControlGripper(double gripper_stroke, double velocity);
 
   /**
    * @brief Enable or disable the motor of the robot arm.

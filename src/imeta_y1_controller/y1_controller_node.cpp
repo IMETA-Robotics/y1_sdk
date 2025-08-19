@@ -2,14 +2,18 @@
 #include <ros/package.h>
 
 #include <boost/filesystem.hpp>
+#include <csignal>
 #include <iostream>
 
 #include "y1_controller.h"
 
 using namespace imeta::controller;
 
+void signalHandler(int signum) { std::exit(signum); }
+
 int main(int argc, char** argv) {
   ros::init(argc, argv, "imeta_y1_controller");
+  std::signal(SIGINT, signalHandler);
 
   // init gflags
   google::ParseCommandLineFlags(&argc, &argv, true);

@@ -5,7 +5,7 @@
     <!-- CAN ID -->
     <param name="arm_can_id" value="can0"/>
     <!-- arm status and joint state feedback frequency (HZ) -->
-    <param name="arm_feedback_rate" value="200"/>
+    <param name="arm_feedback_rate" value="400"/>
     <!-- arm control type: leader_arm(remote master arm), follower_arm(remote slave arm),
                            normal_arm(normal control arm) -->
     <param name="arm_control_type" value="leader_arm"/>
