@@ -31,7 +31,6 @@ def playback_trajectory(jsonl_file, control_pub):
     while not rospy.is_shutdown() and idx < data_len:
         msg.header.stamp = rospy.Time.now()
         msg.arm_end_pose = data_lines[idx]['position'][0:6]
-        # msg.arm_end_pose = 0.4
         # msg.gripper = data_lines[idx]['position'][6]
 
         control_pub.publish(msg)

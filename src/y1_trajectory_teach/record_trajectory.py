@@ -15,7 +15,7 @@ if __name__ == "__main__":
     
     input("enter anything to start recording")
 
-    rate = rospy.Rate(30)  # 400Hz
+    rate = rospy.Rate(30)
     with open("data/arm_state_30hz.jsonl", 'a') as f:
         while not rospy.is_shutdown():
             if latest is not None:
