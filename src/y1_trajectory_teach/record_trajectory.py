@@ -23,6 +23,7 @@ if __name__ == "__main__":
                     'position': list(latest.joint_position),
                     'velocity': list(latest.joint_velocity),
                     'effort': list(latest.joint_effort),
+                    "end_pose": list(latest.end_pose),
                 }
                 f.write(json.dumps(data) + '\n')
                 rospy.loginfo("Saved snapshot")

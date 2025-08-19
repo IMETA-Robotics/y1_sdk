@@ -144,16 +144,16 @@ void Y1Controller::ArmJointPositionControlCallback(
   for (int i = 0; i < 6; i++) {
     arm_joint_position[i] = msg->arm_joint_position[i];
   }
-  LOG(INFO) << "TETS1";
+  // LOG(INFO) << "TETS1";
   y1_interface_->SetArmJointPosition(arm_joint_position);
-  LOG(INFO) << "TETS2";
+  // LOG(INFO) << "TETS2";
 
   // arm joint velocity
   y1_interface_->SetArmJointVelocity(msg->arm_joint_velocity);
-  LOG(INFO) << "TETS3";
+  // LOG(INFO) << "TETS3";
   // gripper stroke (mm)
   y1_interface_->SetGripperStroke(msg->gripper);
-  LOG(INFO) << "TETS4";
+  // LOG(INFO) << "TETS4";
 }
 
 void Y1Controller::ArmInformationTimerCallback(const ros::TimerEvent&) {
