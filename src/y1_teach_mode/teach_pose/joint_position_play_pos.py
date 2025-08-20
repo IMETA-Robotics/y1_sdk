@@ -15,9 +15,9 @@ if __name__ == '__main__':
 
     # parameters
     jsonl_file = "/home/zxf/IMETA_LAB/Y1/data/recorded_pos.jsonl"
-    sleep_time = 0.5
+    sleep_time = 2
     
-    rospy.Subscriber("/master_arm_right/joint_states",
+    rospy.Subscriber("/y1/arm_joint_state",
                      ArmJointState, joint_state_callback, queue_size=1)
     joint_position_control_pub = rospy.Publisher('/y1/arm_joint_position_control', ArmJointPositionControl, queue_size=1)
 
@@ -43,15 +43,18 @@ if __name__ == '__main__':
     
     for i in range(data_len):
       target_pos = data_lines[i]['position'][0:6]
-      print(f"play {i + 1}th position, current position: {joint_state.joint_position},
-            target position: {target_pos}")
+      print(f"play {i + 1}th position, current position: {joint_state.joint_position}, target position: {target_pos}")
       msg.arm_joint_position = target_pos
       # TODO: control gripper
       joint_position_control_pub.publish(msg)
       
-      while True and rospy.is_shutdown() == True:
+      while True:
         current_pos = joint_state.joint_position
         if all(abs(current_pos[i] - target_pos[i]) < 0.01 for i in range(6)):
+          print("reach target position")
           break
+
+        if rospy.is_shutdown() == True:
+          exit() 
         
       time.sleep(sleep_time) 

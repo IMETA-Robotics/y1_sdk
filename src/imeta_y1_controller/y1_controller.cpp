@@ -73,6 +73,9 @@ bool Y1Controller::Init() {
         Y1SDKInterface::ControlMode::RT_JOINT_POSITION);
     // subscriber. follower arm receive leader arm joint state as control
     // command.
+    arm_end_pose_control_sub_ =
+        nh_.subscribe(arm_end_pose_control_topic, 1,
+                      &Y1Controller::ArmEndPoseControlCallback, this);
     arm_joint_position_control_sub_ = nh_.subscribe(
         arm_joint_position_control_topic, 1,
         &Y1Controller::FollowArmJointPositionControlCallback, this);

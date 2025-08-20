@@ -15,7 +15,7 @@ def playback_trajectory(jsonl_file, control_pub):
     rospy.sleep(3) # TODO: 为什么要等待一会，第一个点才可以发送成功？
     data_len  = len(data_lines)
     print("data size : ", data_len)
-    input("Press key [Enter] to start recording")
+    input("Press key [Enter] to start play trajectory.")
     
     idx = 1  # 第一个点已经发过了
     msg = ArmJointState()

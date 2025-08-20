@@ -15,11 +15,11 @@ if __name__ == '__main__':
 
     # parameters
     jsonl_file = "/home/zxf/IMETA_LAB/Y1/data/recorded_pos.jsonl"
-    sleep_time = 0.5
+    sleep_time = 2
     
-    rospy.Subscriber("/y1/arm_joint_states",
+    rospy.Subscriber("/y1/arm_joint_state",
                      ArmJointState, joint_state_callback, queue_size=1)
-    end_pose_control_pub = rospy.Publisher('/y1/arm_joint_position_control', ArmEndPoseControl, queue_size=1)
+    end_pose_control_pub = rospy.Publisher('/y1/arm_end_pose_control', ArmEndPoseControl, queue_size=1)
 
     rospy.loginfo(f"Preparing to play pos from {jsonl_file}...")
     
@@ -43,15 +43,17 @@ if __name__ == '__main__':
     
     for i in range(data_len):
       target_pos = data_lines[i]['end_pose']
-      print(f"play {i + 1}th position, current end pose: {joint_state.end_pose},
-            target end pose: {target_pos}")
+      print(f"play {i + 1}th position, current end pose: {joint_state.end_pose}, target end pose: {target_pos}")
       msg.arm_end_pose = target_pos
       # TODO: control gripper
       end_pose_control_pub.publish(msg)
       
-      while True and rospy.is_shutdown() == True:
+      while True:
         current_pos = joint_state.end_pose
-        if all(abs(current_pos[i] - target_pos[i]) < 0.05 for i in range(6)):
+        if all(abs(current_pos[i] - target_pos[i]) < 0.3 for i in range(6)):
           break
+
+        if rospy.is_shutdown() == True:
+          exit()
         
       time.sleep(sleep_time)
