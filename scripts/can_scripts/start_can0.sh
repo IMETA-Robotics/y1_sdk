@@ -12,13 +12,10 @@ start_can() {
     fi
     echo "配置 $CAN_INTERFACE 接口..."
 
-
-    sudo slcand -o -f -s8 $CAN_DEVICE $CAN_INTERFACE
     sudo ifconfig $CAN_INTERFACE up
     sudo ip link set $CAN_INTERFACE txqueuelen 1000
     
     if [ $? -ne 0 ]; then
-        echo "启动 $CAN_INTERFACE 接口失败：RTNETLINK answers: Operation not supported"
         return 1
     fi
     echo "$CAN_INTERFACE 启动成功"
@@ -54,12 +51,11 @@ while true; do
         sleep 1  
 
         if ! start_can; then
-            echo "重启 CAN 接口失败，请检查硬件或驱动。"
+            echo "重启 CAN 接口失败，请检查USB2CAN是否连接。"
 
         fi
     fi
 
     sleep 1
-
 
 done
