@@ -43,10 +43,10 @@ bool Y1Controller::Init() {
   std::string urdf_path;
   if (arm_end_type == 0) {
     // only load robotic arm
-    urdf_path = package_path + "/urdf/y10804.urdf";
+    urdf_path = package_path + "/urdf/y10824_ee.urdf";
   } else if (arm_end_type == 1) {
     // robotic arm and gripper
-    urdf_path = package_path + "/urdf/y10804.urdf";
+    urdf_path = package_path + "/urdf/y10824_ee.urdf";
   } else if (arm_end_type == 2) {
     // robotic arm and teaching pendant
     urdf_path = package_path + "/urdf/y1_arm_with_teaching_pendant.urdf";

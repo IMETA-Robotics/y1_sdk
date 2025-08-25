@@ -59,44 +59,59 @@ Visualization Manager:
       Enabled: true
       Links:
         All Links Enabled: true
+        Claw_Link_L:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        Claw_Link_R:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
-        J1_Link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        J2_Link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        J3_Link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        J4_Link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        J5_Link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        J6_Link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
         Link Tree Style: Links in Alphabetic Order
+        Link1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        Link2:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        Link3:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        Link4:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        Link5:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        Link6:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         base_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
+        world:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
       Name: RobotModel
       Robot Description: robot_description
       TF Prefix: ""
@@ -124,7 +139,7 @@ Visualization Manager:
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: base_link
+    Fixed Frame: world
     Frame Rate: 30
   Name: root
   Tools:
@@ -148,7 +163,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 0.9563431739807129
+      Distance: 1.339958667755127
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -164,9 +179,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: -0.029601406306028366
+      Pitch: -0.004601285792887211
       Target Frame: <Fixed Frame>
-      Yaw: 1.5453819036483765
+      Yaw: 1.4553906917572021
     Saved: ~
 Window Geometry:
   Displays:
@@ -184,5 +199,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1848
-  X: 1992
+  X: 72
   Y: 27

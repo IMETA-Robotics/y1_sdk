@@ -8,4 +8,4 @@ rostopic pub /y1/arm_joint_position_control imeta_y1_msg/ArmJointPositionControl
   frame_id: ''
 arm_joint_position: [0, 0, 0, 0, 0, 0]
 arm_joint_velocity: 0.8
-gripper: 50"
+gripper: 10"
