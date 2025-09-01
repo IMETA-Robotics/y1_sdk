@@ -45,12 +45,17 @@ bool Y1Controller::Init() {
     // only load robotic arm
     urdf_path = package_path + "/urdf/y10804.urdf";
   } else if (arm_end_type == 1) {
-    // robotic arm and gripper
-    urdf_path = package_path + "/urdf/y10824_ee.urdf";
+    // robotic arm and gripper_T
+    urdf_path = package_path + "/urdf/y1_gripper_t.urdf";
   } else if (arm_end_type == 2) {
-    // robotic arm and teaching pendant
+    // robotic arm and gripper_G
+    urdf_path = package_path + "/urdf/y1_gripper_g.urdf";
+  } else if(arm_end_type == 3){
+    // robotic arm and gripper_GT
+    // urdf_path = package_path + "/urdf/y1_gripper_gt.urdf";
     urdf_path = package_path + "/urdf/y10824_ee.urdf";
-  } else {
+  }
+  else {
     ROS_ERROR("arm_end_type is %d , not supported", arm_end_type);
     return false;
   }
