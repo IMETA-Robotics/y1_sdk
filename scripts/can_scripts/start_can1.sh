@@ -41,19 +41,17 @@ while true; do
     if check_can; then
 
         echo "CAN 接口 $CAN_INTERFACE 正常工作"
-        # break
     else
 
         echo "$CAN_INTERFACE 掉线，重启中..."
         
         sudo ip link set $CAN_INTERFACE down
-        sudo pkill -9 slcand  
         sleep 1  
 
         if ! start_can; then
             echo "重启 CAN 接口失败，请检查USB2CAN是否连接。"
-
         fi
+
     fi
 
     sleep 1

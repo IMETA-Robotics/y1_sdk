@@ -41,13 +41,11 @@ while true; do
     if check_can; then
 
         echo "CAN 接口 $CAN_INTERFACE 正常工作"
-        break
     else
 
         echo "$CAN_INTERFACE 掉线，重启中..."
         
         sudo ip link set $CAN_INTERFACE down
-        sudo pkill -9 slcand  
         sleep 1  
 
         if ! start_can; then
