@@ -1,0 +1,30 @@
+fake_interpolating_controller_rate: 400
+controller_list:
+  - name: fake_arm_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - joint1
+      - joint2
+      - joint3
+      - joint4
+      - joint5
+      - joint6
+  - name: fake_gripper_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - joint7
+  - name: fake_y1_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - joint1
+      - joint2
+      - joint3
+      - joint4
+      - joint5
+      - joint6
+      - joint7
+initial:  # Define initial robot poses per group
+  - group: gripper
+    pose: gripper_open
+  - group: y1
+    pose: zero

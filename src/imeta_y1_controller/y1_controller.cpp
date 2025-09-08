@@ -96,6 +96,9 @@ bool Y1Controller::Init() {
     arm_joint_position_control_sub_ =
         nh_.subscribe(arm_joint_position_control_topic, 1,
                       &Y1Controller::ArmJointPositionControlCallback, this);
+    arm_joint_position_control_sub_ =
+        nh_.subscribe("/joint_states", 1,
+                      &Y1Controller::GazeboControlCallback, this);
 
   } else {
     ROS_ERROR("arm_control_type is %s , not supported",
@@ -164,6 +167,30 @@ void Y1Controller::ArmJointPositionControlCallback(
   // gripper stroke (mm)
   y1_interface_->SetGripperStroke(msg->gripper);
   // LOG(INFO) << "TETS4";
+}
+
+void Y1Controller::GazeboControlCallback(
+    const sensor_msgs::JointStateConstPtr &msg) {
+  // arm joint position
+  std::array<double, 6> arm_joint_position;
+  for (int i = 0; i < 6; i++) {
+    arm_joint_position[i] = msg->position[i];
+  }
+  // LOG(INFO) << "TETS1";
+  y1_interface_->SetArmJointPosition(arm_joint_position);
+  // LOG(INFO) << "TETS2";
+
+  if (msg->position.size() == 7) {
+    y1_interface_->SetGripperStroke(msg->position[6]);
+  }
+
+  // arm joint velocity
+  // std::array<double, 6> arm_joint_velocity;
+  // for (int i = 0; i < 6; i++) {
+  //   arm_joint_velocity[i] = msg->velocity[i];
+  // }
+  // y1_interface_->SetArmJointVelocity(arm_joint_velocity);
+  // LOG(INFO) << "TETS3";
 }
 
 void Y1Controller::ArmInformationTimerCallback(const ros::TimerEvent&) {

@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: y1_description
+    relative_path: urdf/y1_with_02.urdf
+    xacro_args: ""
+  SRDF:
+    relative_path: config/y1_description.srdf
+  CONFIG:
+    author_name: imeta_stitch
+    author_email: imeta_stitch@163.com
+    generated_timestamp: 1757319517

@@ -8,7 +8,7 @@ catkin_package()
 
 find_package(roslaunch)
 
-foreach(dir launch meshes urdf rviz)
+foreach(dir launch meshes1 meshes2 meshes3 urdf)
 	install(DIRECTORY ${dir}/
 		DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/${dir})
 endforeach(dir)
