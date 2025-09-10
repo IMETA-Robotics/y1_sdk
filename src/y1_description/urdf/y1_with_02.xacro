@@ -563,7 +563,7 @@
       xyz="0 0 1" />
     <mimic joint="joint7" multiplier="1.0" offset="0.0"/>
     <limit
-      lower="0"
+      lower="0.0"
       upper="0.04"
       effort="10"
       velocity="20" />
@@ -590,7 +590,7 @@
   <xacro:transmission_block tran_name="tran5" joint_name="joint5" motor_name="joint5_motor"/>
   <xacro:transmission_block tran_name="tran6" joint_name="joint6" motor_name="joint6_motor"/>
   <xacro:transmission_block tran_name="tran7" joint_name="joint7" motor_name="joint7_motor"/>
-  <!-- <xacro:transmission_block tran_name="tran8" joint_name="joint8" motor_name="joint8_motor"/> -->
+  <xacro:transmission_block tran_name="tran8" joint_name="joint8" motor_name="joint8_motor"/>
   
   <!-- gazebo -->
   <gazebo>

@@ -180,8 +180,9 @@ void Y1Controller::GazeboControlCallback(
   y1_interface_->SetArmJointPosition(arm_joint_position);
   // LOG(INFO) << "TETS2";
 
-  if (msg->position.size() == 7) {
-    y1_interface_->SetGripperStroke(msg->position[6]);
+   LOG(INFO) << "msg->position.size(): " << msg->position.size();
+  if (msg->position.size() >= 7) {
+    y1_interface_->SetGripperStroke(msg->position[6] * 2000);
   }
 
   // arm joint velocity
