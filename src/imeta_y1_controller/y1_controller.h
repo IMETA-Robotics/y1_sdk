@@ -38,6 +38,11 @@ class Y1Controller {
       const imeta_y1_msg::ArmJointState::ConstPtr& msg);
 
   /**
+   * @brief master arm receive gripper joint infomation.
+   */
+  void GripperJointInfoCallback(const imeta_y1_msg::ArmJointState::ConstPtr &msg);
+
+  /**
    * @brief normal control arm receive end pose control command.
    */
   void ArmEndPoseControlCallback(

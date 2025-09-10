@@ -72,6 +72,9 @@ bool Y1Controller::Init() {
     // leader arm need gravity compensation
     y1_interface_->SetArmControlMode(
         Y1SDKInterface::ControlMode::GRAVITY_COMPENSATION);
+    arm_joint_position_control_sub_ =
+        nh_.subscribe("/puppet_arm_right/joint_states", 1,
+                      &Y1Controller::GripperJointInfoCallback, this);
 
   } else if (arm_control_type == "follower_arm") {
     y1_interface_->SetArmControlMode(
@@ -144,6 +147,24 @@ void Y1Controller::FollowArmJointPositionControlCallback(
     y1_interface_->SetArmJointVelocity(msg->joint_velocity);
   } else {
     ROS_ERROR("follow arm receive joint control size < 6");
+  }
+}
+
+void Y1Controller::GripperJointInfoCallback(
+    const imeta_y1_msg::ArmJointState::ConstPtr &msg) {
+  if (msg->joint_position.size() >= 6 && msg->joint_velocity.size() >= 6) {
+    // gripper joint position
+    y1_interface_->CatchGripperJointInfo(
+        msg->joint_position, msg->joint_velocity, msg->joint_effort);
+
+    // // gripper joint velocity
+    // y1_interface_->CatchGripperJointVelocity(msg->joint_velocity);
+
+    // // gripper joint velocity
+    // y1_interface_->CatchGripperJointEffort(msg->joint_effort);
+
+  } else {
+    ROS_ERROR("GripperJointInfoCallback receive joint control size < 6");
   }
 }
 
