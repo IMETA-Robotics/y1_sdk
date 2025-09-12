@@ -10,7 +10,7 @@
 // 关节列表
 std::vector<std::string> joint_names = {
     "joint1", "joint2", "joint3", "joint4",
-    "joint5", "joint6", "joint7"
+    "joint5", "joint6", "joint7", "joint8"
 };
 
 // Publisher 列表
@@ -35,22 +35,22 @@ void jointStateCallback(const sensor_msgs::JointState::ConstPtr& msg)
     for (const auto& joint_name : joint_names) {
         double position = 0.0;
 
-        // if (joint_name == "joint8") {
-        //     // joint8 = -joint7
-        //     if (joint_positions.find("joint7") != joint_positions.end()) {
-        //         position = -joint_positions["joint7"];
-        //         // position = joint_positions["joint7"];
-        //     } else {
-        //         position = 0.0;
-        //     }
-        // } else {
+        if (joint_name == "joint8") {
+            // joint8 = -joint7
+            if (joint_positions.find("joint7") != joint_positions.end()) {
+                // position = -joint_positions["joint7"];
+                position = joint_positions["joint7"];
+            } else {
+                position = 0.0;
+            }
+        } else {
             // 其他关节
             if (joint_positions.find(joint_name) != joint_positions.end()) {
                 position = joint_positions[joint_name];
             } else {
                 continue;  // 没有该关节数据
             }
-        // }
+        }
 
         // 仅在关节位置发生变化时发布
         if (last_positions.find(joint_name) == last_positions.end() ||

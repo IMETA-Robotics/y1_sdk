@@ -31,10 +31,10 @@ gazebo:
     type: position_controllers/JointPositionController
     joint: joint7
     pid: {p: 100, i: 0.001, d: 10.0}
-  # joint8_position_controller:
-  #   type: position_controllers/JointPositionController
-  #   joint: joint8
-  #   pid: {p: 100, i: 0.001, d: 10.0}
+  joint8_position_controller:
+    type: position_controllers/JointPositionController
+    joint: joint8
+    pid: {p: 100, i: 0.001, d: 10.0}
   # gazebo_ros_control:
   #   pid_gains:
   #     joint1:

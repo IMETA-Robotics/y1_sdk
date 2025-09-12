@@ -42,6 +42,8 @@ class Y1SDKInterface {
 
   /**
    * @brief the interface of all joint error code.
+   * 0: Disabled, 1: Enabled, 2: MotorDisconnected, 3: OverVoltage, 4: UnderVoltage 
+   * 5: Overcurrent, 6: MosOverTemperature, 7: RotorOverTemperature, 8: Overload
    * @return 6 or 7(include gripper) joint error code.
    */
   std::vector<int> GetJointErrorCode();
