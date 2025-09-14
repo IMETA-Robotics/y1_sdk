@@ -10,7 +10,7 @@
                            normal_arm(normal control arm) -->
     <param name="arm_control_type" value="leader_arm"/>
     <!-- 0: nothing, 1: gripper, 2: teaching pendant -->
-    <param name="arm_end_type" value="0"/>
+    <param name="arm_end_type" value="3"/>
     <!-- whether to enable robotic arm -->
     <param name="auto_enable" value="true"/>
 

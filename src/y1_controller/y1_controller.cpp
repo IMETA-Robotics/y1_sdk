@@ -5,8 +5,8 @@
 
 #include <vector>
 
-#include "y1_msg/ArmStatus.h"
 #include "std_msgs/String.h"
+#include "y1_msg/ArmStatus.h"
 
 namespace imeta {
 namespace y1_controller {
@@ -120,16 +120,13 @@ bool Y1Controller::Init() {
 void Y1Controller::ArmEndPoseControlCallback(
     const y1_msg::ArmEndPoseControl::ConstPtr& msg) {
   // end pose
-  std::array<double, 6> arm_end_pose;
+  std::array<double, 6> end_pose;
   for (int i = 0; i < 6; i++) {
-    arm_end_pose[i] = msg->arm_end_pose[i];
+    end_pose[i] = msg->end_pose[i];
   }
-  LOG(INFO) << "TETS1";
-  y1_interface_->SetArmEndPose(arm_end_pose);
-  LOG(INFO) << "TETS2";
+  y1_interface_->SetArmEndPose(end_pose);
   // gripper stroke (mm)
-  y1_interface_->SetGripperStroke(msg->gripper);
-  LOG(INFO) << "TETS3";
+  y1_interface_->SetGripperStroke(msg->gripper_stroke);
 }
 
 void Y1Controller::FollowArmJointPositionControlCallback(
@@ -145,15 +142,15 @@ void Y1Controller::FollowArmJointPositionControlCallback(
 
 void Y1Controller::ArmJointPositionControlCallback(
     const y1_msg::ArmJointPositionControl::ConstPtr& msg) {
-  // arm joint position
-  std::array<double, 6> arm_joint_position;
+  // joint position and velocity
+  std::array<double, 6> joint_position;
   for (int i = 0; i < 6; i++) {
-    arm_joint_position[i] = msg->arm_joint_position[i];
+    joint_position[i] = msg->joint_position[i];
   }
-  y1_interface_->SetArmJointPosition(arm_joint_position);
+  y1_interface_->SetArmJointPosition(joint_position, msg->joint_velocity);
 
   // gripper stroke (mm)
-  y1_interface_->SetGripperStroke(msg->gripper);
+  y1_interface_->SetGripperStroke(msg->gripper_stroke, msg->gripper_velocity);
 }
 
 void Y1Controller::ArmInformationTimerCallback(const ros::TimerEvent&) {
