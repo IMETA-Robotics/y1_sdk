@@ -9,6 +9,8 @@ def joint_state_callback(msg):
 
 if __name__ == "__main__":
     rospy.init_node('record_trajectory', anonymous=True)
+    # file_path = os.path.join(data_dir, "arm_state_400hz.jsonl")
+
     os.makedirs("data", exist_ok=True)
     rospy.Subscriber("/master_arm_right/joint_states",
                      ArmJointState, joint_state_callback, queue_size=1)

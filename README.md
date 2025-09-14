@@ -1,6 +1,10 @@
 ### 依赖项
 ubuntu 20.04  ros-noetic版本
 
+sudo apt update
+sudo apt install can-utils net-tools iproute2
+sudp apt install ros-noetic-
+
 ### CAN接口设置
 # ONLY ONE ARM
 1. 设置CAN(同一个系统只需要设置一次)
@@ -31,7 +35,7 @@ bash start_can1.sh
 ### 运行驱动 
 1. 启动ROS驱动
 source devel/setup.bash
-roslaunch imeta_y1_controller single_arm_controller.launch
+roslaunch y1_controller single_arm_controller.launch
 
 使用rostopic list查看话题, 会存在以下话题：
 /humanoid/can_driver/motor_states     电机状态反馈

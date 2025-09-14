@@ -1,3 +1,3 @@
 #!/bin/sh
 
-cansend can0 001#FFFFFFFFFFFFFFFE
+cansend can1 006#FFFFFFFFFFFFFFFE

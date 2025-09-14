@@ -7,6 +7,6 @@ install/
 src/CMakeLists.txt
 
 log/*
-src/imeta_y1_controller/log/*
+src/y1_controller/log/*
 data/*
 *bag

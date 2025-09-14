@@ -44,7 +44,7 @@ def playback_trajectory(jsonl_file, control_pub):
 if __name__ == '__main__':
     rospy.init_node('play_trajectory', anonymous=True)
 
-    jsonl_file = "/home/zxf/IMETA_LAB/Y1/data/arm_state_25hz.jsonl"
+    jsonl_file = "/home/zxf/IMETA_LAB/Y1/data/arm_state_clothse_25hz.jsonl"
     
     pub = rospy.Publisher('/y1/arm_joint_position_control', ArmJointPositionControl, queue_size=1)
 
