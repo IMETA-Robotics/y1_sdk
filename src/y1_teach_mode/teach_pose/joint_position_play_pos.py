@@ -3,7 +3,7 @@
 import rospy
 import json
 import time
-from imeta_y1_msg.msg import ArmJointPositionControl, ArmJointState
+from y1_msg.msg import ArmJointPositionControl, ArmJointState
 
 joint_state = None
 def joint_state_callback(msg):

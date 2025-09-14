@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import rospy, json, os
-from imeta_y1_msg.msg import ArmJointState
+from y1_msg.msg import ArmJointState
 
 joint_state = None
 def joint_state_callback(msg):

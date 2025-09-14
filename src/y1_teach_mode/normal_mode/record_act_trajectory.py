@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import rospy, json, os
-from imeta_y1_msg.msg import ArmJointPositionControl
+from y1_msg.msg import ArmJointPositionControl
 
 latest = None
 def state_callback(msg):

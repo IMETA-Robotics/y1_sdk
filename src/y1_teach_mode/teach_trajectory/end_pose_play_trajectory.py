@@ -2,7 +2,7 @@
 
 import rospy
 import json
-from imeta_y1_msg.msg import ArmEndPoseControl
+from y1_msg.msg import ArmEndPoseControl
 
 def playback_trajectory(jsonl_file, control_pub):
     with open(jsonl_file, 'r') as f:
