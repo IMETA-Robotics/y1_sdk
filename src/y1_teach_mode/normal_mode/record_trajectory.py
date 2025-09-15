@@ -13,10 +13,10 @@ if __name__ == "__main__":
     rospy.Subscriber("/master_arm_right/joint_states",
                      ArmJointState, state_callback, queue_size=1)
     
-    input("enter anything to start recording")
+    input("press key [Enter] to start record trajectory.")
 
     rate = rospy.Rate(25)
-    with open("data/arm_state_clothse_25hz.jsonl", 'a') as f:
+    with open("data/arm_state_25hz.jsonl", 'a') as f:
         while not rospy.is_shutdown():
             if latest is not None:
                 data = {
