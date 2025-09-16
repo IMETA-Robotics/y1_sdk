@@ -19,7 +19,7 @@ def playback_trajectory(jsonl_file, control_pub):
     msg.header.stamp = rospy.Time.now()
     msg.header.frame_id = "base_link"
     msg.joint_position = data_lines[0]['position'][0:6]
-    # msg.gripper_stroke = data_lines[0]['position'][6]
+    msg.gripper_stroke = data_lines[0]['position'][6]
     input("press key [Enter] to start play trajectory.")
     
     rospy.sleep(3) # TODO: 为什么要等待一会，第一个点才可以发送成功？
@@ -33,7 +33,7 @@ def playback_trajectory(jsonl_file, control_pub):
     while not rospy.is_shutdown() and idx < data_len:
         msg.header.stamp = rospy.Time.now()
         msg.joint_position = data_lines[idx]['position'][0:6]
-        # msg.gripper_stroke = data_lines[idx]['position'][6]
+        msg.gripper_stroke = data_lines[idx]['position'][6]
 
         control_pub.publish(msg)
         idx += 1

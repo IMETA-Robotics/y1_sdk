@@ -9,7 +9,7 @@
     <!-- arm control type: leader_arm(remote master arm), follower_arm(remote slave arm),
                            normal_arm(normal control arm) -->
     <param name="arm_control_type" value="follower_arm"/>
-    <!-- 0: nothing, 1: gripper, 2: teaching pendant -->
+    <!-- 0: nothing, 1: gripper, 2: teaching pendant, 3: gripper and teaching pendant -->
     <param name="arm_end_type" value="0"/>
     <!-- whether to enable robotic arm -->
     <param name="auto_enable" value="true"/>
