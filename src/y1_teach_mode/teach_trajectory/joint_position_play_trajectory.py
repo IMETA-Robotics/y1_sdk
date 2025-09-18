@@ -20,7 +20,7 @@ def playback_trajectory(jsonl_file, control_pub):
     idx = 1  # 第一个点已经发过了
     msg = ArmJointState()
     msg.header.stamp = rospy.Time.now()
-    msg.joint_position = data_lines[0]['position'][0:6]
+    msg.joint_position = data_lines[0]['position'][0:7]
     control_pub.publish(msg)
     rospy.loginfo("Publish start position, sleeping for 3 seconds go to start position.")
     rospy.sleep(3)  # 给机械臂3秒时间移动到位
@@ -28,7 +28,7 @@ def playback_trajectory(jsonl_file, control_pub):
     rate = rospy.Rate(400)  # high frequency
     while not rospy.is_shutdown() and idx < data_len:
         msg.header.stamp = rospy.Time.now()
-        msg.joint_position = data_lines[idx]['position'][0:6]
+        msg.joint_position = data_lines[idx]['position'][0:7]
 
         control_pub.publish(msg)
         idx += 1

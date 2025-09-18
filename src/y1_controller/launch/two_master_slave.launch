@@ -1,15 +1,15 @@
 <launch>
 
-  <!-- right master arm -->
-  <node pkg="y1_controller" type="y1_controller" name="y1_arm" output="screen"> 
+  <!-- master arm right -->
+  <node pkg="y1_controller" type="y1_controller" name="master_arm_right" output="screen"> 
     <!-- CAN ID -->
     <param name="arm_can_id" value="can0"/>
     <!-- arm status and joint state feedback frequency (HZ) -->
-    <param name="arm_feedback_rate" value="200"/>
+    <param name="arm_feedback_rate" value="400"/>
     <!-- arm control type: leader_arm(remote master arm), follower_arm(remote slave arm),
                            normal_arm(normal control arm) -->
     <param name="arm_control_type" value="leader_arm"/>
-    <!-- 0: nothing, 1: gripper, 2: teaching pendant -->
+    <!-- 0: nothing, 1: gripper, 2: teaching pendant, 3: gripper and teaching pendant -->
     <param name="arm_end_type" value="0"/>
     <!-- whether to enable robotic arm -->
     <param name="auto_enable" value="true"/>
@@ -20,36 +20,16 @@
     <param name="arm_status_topic" value="/master_arm_right/arm_status"/>
   </node>
 
-  <!-- left master arm -->
-  <node pkg="y1_controller" type="y1_controller" name="y1_arm" output="screen"> 
-    <!-- CAN ID -->
-    <param name="arm_can_id" value="can2"/>
-    <!-- arm status and joint state feedback frequency (HZ) -->
-    <param name="arm_feedback_rate" value="200"/>
-    <!-- arm control type: leader_arm(remote master arm), follower_arm(remote slave arm),
-                           normal_arm(normal control arm) -->
-    <param name="arm_control_type" value="leader_arm"/>
-    <!-- 0: nothing, 1: gripper, 2: teaching pendant -->
-    <param name="arm_end_type" value="0"/>
-    <!-- whether to enable robotic arm -->
-    <param name="auto_enable" value="true"/>
-
-    <!-- end pose and joint position feedback -->
-    <param name="arm_joint_state_topic" value="/master_arm_left/joint_states"/>
-    <!-- joint motor status feedback -->
-    <param name="arm_status_topic" value="/master_arm_left/arm_status"/>
-  </node>
-
-  <!-- right slave arm -->
-  <node pkg="y1_controller" type="y1_controller" name="y1_arm" output="screen"> 
+  <!-- slave arm right -->
+  <node pkg="y1_controller" type="y1_controller" name="slave_arm_right" output="screen"> 
     <!-- CAN ID -->
     <param name="arm_can_id" value="can1"/>
     <!-- arm status and joint state feedback frequency (HZ) -->
-    <param name="arm_feedback_rate" value="200"/>
+    <param name="arm_feedback_rate" value="400"/>
     <!-- arm control type: leader_arm(remote master arm), follower_arm(remote slave arm),
                            normal_arm(normal control arm) -->
     <param name="arm_control_type" value="follower_arm"/>
-    <!-- 0: nothing, 1: gripper, 2: teaching pendant -->
+    <!-- 0: nothing, 1: gripper, 2: teaching pendant, 3: gripper and teaching pendant -->
     <param name="arm_end_type" value="0"/>
     <!-- whether to enable robotic arm -->
     <param name="auto_enable" value="true"/>
@@ -62,16 +42,36 @@
     <param name="arm_status_topic" value="/puppet_arm_right/arm_status"/>
   </node>
 
-  <!-- left slave arm -->
-  <node pkg="y1_controller" type="y1_controller" name="y1_arm" output="screen"> 
+  <!-- master arm left -->
+  <node pkg="y1_controller" type="y1_controller" name="master_arm_left" output="screen"> 
+    <!-- CAN ID -->
+    <param name="arm_can_id" value="can2"/>
+    <!-- arm status and joint state feedback frequency (HZ) -->
+    <param name="arm_feedback_rate" value="400"/>
+    <!-- arm control type: leader_arm(remote master arm), follower_arm(remote slave arm),
+                           normal_arm(normal control arm) -->
+    <param name="arm_control_type" value="leader_arm"/>
+    <!-- 0: nothing, 1: gripper, 2: teaching pendant, 3: gripper and teaching pendant -->
+    <param name="arm_end_type" value="0"/>
+    <!-- whether to enable robotic arm -->
+    <param name="auto_enable" value="true"/>
+
+    <!-- end pose and joint position feedback -->
+    <param name="arm_joint_state_topic" value="/master_arm_left/joint_states"/>
+    <!-- joint motor status feedback -->
+    <param name="arm_status_topic" value="/master_arm_left/arm_status"/>
+  </node>
+
+  <!-- slave arm right -->
+  <node pkg="y1_controller" type="y1_controller" name="slave_arm_left" output="screen"> 
     <!-- CAN ID -->
     <param name="arm_can_id" value="can3"/>
     <!-- arm status and joint state feedback frequency (HZ) -->
-    <param name="arm_feedback_rate" value="200"/>
+    <param name="arm_feedback_rate" value="400"/>
     <!-- arm control type: leader_arm(remote master arm), follower_arm(remote slave arm),
                            normal_arm(normal control arm) -->
     <param name="arm_control_type" value="follower_arm"/>
-    <!-- 0: nothing, 1: gripper, 2: teaching pendant -->
+    <!-- 0: nothing, 1: gripper, 2: teaching pendant, 3: gripper and teaching pendant -->
     <param name="arm_end_type" value="0"/>
     <!-- whether to enable robotic arm -->
     <param name="auto_enable" value="true"/>
