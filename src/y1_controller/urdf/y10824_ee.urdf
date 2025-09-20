@@ -110,7 +110,7 @@
       lower="-3.0"
       upper="3.0"
       effort="30"
-      velocity="5" />
+      velocity="10" />
   </joint>
   <link
     name="Link2">
@@ -167,8 +167,8 @@
     <limit
       lower="-3.5"
       upper="0.2"
-      effort="100"
-      velocity="5" />
+      effort="120"
+      velocity="10" />
   </joint>
   <link
     name="Link3">
@@ -224,9 +224,9 @@
       xyz="0 0 1" />
     <limit
       lower="-0.2"
-      upper="4.1"
+      upper="3.5"
       effort="30"
-      velocity="5" />
+      velocity="10" />
   </joint>
   <link
     name="Link4">
@@ -283,8 +283,8 @@
     <limit
       lower="-2.5"
       upper="1.7"
-      effort="10"
-      velocity="20" />
+      effort="30"
+      velocity="10" />
   </joint>
   <link
     name="Link5">
@@ -341,8 +341,8 @@
     <limit
       lower="-2.0"
       upper="2.0"
-      effort="10"
-      velocity="20" />
+      effort="20"
+      velocity="30" />
   </joint>
   <link
     name="Link6">
@@ -399,24 +399,20 @@
     <limit
       lower="-3.0"
       upper="3.0"
-      effort="10"
-      velocity="20" />
+      effort="20"
+      velocity="30" />
   </joint>
 
-  <!-- gripper_ee link，合并两指的质量与惯量 -->
   <link name="gripper_ee">
     <inertial>
-      <!-- 质量 = 左指 + 右指 -->
       <mass value="0.172000"/>
-      <!-- 假设 COM 在 Link6 末端中心 -->
+      <!-- COM 在 Link6 末端中心 -->
       <origin xyz="-0.006099 0.000000 0.083924" rpy="0 0 0"/>
-      <!-- 转动惯量：示例写法，可根据 CAD 或工具计算更精确 -->
       <inertia 
         ixx="0.000619" iyy=" 0.000150" izz="0.000645"
         ixy="-0.000064"   ixz="-0.000003"   iyz="-0.000001"/>
     </inertial>
 
-    <!-- 可选：几何形状仅用作可视化，不影响动力学 -->
     <visual>
       <origin xyz="0 0 0.05" rpy="0 0 0"/>
       <geometry>
@@ -428,12 +424,11 @@
     </visual>
   </link>
 
-  <!-- 固定关节，把 gripper_ee 固定到 Link6 末端 -->
-  <joint name="Link6_to_gripper_ee" type="fixed">
+  <joint name="Link6_to_gripper_ee" type="fixed">STL
     <parent link="Link6"/>
     <child link="gripper_ee"/>
     <!-- 这里的 origin 根据你 Link6 的末端坐标系来设定，
-        假设 gripper_ee 在 Link6 末端中心 -->
+        设 gripper_ee 在 Link6 末端中心 -->
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
 

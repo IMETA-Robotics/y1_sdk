@@ -105,7 +105,7 @@
       lower="-3.0"
       upper="3.0"
       effort="30"
-      velocity="5" />
+      velocity="10" />
   </joint>
   <link
     name="Link2">
@@ -162,8 +162,8 @@
     <limit
       lower="-3.5"
       upper="0.2"
-      effort="100"
-      velocity="5" />
+      effort="120"
+      velocity="10" />
   </joint>
   <link
     name="Link3">
@@ -219,9 +219,9 @@
       xyz="0 0 1" />
     <limit
       lower="-0.2"
-      upper="4.1"
+      upper="3.5"
       effort="30"
-      velocity="5" />
+      velocity="10" />
   </joint>
   <link
     name="Link4">
@@ -278,8 +278,8 @@
     <limit
       lower="-2.5"
       upper="1.7"
-      effort="10"
-      velocity="20" />
+      effort="30"
+      velocity="10" />
   </joint>
   <link
     name="Link5">
@@ -336,8 +336,8 @@
     <limit
       lower="-2.0"
       upper="2.0"
-      effort="10"
-      velocity="20" />
+      effort="20"
+      velocity="30" />
   </joint>
   <link
     name="Link6">
@@ -394,7 +394,7 @@
     <limit
       lower="-3.0"
       upper="3.0"
-      effort="10"
-      velocity="20" />
+      effort="20"
+      velocity="30" />
   </joint>
 </robot>
