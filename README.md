@@ -1,9 +1,11 @@
 ### 依赖项
 ubuntu 20.04  ros-noetic版本
 
+```sh
 sudo apt update
-sudo apt install can-utils net-tools iproute2
-sudp apt install ros-noetic-
+sudo apt install can-utils net-tools iproute2 libgoogle-glog-dev libnlopt-cxx-dev  
+sudo apt install ros-humble-kdl-parser liborocos-kdl-dev 
+```
 
 ### CAN接口设置
 # ONLY ONE ARM

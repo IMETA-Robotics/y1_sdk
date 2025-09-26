@@ -1,18 +1,24 @@
 <?xml version="1.0"?>
-<package format="2">
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
   <name>y1_msg</name>
   <version>0.0.0</version>
   <description>ros message for y1 arm in ros</description>
   
-  <maintainer email="601081321@qq.com">xiaofan Zhang</maintainer>
+  <maintainer email="601081321@qq.com">xiaofan zhang</maintainer>
   <license>Business</license>
 
-  <buildtool_depend>catkin</buildtool_depend>
-  <build_depend>message_generation</build_depend>
-  <build_depend>std_msgs</build_depend>
-  
-  <build_export_depend>std_msgs</build_export_depend>
-  
-  <exec_depend>std_msgs</exec_depend>
+  <buildtool_depend>ament_cmake</buildtool_depend>
 
+  <depend>rosidl_default_generators</depend>
+  <depend>std_msgs</depend>
+
+  <member_of_group>rosidl_interface_packages</member_of_group>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
 </package>

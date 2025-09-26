@@ -1,12 +1,13 @@
 devel/
 build/
 install/
+log/
 .cache/
 .vscode/
 .catkin_workspace
 src/CMakeLists.txt
 
-log/*
-src/y1_controller/log/*
-data/*
+src/y1_controller/log/
+src/y1_controller/launch/__pycache__
+data/
 *bag

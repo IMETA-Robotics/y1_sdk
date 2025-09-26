@@ -1,0 +1,20 @@
+single_arm:
+  ros__parameters:
+    # CAN ID 
+    arm_can_id: 'can0'
+    # arm status and joint state feedback frequency (HZ) 
+    arm_feedback_rate: 200
+    # arm control type: leader_arm(remote master arm), follower_arm(remote slave arm), normal_arm(normal control arm) 
+    arm_control_type: 'normal_arm'
+    # 0: nothing, 1: gripper, 2: teaching pendant 
+    arm_end_type: 1
+    # whether to enable robotic arm 
+    auto_enable: true
+    # end pose control arm 
+    arm_end_pose_control_topic: '/y1/arm_end_pose_control'
+    # joint position control arm 
+    arm_joint_position_control_topic: '/y1/arm_joint_position_control'
+    # end pose and joint position feedback 
+    arm_joint_state_topic: '/y1/arm_joint_state'
+    # joint motor status feedback 
+    arm_status_topic: '/y1/arm_status'
