@@ -38,8 +38,8 @@ int main(int argc, char** argv) {
       return -1;
     }
   }
-  FLAGS_log_dir = log_dir;
-  std::cout << "y1_controller log dir: " << FLAGS_log_dir << std::endl;
+  // FLAGS_log_dir = log_dir;
+  // std::cout << "y1_controller log dir: " << FLAGS_log_dir << std::endl;
 
   Y1Controller y1_controller;
   if (!y1_controller.Init()) {

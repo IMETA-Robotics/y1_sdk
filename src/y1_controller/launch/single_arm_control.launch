@@ -14,6 +14,8 @@
     <!-- whether to enable robotic arm -->
     <param name="auto_enable" value="true"/>
 
+    <!-- end pose control arm -->
+    <param name="arm_end_pose_control_topic" value="/master_arm_right/end_pose_control"/>
     <!-- joint position control arm -->
     <param name="arm_joint_position_control_topic" value="/master_arm_right/joint_states"/>
     <!-- end pose and joint position feedback -->
