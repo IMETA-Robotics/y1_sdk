@@ -6,13 +6,8 @@
   name="y1">
   <link name="world"/>
   <joint name="fixed_base_joint" type="fixed">
-    <origin
-      xyz="0 0 0.06675"
-      rpy="0 0 0" />
     <parent link="world"/>
     <child link="base_link"/>
-    <axis
-      xyz="0 0 1" />
   </joint>
   <link
     name="base_link">
@@ -98,7 +93,7 @@
     name="JOINT1"
     type="revolute">
     <origin
-      xyz="0 0 0"
+      xyz="0 0 0.06675"
       rpy="0 0 0" />
     <parent
       link="base_link" />
