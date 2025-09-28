@@ -26,10 +26,10 @@ docker run -itd \
 		--user=$(id -u $USER):$(id -g $USER) \
 		--network=host \
 		--privileged \
-		--workdir "/home/$USER/Y1" \
+		--workdir "/home/$USER/y1_sdk" \
 		--env="QT_X11_NO_MITSHM=1" \
 		--env="DISPLAY" \
-		--volume=$(pwd):"/home/$USER/Y1" \
+		--volume=$(pwd):"/home/$USER/y1_sdk" \
 		--volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
 		--volume="/etc/group:/etc/group:ro" \
 		--volume="/etc/passwd:/etc/passwd:ro" \
