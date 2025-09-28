@@ -25,7 +25,6 @@ docker run -itd \
 		--name y1_ros2 \
 		--user=$(id -u $USER):$(id -g $USER) \
 		--network=host \
-		--gpus=all \
 		--privileged \
 		--workdir "/home/$USER/Y1" \
 		--env="QT_X11_NO_MITSHM=1" \
@@ -38,7 +37,7 @@ docker run -itd \
 		--volume="/etc/sudoers.d:/etc/sudoers.d:ro" \
 		--volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
 		--volume="/dev:/dev" \
-		ros2-humble:latest
+		y1_ros2:latest
 
 echo "Congratulations! You have successfully finished setting up ros2 humble Dev Environment."
 echo "To login into the newly created y1_ros2 container, please run the following command:"

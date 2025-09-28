@@ -5,12 +5,20 @@ from launch.actions import DeclareLaunchArgument
 from launch_ros.actions import Node
 
 params_file = os.path.join(
-    get_package_share_directory('y1_controller'), 'config', 'single_arm_control.yaml')
+    get_package_share_directory('y1_controller'), 'config', 'two_master.yaml')
 
-arm_node = Node(
+right_arm_node = Node(
     package='y1_controller',
     executable='y1_controller',
-    name='single_arm',
+    name='right_master_arm',
+    output='screen',
+    parameters=[params_file]
+)
+
+left_arm_node = Node(
+    package='y1_controller',
+    executable='y1_controller',
+    name='left_master_arm',
     output='screen',
     parameters=[params_file]
 )
@@ -19,5 +27,6 @@ def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument(name='params_file',
                               default_value=params_file),
-        arm_node,
+        right_arm_node,
+        left_arm_node
     ])
