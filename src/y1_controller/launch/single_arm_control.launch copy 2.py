@@ -5,7 +5,7 @@ from launch.actions import DeclareLaunchArgument
 from launch_ros.actions import Node
 
 params_file = os.path.join(
-    get_package_share_directory('y1_controller'), 'config', 'single_arm.yaml')
+    get_package_share_directory('y1_controller'), 'config', 'single_arm_control.yaml')
 
 arm_node = Node(
     package='y1_controller',

@@ -61,9 +61,9 @@ class Y1Controller : public rclcpp::Node {
   rclcpp::Subscription<y1_msg::msg::ArmEndPoseControl>::SharedPtr
       arm_end_pose_control_sub_;
   rclcpp::Subscription<y1_msg::msg::ArmJointState>::SharedPtr
-      arm_joint_position_control_sub_;
+      master_arm_joint_position_sub_;
   rclcpp::Subscription<y1_msg::msg::ArmJointPositionControl>::SharedPtr
-      arm_joint_position_control_sub2_;
+      arm_joint_position_control_sub_;
 
   rclcpp::TimerBase::SharedPtr arm_information_timer_;
 
