@@ -23,7 +23,7 @@
 ## 多臂设置参考一下飞书文档
 Refer [C++ SDK 和 ROS1使用说明](https://p05rcnnjwft.feishu.cn/wiki/NfQbwougEi7YSAkW330cW1elnBb)
 
-## Use y1_ros(基于python sdk封装的ros1, 推荐入门使用, 不再需要自己调用接口写程序)
+## Use ros1 driver(基于c++ sdk封装的ros1, 推荐入门使用, 不再需要自己调用接口写程序)
 
 ### build
   ```sh
