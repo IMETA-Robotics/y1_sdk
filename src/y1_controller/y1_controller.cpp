@@ -144,6 +144,9 @@ void Y1Controller::FollowArmJointPositionControlCallback(
     // arm joint position
     y1_interface_->SetArmJointPosition(msg->joint_position);
 
+    // 临时借改回调函数调试fdob用，传入主臂关节速度给从臂用
+    y1_interface_->SetArmJointVelocity(msg->joint_velocity);
+
   } else {
     ROS_ERROR("follow arm receive joint control size < 6");
   }
