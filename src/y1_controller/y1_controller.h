@@ -5,10 +5,12 @@
 #include <memory>
 #include <string>
 
+#include "ros/publisher.h"
 #include "y1_msg/ArmEndPoseControl.h"
 #include "y1_msg/ArmJointPositionControl.h"
 #include "y1_msg/ArmJointState.h"
 #include "ros/subscriber.h"
+#include "y1_msg/InteractionForce.h"
 #include "y1_sdk/y1_sdk_interface.h"
 
 namespace imeta {
@@ -54,14 +56,22 @@ class Y1Controller {
    */
   void ArmInformationTimerCallback(const ros::TimerEvent&);
 
- private:
+  void SlaveArmInteractionCallback(const y1_msg::InteractionForce::ConstPtr &msg);
+
+  void SlaveArmInteractionTimerCallback(const ros::TimerEvent &);
+
+private:
   ros::NodeHandle nh_;
   ros::Publisher arm_joint_state_pub_;
   ros::Publisher arm_status_pub_;
   ros::Subscriber arm_end_pose_control_sub_;
   ros::Subscriber arm_joint_position_control_sub_;
 
+  ros::Publisher slave_arm_interaction_pub_;
+  ros::Subscriber slave_arm_interaction_sub_;
+
   ros::Timer arm_information_timer_;
+  ros::Timer slave_arm_interaction_timer_;
 
   std::shared_ptr<Y1SDKInterface> y1_interface_;
 };

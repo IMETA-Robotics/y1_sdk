@@ -79,6 +79,14 @@ class Y1SDKInterface {
    */
   std::array<double, 6> GetArmEndPose();
 
+  std::vector<double> GetSlaveArmInteractionForce();
+
+  std::vector<double> GetGripperInteractionForce();
+
+  void SetSlaveArmInteractionForce(const std::vector<double> &arm_interaction_force);
+
+  void SetSlaveGripperInteractionForce(const std::vector<double> &gripper_interaction_force);
+
   /**
    * @brief set arm control mode. (0: GRAVITY_COMPENSATION, 1:
    * RT_JOINT_POSITION, 2: NRT_JOINT_POSITION)

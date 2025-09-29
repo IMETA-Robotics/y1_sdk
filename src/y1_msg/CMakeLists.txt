@@ -16,6 +16,7 @@ add_message_files(
   ArmJointPositionControl.msg
   ArmJointState.msg
   ArmStatus.msg
+  InteractionForce.msg
 )
 
 generate_messages(

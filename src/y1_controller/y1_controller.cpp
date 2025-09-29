@@ -7,6 +7,7 @@
 
 #include "std_msgs/String.h"
 #include "y1_msg/ArmStatus.h"
+#include "y1_msg/InteractionForce.h"
 
 namespace imeta {
 namespace y1_controller {
@@ -70,7 +71,9 @@ bool Y1Controller::Init() {
     // leader arm need gravity compensation
     y1_interface_->SetArmControlMode(
         Y1SDKInterface::ControlMode::GRAVITY_COMPENSATION);
-
+    slave_arm_interaction_sub_ =
+        nh_.subscribe("/y1/slave_arm_interaction", 1,
+                      &Y1Controller::SlaveArmInteractionCallback, this);
   } else if (arm_control_type == "follower_arm") {
     y1_interface_->SetArmControlMode(
         Y1SDKInterface::ControlMode::RT_JOINT_POSITION);
@@ -83,6 +86,12 @@ bool Y1Controller::Init() {
         arm_joint_position_control_topic, 1,
         &Y1Controller::FollowArmJointPositionControlCallback, this);
 
+    slave_arm_interaction_pub_ = nh_.advertise<y1_msg::InteractionForce>(
+        "/y1/slave_arm_interaction", 1);
+    // publish slave arm interaction force
+    slave_arm_interaction_timer_ =
+        nh_.createTimer(ros::Duration(1.0 / arm_feedback_rate),
+                        &Y1Controller::SlaveArmInteractionTimerCallback, this);
   } else if (arm_control_type == "normal_arm") {
     y1_interface_->SetArmControlMode(
         Y1SDKInterface::ControlMode::NRT_JOINT_POSITION);
@@ -211,6 +220,26 @@ void Y1Controller::ArmInformationTimerCallback(const ros::TimerEvent&) {
   // publish arm information
   arm_joint_state_pub_.publish(arm_joint_state);
   arm_status_pub_.publish(arm_status);
+}
+
+void Y1Controller::SlaveArmInteractionTimerCallback(const ros::TimerEvent &) {
+  y1_msg::InteractionForce interaction_force;
+
+  interaction_force.header.stamp = ros::Time::now();
+
+  interaction_force.arm_interaction_torque = y1_interface_->GetSlaveArmInteractionForce();
+
+  interaction_force.grip_interaction_torque = y1_interface_->GetGripperInteractionForce();
+
+  slave_arm_interaction_pub_.publish(interaction_force);
+}
+
+void Y1Controller::SlaveArmInteractionCallback(
+    const y1_msg::InteractionForce::ConstPtr &msg) {
+
+  y1_interface_->SetSlaveArmInteractionForce(msg->arm_interaction_torque);
+
+  y1_interface_->SetSlaveGripperInteractionForce(msg->grip_interaction_torque);
 }
 
 }  // namespace y1_controller
