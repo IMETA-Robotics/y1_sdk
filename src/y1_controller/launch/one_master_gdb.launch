@@ -1,7 +1,7 @@
 <launch>
 
   <!-- master arm right -->
-  <node pkg="y1_controller" type="y1_controller" name="master_arm_right" output="screen">
+  <node pkg="y1_controller" type="y1_controller" name="master_arm_right" output="screen" launch-prefix="gdb -ex run --args">
     <!-- CAN ID -->
     <param name="arm_can_id" value="can0"/>
     <!-- arm status and joint state feedback frequency (HZ) -->

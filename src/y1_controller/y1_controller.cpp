@@ -140,12 +140,34 @@ void Y1Controller::ArmEndPoseControlCallback(
 
 void Y1Controller::FollowArmJointPositionControlCallback(
     const y1_msg::ArmJointState::ConstPtr& msg) {
+  // if (msg->joint_position.size() == 6) {
+  //   std::cout << "follow_target_joint_position_: [" << msg->joint_position[0]
+  //             << ", " << msg->joint_position[1] << ", "
+  //             << msg->joint_position[2] << ", " << msg->joint_position[3]
+  //             << ", " << msg->joint_position[4] << ", "
+  //             << msg->joint_position[5] << "]" << std::endl;
+  // }
   if (msg->joint_position.size() >= 6) {
     // arm joint position
     y1_interface_->SetArmJointPosition(msg->joint_position);
+    // if (msg->joint_position.size() == 6) {
+    //   std::cout << "follow_target_joint_position_callback: [" << msg->joint_position[0]
+    //             << ", " << msg->joint_position[1] << ", "
+    //             << msg->joint_position[2] << ", " << msg->joint_position[3]
+    //             << ", " << msg->joint_position[4] << ", "
+    //             << msg->joint_position[5] << "]" << std::endl;
+    // }
 
     // 临时借改回调函数调试fdob用，传入主臂关节速度给从臂用
     y1_interface_->SetArmJointVelocity(msg->joint_velocity);
+    // if (msg->joint_velocity.size() == 6) {
+    //   std::cout << "follow_target_joint_velocity_callback: [" << msg->joint_velocity[0]
+    //             << ", " << msg->joint_velocity[1] << ", "
+    //             << msg->joint_velocity[2] << ", " << msg->joint_velocity[3]
+    //             << ", " << msg->joint_velocity[4] << ", "
+    //             << msg->joint_velocity[5] << "]" << std::endl;
+    // }
+    
 
   } else {
     ROS_ERROR("follow arm receive joint control size < 6");
