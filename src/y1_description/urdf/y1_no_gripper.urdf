@@ -6,24 +6,29 @@
   name="y1">
   <link name="world"/>
   <joint name="fixed_base_joint" type="fixed">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
     <parent link="world"/>
     <child link="base_link"/>
+    <axis
+      xyz="0 0 1" />
   </joint>
   <link
     name="base_link">
     <inertial>
       <origin
-        xyz="-0.000029 -0.000001 0.033965"
+        xyz="-9.09789029626031E-05 -1.00838762111356E-06 0.0341142783974825"
         rpy="0 0 0" />
       <mass
-        value="0.632" />
+        value="0.630484112037129" />
       <inertia
-        ixx="0.000532"
-        ixy="0.000000"
-        ixz="0.000001"
-        iyy="0.000532"
-        iyz="0.000000"
-        izz="0.000493" />
+        ixx="0.000410475542409659"
+        ixy="6.62504499788967E-08"
+        ixz="2.20725015722797E-07"
+        iyy="0.000409696540187415"
+        iyz="-9.52578419911164E-09"
+        izz="0.000488804326955829" />
     </inertial>
     <visual>
       <origin
@@ -36,7 +41,7 @@
       <material
         name="">
         <color
-          rgba="0.89804 0.91765 0.92941 1" />
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
       </material>
     </visual>
     <collision>
@@ -53,17 +58,17 @@
     name="Link1">
     <inertial>
       <origin
-        xyz="0.000693 -0.001221 0.050197"
+        xyz="0.000681166801672071 -0.00046232914455336 0.045774892481422"
         rpy="0 0 0" />
       <mass
-        value="0.893000" />
+        value="0.465086237348566" />
       <inertia
-        ixx="0.000738"
-        ixy="0.000001"
-        ixz="-0.000001"
-        iyy="0.000755"
-        iyz="-0.000002"
-        izz="0.000606" />
+        ixx="0.000229226849289421"
+        ixy="6.51443398285894E-09"
+        ixz="4.13823216869872E-08"
+        iyy="0.000349392243512686"
+        iyz="4.09909327547663E-06"
+        izz="0.000228246849171451" />
     </inertial>
     <visual>
       <origin
@@ -76,7 +81,7 @@
       <material
         name="">
         <color
-          rgba="0.75294 0.75294 0.75294 1" />
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
       </material>
     </visual>
     <collision>
@@ -90,7 +95,7 @@
     </collision>
   </link>
   <joint
-    name="JOINT1"
+    name="Joint1"
     type="revolute">
     <origin
       xyz="0 0 0.06675"
@@ -100,28 +105,28 @@
     <child
       link="Link1" />
     <axis
-      xyz="0 0 -1" />
+      xyz="0 0 1" />
     <limit
-      lower="-3.0"
-      upper="3.0"
+      lower="-2.79"
+      upper="2.79"
       effort="30"
-      velocity="10" />
+      velocity="5" />
   </joint>
   <link
     name="Link2">
     <inertial>
       <origin
-        xyz="-0.185969 -0.001045 -0.000524"
+        xyz="-0.18883363836199 -0.00103696749691735 -0.000652233498703338"
         rpy="0 0 0" />
       <mass
-        value="1.028000" />
+        value="1.00848298846255" />
       <inertia
-        ixx="0.000769"
-        ixy="0.000142"
-        ixz="-0.000070"
-        iyy="0.011712"
-        iyz="0.000002"
-        izz="0.011441" />
+        ixx="0.000410794336332579"
+        ixy="-8.40217278690792E-05"
+        ixz="8.54409137580295E-06"
+        iyy="0.0060417092412649"
+        iyz="-2.44381601939707E-07"
+        izz="0.00611040782664147" />
     </inertial>
     <visual>
       <origin
@@ -148,11 +153,11 @@
     </collision>
   </link>
   <joint
-    name="JOINT2"
+    name="Joint2"
     type="revolute">
     <origin
       xyz="0.00075 0 0.055"
-      rpy="1.5708 0 0" />
+      rpy="1.5707963267949 0 0" />
     <parent
       link="Link1" />
     <child
@@ -160,26 +165,26 @@
     <axis
       xyz="0 0 1" />
     <limit
-      lower="-3.5"
-      upper="0.2"
-      effort="120"
-      velocity="10" />
+      lower="-3.14"
+      upper="0"
+      effort="100"
+      velocity="5" />
   </joint>
   <link
     name="Link3">
     <inertial>
       <origin
-        xyz="0.132810 0.052976 -0.000025"
+        xyz="0.133032369395304 0.0530016058529144 0.000290607464783963"
         rpy="0 0 0" />
       <mass
-        value="0.838" />
+        value="0.839664047451371" />
       <inertia
-        ixx="0.000976"
-        ixy="-0.001080"
-        ixz="0.000036"
-        iyy="0.007005"
-        iyz="0.000000"
-        izz="0.007063" />
+        ixx="0.000602602152841581"
+        ixy="0.000475019651698254"
+        ixz="4.78547824051497E-06"
+        iyy="0.00179992027196969"
+        iyz="2.90178956983618E-06"
+        izz="0.00208247690008721" />
     </inertial>
     <visual>
       <origin
@@ -192,7 +197,7 @@
       <material
         name="">
         <color
-          rgba="0.89804 0.91765 0.92941 1" />
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
       </material>
     </visual>
     <collision>
@@ -206,7 +211,7 @@
     </collision>
   </link>
   <joint
-    name="JOINT3"
+    name="Joint3"
     type="revolute">
     <origin
       xyz="-0.28 0 0"
@@ -218,26 +223,26 @@
     <axis
       xyz="0 0 1" />
     <limit
-      lower="-0.2"
-      upper="3.5"
+      lower="0"
+      upper="3.14"
       effort="30"
-      velocity="10" />
+      velocity="5" />
   </joint>
   <link
     name="Link4">
     <inertial>
       <origin
-        xyz="0.067326 0.059806 0.005043"
+        xyz="0.0666890671297201 0.061249505361484 0.00493164049114361"
         rpy="0 0 0" />
       <mass
-        value="0.444000" />
+        value="0.455192806560725" />
       <inertia
-        ixx="0.000428"
-        ixy="-0.000241"
-        ixz="0.000099"
-        iyy="0.000477"
-        iyz="0.000091"
-        izz="0.000648" />
+        ixx="0.000176582732613137"
+        ixy="2.15495918248381E-05"
+        ixz="-5.61631637175522E-06"
+        iyy="0.000211179169445067"
+        iyz="-5.37410070664354E-06"
+        izz="0.000207766320179744" />
     </inertial>
     <visual>
       <origin
@@ -264,10 +269,10 @@
     </collision>
   </link>
   <joint
-    name="JOINT4"
+    name="Joint4"
     type="revolute">
     <origin
-      xyz="0.215 0.063 0"
+      xyz="0.215000000000004 0.0630000000000073 0"
       rpy="0 0 0" />
     <parent
       link="Link3" />
@@ -276,26 +281,26 @@
     <axis
       xyz="0 0 1" />
     <limit
-      lower="-2.5"
-      upper="1.7"
-      effort="30"
-      velocity="10" />
+      lower="-2.145"
+      upper="1.413"
+      effort="10"
+      velocity="20" />
   </joint>
   <link
     name="Link5">
     <inertial>
       <origin
-        xyz="0.002596 0.000018 0.039895"
+        xyz="0.00248530581728849 1.71803824630881E-05 0.0400785531860572"
         rpy="0 0 0" />
       <mass
-        value="0.363000" />
+        value="0.373508569742983" />
       <inertia
-        ixx="0.000189"
-        ixy="0.000000"
-        ixz="0.000008"
-        iyy="0.000186"
-        iyz="-0.000001"
-        izz="0.000148" />
+        ixx="0.00016414068497646"
+        ixy="1.01562762133299E-07"
+        ixz="8.98033278270026E-06"
+        iyy="0.000150227046495623"
+        iyz="7.2756432239469E-07"
+        izz="0.000141442797294447" />
     </inertial>
     <visual>
       <origin
@@ -308,7 +313,7 @@
       <material
         name="">
         <color
-          rgba="0.89804 0.91765 0.92941 1" />
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
       </material>
     </visual>
     <collision>
@@ -322,11 +327,11 @@
     </collision>
   </link>
   <joint
-    name="JOINT5"
+    name="Joint5"
     type="revolute">
     <origin
-      xyz="0.080817 0.05072 0.00025"
-      rpy="1.5708 0 -0.015918" />
+      xyz="0.0799999999999998 0.0519999999999981 0.000249997832942123"
+      rpy="1.5707963267949 0 0" />
     <parent
       link="Link4" />
     <child
@@ -334,26 +339,26 @@
     <axis
       xyz="0 0 1" />
     <limit
-      lower="-2.0"
-      upper="2.0"
-      effort="20"
-      velocity="30" />
+      lower="-1.482"
+      upper="1.482"
+      effort="10"
+      velocity="20" />
   </joint>
   <link
     name="Link6">
     <inertial>
       <origin
-        xyz="-0.006 0.000 0.047"
+        xyz="0.0108106656274518 0.000127504395052592 0.00016010488602905"
         rpy="0 0 0" />
       <mass
-        value=" 0.650" />
+        value="0.0724468602058996" />
       <inertia
-        ixx="0.000"
-        ixy="0.000"
-        ixz=" 0.000"
-        iyy="0.001"
-        iyz="0.000"
-        izz="0.001" />
+        ixx="3.15031267100887E-05"
+        ixy="-1.31150970829828E-08"
+        ixz="-1.64301978495266E-08"
+        iyy="1.66634761480036E-05"
+        iyz="1.49361456762624E-07"
+        izz="1.66897035808186E-05" />
     </inertial>
     <visual>
       <origin
@@ -366,7 +371,7 @@
       <material
         name="">
         <color
-          rgba="1 1 1 1" />
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
       </material>
     </visual>
     <collision>
@@ -380,51 +385,21 @@
     </collision>
   </link>
   <joint
-    name="JOINT6"
+    name="Joint6"
     type="revolute">
     <origin
-      xyz="0.0235 0 0.044"
-      rpy="3.1416 1.5708 3.1416" />
+      xyz="0.0235 0 0.0440000000000001"
+      rpy="-3.14159265330655 0 0" />
     <parent
       link="Link5" />
     <child
       link="Link6" />
     <axis
-      xyz="0 0 1" />
+      xyz="1 0 0" />
     <limit
-      lower="-3.0"
-      upper="3.0"
-      effort="20"
-      velocity="30" />
+      lower="-2.529"
+      upper="2.529"
+      effort="10"
+      velocity="20" />
   </joint>
-
-  <link name="gripper_ee">
-    <inertial>
-      <mass value="0.172000"/>
-      <!-- COM 在 Link6 末端中心 -->
-      <origin xyz="-0.006099 0.000000 0.083924" rpy="0 0 0"/>
-      <inertia 
-        ixx="0.000619" iyy=" 0.000150" izz="0.000645"
-        ixy="-0.000064"   ixz="-0.000003"   iyz="-0.000001"/>
-    </inertial>
-
-    <visual>
-      <origin xyz="0 0 0.05" rpy="0 0 0"/>
-      <geometry>
-        <box size="0.05 0.05 0.1"/>
-      </geometry>
-      <material name="gray">
-        <color rgba="0.5 0.5 0.5 1.0"/>
-      </material>
-    </visual>
-  </link>
-
-  <joint name="Link6_to_gripper_ee" type="fixed">STL
-    <parent link="Link6"/>
-    <child link="gripper_ee"/>
-    <!-- 这里的 origin 根据你 Link6 的末端坐标系来设定，
-        设 gripper_ee 在 Link6 末端中心 -->
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-  </joint>
-
 </robot>
