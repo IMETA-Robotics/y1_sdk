@@ -3,7 +3,7 @@
   <!-- slave arm right -->
   <node pkg="y1_controller" type="y1_controller" name="slave_arm_right" output="screen"> 
     <!-- CAN ID -->
-    <param name="arm_can_id" value="can1"/>
+    <param name="arm_can_id" value="can0"/>
     <!-- arm status and joint state feedback frequency (HZ) -->
     <param name="arm_feedback_rate" value="400"/>
     <!-- arm control type: leader_arm(remote master arm), follower_arm(remote slave arm),
