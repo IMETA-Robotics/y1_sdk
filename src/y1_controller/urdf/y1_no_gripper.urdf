@@ -31,7 +31,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://piper_description/meshes_y1/base_link.STL" />
+          filename="package://y1_description/meshes/base_link.STL" />
       </geometry>
       <material
         name="">
@@ -45,7 +45,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://piper_description/meshes_y1/base_link.STL" />
+          filename="package://y1_description/meshes/base_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -71,7 +71,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://piper_description/meshes_y1/Link1.STL" />
+          filename="package://y1_description/meshes/Link1.STL" />
       </geometry>
       <material
         name="">
@@ -85,7 +85,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://piper_description/meshes_y1/Link1.STL" />
+          filename="package://y1_description/meshes/Link1.STL" />
       </geometry>
     </collision>
   </link>
@@ -129,7 +129,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://piper_description/meshes_y1/Link2.STL" />
+          filename="package://y1_description/meshes/Link2.STL" />
       </geometry>
       <material
         name="">
@@ -143,7 +143,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://piper_description/meshes_y1/Link2.STL" />
+          filename="package://y1_description/meshes/Link2.STL" />
       </geometry>
     </collision>
   </link>
@@ -169,17 +169,17 @@
     name="Link3">
     <inertial>
       <origin
-        xyz="0.126600 0.052219 0.001662"
+        xyz="0.132810 0.052976 -0.000025"
         rpy="0 0 0" />
       <mass
-        value="0.84000" />
+        value="0.838" />
       <inertia
-        ixx="0.000921"
-        ixy="-0.001028"
-        ixz="-0.000080"
-        iyy="0.006528"
-        iyz="-0.000014"
-        izz="0.006605" />
+        ixx="0.000976"
+        ixy="-0.001080"
+        ixz="0.000036"
+        iyy="0.007005"
+        iyz="0.000000"
+        izz="0.007063" />
     </inertial>
     <visual>
       <origin
@@ -187,7 +187,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://piper_description/meshes_y1/Link3.STL" />
+          filename="package://y1_description/meshes/Link3.STL" />
       </geometry>
       <material
         name="">
@@ -201,7 +201,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://piper_description/meshes_y1/Link3.STL" />
+          filename="package://y1_description/meshes/Link3.STL" />
       </geometry>
     </collision>
   </link>
@@ -245,7 +245,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://piper_description/meshes_y1/Link4.STL" />
+          filename="package://y1_description/meshes/Link4.STL" />
       </geometry>
       <material
         name="">
@@ -259,7 +259,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://piper_description/meshes_y1/Link4.STL" />
+          filename="package://y1_description/meshes/Link4.STL" />
       </geometry>
     </collision>
   </link>
@@ -303,7 +303,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://piper_description/meshes_y1/Link5.STL" />
+          filename="package://y1_description/meshes/Link5.STL" />
       </geometry>
       <material
         name="">
@@ -317,7 +317,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://piper_description/meshes_y1/Link5.STL" />
+          filename="package://y1_description/meshes/Link5.STL" />
       </geometry>
     </collision>
   </link>
@@ -343,17 +343,17 @@
     name="Link6">
     <inertial>
       <origin
-        xyz="0.00034807 -9.6297E-08 0.0098368"
+        xyz="0.031920 -0.000193 0.043758"
         rpy="0 0 0" />
       <mass
-        value="0.016469" />
+        value="0.150000" />
       <inertia
-        ixx="0.000003"
+        ixx="0.000058"
         ixy="0.000000"
         ixz="0.000000"
-        iyy="0.000003"
+        iyy="0.000027"
         iyz="0.000000"
-        izz="0.000005" />
+        izz="0.000027" />
     </inertial>
     <visual>
       <origin
@@ -361,7 +361,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://piper_description/meshes_y1/Link6.STL" />
+          filename="package://y1_description/meshes_y1/Link6.STL" />
       </geometry>
       <material
         name="">
@@ -375,7 +375,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://piper_description/meshes_y1/Link6.STL" />
+          filename="package://y1_description/meshes_y1/Link6.STL" />
       </geometry>
     </collision>
   </link>
@@ -383,14 +383,14 @@
     name="JOINT6"
     type="revolute">
     <origin
-      xyz="0.0235 0 0.044"
-      rpy="3.1416 1.5708 3.1416" />
+      xyz="0.0235 0 0.0440000000000001"
+      rpy="-3.14159265330655 0 0" />
     <parent
       link="Link5" />
     <child
       link="Link6" />
     <axis
-      xyz="0 0 1" />
+      xyz="1 0 0" />
     <limit
       lower="-3.0"
       upper="3.0"

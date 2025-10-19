@@ -6,13 +6,8 @@
   name="y1">
   <link name="world"/>
   <joint name="fixed_base_joint" type="fixed">
-    <origin
-      xyz="0 0 0.06675"
-      rpy="0 0 0" />
     <parent link="world"/>
     <child link="base_link"/>
-    <axis
-      xyz="0 0 1" />
   </joint>
   <link
     name="base_link">
@@ -98,7 +93,7 @@
     name="JOINT1"
     type="revolute">
     <origin
-      xyz="0 0 0"
+      xyz="0 0 0.06675"
       rpy="0 0 0" />
     <parent
       link="base_link" />
@@ -110,7 +105,7 @@
       lower="-3.0"
       upper="3.0"
       effort="30"
-      velocity="5" />
+      velocity="10" />
   </joint>
   <link
     name="Link2">
@@ -167,8 +162,8 @@
     <limit
       lower="-3.5"
       upper="0.2"
-      effort="100"
-      velocity="5" />
+      effort="120"
+      velocity="10" />
   </joint>
   <link
     name="Link3">
@@ -224,9 +219,9 @@
       xyz="0 0 1" />
     <limit
       lower="-0.2"
-      upper="4.1"
+      upper="3.5"
       effort="30"
-      velocity="5" />
+      velocity="10" />
   </joint>
   <link
     name="Link4">
@@ -283,8 +278,8 @@
     <limit
       lower="-2.5"
       upper="1.7"
-      effort="10"
-      velocity="20" />
+      effort="30"
+      velocity="10" />
   </joint>
   <link
     name="Link5">
@@ -341,24 +336,24 @@
     <limit
       lower="-2.0"
       upper="2.0"
-      effort="10"
-      velocity="20" />
+      effort="20"
+      velocity="30" />
   </joint>
   <link
     name="Link6">
     <inertial>
       <origin
-        xyz="-0.006 0.000 0.047"
+        xyz="0.059580 0.000000 -0.006779"
         rpy="0 0 0" />
       <mass
-        value=" 0.479" />
+        value="0.667000" />
       <inertia
-        ixx="0.000"
-        ixy="0.000"
-        ixz=" 0.000"
-        iyy="0.001"
-        iyz="0.000"
-        izz="0.001" />
+        ixx="0.000731"
+        ixy="0.000000"
+        ixz="-0.000002"
+        iyy="0.001116"
+        iyz="-0.000001"
+        izz="0.000942" />
     </inertial>
     <visual>
       <origin
@@ -388,134 +383,18 @@
     name="JOINT6"
     type="revolute">
     <origin
-      xyz="0.0235 0 0.044"
-      rpy="3.1416 1.5708 3.1416" />
+      xyz="0.0235 0 0.0440000000000001"
+      rpy="-3.14159265330655 0 0" />
     <parent
       link="Link5" />
     <child
       link="Link6" />
     <axis
-      xyz="0 0 1" />
+      xyz="1 0 0" />
     <limit
       lower="-3.0"
       upper="3.0"
-      effort="10"
-      velocity="20" />
-  </joint>
-  <link
-    name="Claw_Link_R">
-    <inertial>
-      <origin
-        xyz="0.008 -0.016 -0.129"
-        rpy="0 0 0" />
-      <mass
-        value="0.086" />
-      <inertia
-        ixx="5.6073E-05"
-        ixy="-5.0476E-07"
-        ixz="-6.5556E-06"
-        iyy="8.8688E-05"
-        iyz="6.7747E-08"
-        izz="8.684E-05" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://y1_description/meshes/Claw_Link_R.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.89804 0.91765 0.92941 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://y1_description/meshes/Claw_Link_R.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <joint
-    name="Claw_Link_R"
-    type="prismatic">
-    <origin
-      xyz="-0.0012063 0.076999 0.075791"
-      rpy="0 -1.5708 -1.5708" />
-    <parent
-      link="Link6" />
-    <child
-      link="Claw_Link_R" />
-    <axis
-      xyz="0 0 -1" />
-    <limit
-      lower="0"
-      upper="0.045"
-      effort="10"
-      velocity="20" />
-  </joint>
-  <link
-    name="Claw_Link_L">
-    <inertial>
-      <origin
-        xyz="0.008 0.006 0.129"
-        rpy="0 0 0" />
-      <mass
-        value="0.086" />
-      <inertia
-        ixx="5.7863E-05"
-        ixy="-4.8654E-07"
-        ixz="6.5445E-06"
-        iyy="8.9831E-05"
-        iyz="-1.1971E-07"
-        izz="8.8153E-05" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://y1_description/meshes/Claw_Link_L.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.89804 0.91765 0.92941 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://y1_description/meshes/Claw_Link_L.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <joint
-    name="Claw_Link_L"
-    type="prismatic">
-    <origin
-      xyz="-0.0012063 -0.077001 0.07579"
-      rpy="0 -1.5708 -1.5708" />
-    <parent
-      link="Link6" />
-    <child
-      link="Claw_Link_L" />
-    <axis
-      xyz="0 0 -1" />
-    <limit
-      lower="0"
-      upper="0.045"
-      effort="10"
-      velocity="20" />
+      effort="20"
+      velocity="30" />
   </joint>
 </robot>

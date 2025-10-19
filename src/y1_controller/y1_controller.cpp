@@ -47,7 +47,7 @@ Y1Controller::Y1Controller() : Node("y1_controller") {
   std::string urdf_path;
   if (arm_end_type == 0) {
     // only load robotic arm
-    urdf_path = package_path + "/urdf/y10804.urdf";
+    urdf_path = package_path + "/urdf/y1_no_gripper.urdf";
   } else if (arm_end_type == 1) {
     // robotic arm and gripper_T
     urdf_path = package_path + "/urdf/y1_gripper_t.urdf";
@@ -56,11 +56,10 @@ Y1Controller::Y1Controller() : Node("y1_controller") {
     urdf_path = package_path + "/urdf/y1_gripper_g.urdf";
   } else if (arm_end_type == 3) {
     // robotic arm and gripper_GT
-    urdf_path = package_path + "/urdf/y10824_ee.urdf";
+    urdf_path = package_path + "/urdf/y1_with_gripper.urdf";
   } else {
     RCLCPP_ERROR(this->get_logger(), "arm_end_type is %d , not supported",
                  arm_end_type);
-    // return false;
   }
 
   // Make Y1 SDK Interface
