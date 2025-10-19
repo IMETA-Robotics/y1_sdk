@@ -8,6 +8,7 @@
 #include "y1_msg/msg/arm_joint_position_control.hpp"
 #include "y1_msg/msg/arm_joint_state.hpp"
 #include "y1_msg/msg/arm_status.hpp"
+#include "y1_msg/msg/mit_control_mode.hpp"
 #include "y1_sdk/y1_sdk_interface.h"
 
 namespace imeta {
@@ -55,6 +56,12 @@ class Y1Controller : public rclcpp::Node {
    */
   void ArmInformationTimerCallback();
 
+  /**
+   * @brief mit control mode.
+   */
+  void MitControlCallback(
+      const y1_msg::msg::MitControlMode::SharedPtr msg);
+
  private:
   rclcpp::Publisher<y1_msg::msg::ArmJointState>::SharedPtr arm_joint_state_pub_;
   rclcpp::Publisher<y1_msg::msg::ArmStatus>::SharedPtr arm_status_pub_;
@@ -64,6 +71,8 @@ class Y1Controller : public rclcpp::Node {
       master_arm_joint_position_sub_;
   rclcpp::Subscription<y1_msg::msg::ArmJointPositionControl>::SharedPtr
       arm_joint_position_control_sub_;
+  rclcpp::Subscription<y1_msg::msg::MitControlMode>::SharedPtr
+      mit_control_sub_;
 
   rclcpp::TimerBase::SharedPtr arm_information_timer_;
 
@@ -71,6 +80,7 @@ class Y1Controller : public rclcpp::Node {
 
   // ros params
   int arm_feedback_rate_;
+  std::string mit_control_topic_;
   std::string arm_end_pose_control_topic_;
   std::string arm_joint_position_control_topic_;
   std::string arm_joint_state_topic_;

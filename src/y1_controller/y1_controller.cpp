@@ -19,6 +19,9 @@ Y1Controller::Y1Controller() : Node("y1_controller") {
       this->declare_parameter("arm_can_id", std::string("can0"));
   arm_feedback_rate_ = this->declare_parameter("arm_feedback_rate", 200);
 
+  // mit control control mode
+  mit_control_topic_ = this->declare_parameter(
+      "mit_control_topic", std::string("/imeta_y1/mit_control"));
   // end pose control mode
   arm_end_pose_control_topic_ = this->declare_parameter(
       "arm_end_pose_control_topic", std::string("/y1/arm_end_pose_control"));
@@ -111,7 +114,16 @@ bool Y1Controller::Init() {
             std::bind(&Y1Controller::ArmJointPositionControlCallback, this,
                       std::placeholders::_1));
 
-  } else {
+  } else if (arm_control_type_ == "mit_control_mode") {
+    y1_interface_->SetArmControlMode(
+        Y1SDKInterface::ControlMode::MIT_CONTROL);
+    // subscriber
+    mit_control_sub_ = this->create_subscription<y1_msg::msg::MitControlMode>(
+            mit_control_topic_, 1,
+            std::bind(&Y1Controller::MitControlCallback, this,
+                      std::placeholders::_1));
+  }
+  else {
     RCLCPP_ERROR(this->get_logger(), "arm_control_type is %s , not supported",
                  arm_control_type_.c_str());
     return false;
@@ -168,6 +180,30 @@ void Y1Controller::ArmJointPositionControlCallback(
 
   // gripper stroke (mm)
   y1_interface_->SetGripperStroke(msg->gripper_stroke, msg->gripper_velocity);
+}
+
+void Y1Controller::MitControlCallback(
+      const y1_msg::msg::MitControlMode::SharedPtr msg) {
+  // arm J1 - J6 mit control
+  std::array<MitControlCommand, 6>  arm_control_command;
+  MitControlCommand motor_control_command;
+  for (size_t i = 0; i < 6; i++) {
+    motor_control_command.kp = msg->kp[i];
+    motor_control_command.joint_position = msg->joint_position[i];
+    motor_control_command.kd = msg->kd[i];
+    motor_control_command.joint_velocity = msg->joint_velocity[i];
+    motor_control_command.torque = msg->torque[i];
+    arm_control_command.at(i) = motor_control_command;
+  }
+  y1_interface_->MitControlArm(arm_control_command);
+
+  // gripper mit control
+  motor_control_command.kp = msg->kp[6];
+  motor_control_command.joint_position = msg->joint_position[6];
+  motor_control_command.kd = msg->kd[6];
+  motor_control_command.joint_velocity = msg->joint_velocity[6];
+  motor_control_command.torque = msg->torque[6];
+  y1_interface_->MitControlGripper(motor_control_command);
 }
 
 void Y1Controller::ArmInformationTimerCallback() {

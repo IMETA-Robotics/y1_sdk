@@ -92,6 +92,13 @@ Refer [C++ SDK 和 ROS2使用说明](https://nxjux7a2aq.feishu.cn/wiki/SSsqwir8Z
   ros2 launch y1_controller two_arm_control.launch.py
   ```
 
+### MitControlMode 
+  单臂控制demo:
+  ```sh
+  source install/setup.bash
+  ros2 launch y1_controller mit_control.launch.py
+  ```
+
 ## 以下为单臂rostopic控制示例（双臂是分为两个话题，分别下发控制指令）
 ### joint position control
 
