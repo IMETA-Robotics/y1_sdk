@@ -15,8 +15,8 @@ if __name__ == "__main__":
     
     input("press key [Enter] to start record trajectory.")
 
-    rate = rospy.Rate(25)
-    with open("data/arm_state_25hz.jsonl", 'a') as f:
+    rate = rospy.Rate(30)
+    with open("data/arm_state_30hz.jsonl", 'a') as f:
         while not rospy.is_shutdown():
             if latest is not None:
                 data = {
