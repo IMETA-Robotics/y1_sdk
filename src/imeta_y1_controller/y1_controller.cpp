@@ -182,7 +182,7 @@ void Y1Controller::GazeboControlCallback(
 
    LOG(INFO) << "msg->position.size(): " << msg->position.size();
   if (msg->position.size() >= 7) {
-    y1_interface_->SetGripperStroke(msg->position[6] * 2000);
+    y1_interface_->SetGripperStroke(msg->position[6] * 1000);
   }
 
   // arm joint velocity
