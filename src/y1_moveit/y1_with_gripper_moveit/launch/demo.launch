@@ -65,7 +65,7 @@
     <arg name="moveit_warehouse_database_path" value="$(arg db_path)"/>
   </include>
 
-  <!-- 启动 joint_moveit_ctrl_server 节点 -->
+    <!-- 启动 joint_moveit_ctrl_server 节点 -->
   <node pkg="y1_moveit_ctrl" type="joint_moveit_ctrl_server" name="joint_moveit_ctrl_server" output="screen" />
 
 </launch>

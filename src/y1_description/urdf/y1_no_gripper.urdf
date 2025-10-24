@@ -55,7 +55,7 @@
     </collision>
   </link>
   <link
-    name="Link1">
+    name="link1">
     <inertial>
       <origin
         xyz="0.000681166801672071 -0.00046232914455336 0.045774892481422"
@@ -76,7 +76,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/Link1.STL" />
+          filename="package://y1_description/meshes/link1.STL" />
       </geometry>
       <material
         name="">
@@ -90,12 +90,12 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/Link1.STL" />
+          filename="package://y1_description/meshes/link1.STL" />
       </geometry>
     </collision>
   </link>
   <joint
-    name="Joint1"
+    name="joint1"
     type="revolute">
     <origin
       xyz="0 0 0.06675"
@@ -103,7 +103,7 @@
     <parent
       link="base_link" />
     <child
-      link="Link1" />
+      link="link1" />
     <axis
       xyz="0 0 1" />
     <limit
@@ -113,7 +113,7 @@
       velocity="5" />
   </joint>
   <link
-    name="Link2">
+    name="link2">
     <inertial>
       <origin
         xyz="-0.18883363836199 -0.00103696749691735 -0.000652233498703338"
@@ -134,7 +134,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/Link2.STL" />
+          filename="package://y1_description/meshes/link2.STL" />
       </geometry>
       <material
         name="">
@@ -148,20 +148,20 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/Link2.STL" />
+          filename="package://y1_description/meshes/link2.STL" />
       </geometry>
     </collision>
   </link>
   <joint
-    name="Joint2"
+    name="joint2"
     type="revolute">
     <origin
       xyz="0.00075 0 0.055"
       rpy="1.5707963267949 0 0" />
     <parent
-      link="Link1" />
+      link="link1" />
     <child
-      link="Link2" />
+      link="link2" />
     <axis
       xyz="0 0 1" />
     <limit
@@ -171,7 +171,7 @@
       velocity="5" />
   </joint>
   <link
-    name="Link3">
+    name="link3">
     <inertial>
       <origin
         xyz="0.133032369395304 0.0530016058529144 0.000290607464783963"
@@ -192,7 +192,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/Link3.STL" />
+          filename="package://y1_description/meshes/link3.STL" />
       </geometry>
       <material
         name="">
@@ -206,20 +206,20 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/Link3.STL" />
+          filename="package://y1_description/meshes/link3.STL" />
       </geometry>
     </collision>
   </link>
   <joint
-    name="Joint3"
+    name="joint3"
     type="revolute">
     <origin
       xyz="-0.28 0 0"
       rpy="0 0 0" />
     <parent
-      link="Link2" />
+      link="link2" />
     <child
-      link="Link3" />
+      link="link3" />
     <axis
       xyz="0 0 1" />
     <limit
@@ -229,7 +229,7 @@
       velocity="5" />
   </joint>
   <link
-    name="Link4">
+    name="link4">
     <inertial>
       <origin
         xyz="0.0666890671297201 0.061249505361484 0.00493164049114361"
@@ -250,7 +250,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/Link4.STL" />
+          filename="package://y1_description/meshes/link4.STL" />
       </geometry>
       <material
         name="">
@@ -264,20 +264,20 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/Link4.STL" />
+          filename="package://y1_description/meshes/link4.STL" />
       </geometry>
     </collision>
   </link>
   <joint
-    name="Joint4"
+    name="joint4"
     type="revolute">
     <origin
       xyz="0.215000000000004 0.0630000000000073 0"
       rpy="0 0 0" />
     <parent
-      link="Link3" />
+      link="link3" />
     <child
-      link="Link4" />
+      link="link4" />
     <axis
       xyz="0 0 1" />
     <limit
@@ -287,7 +287,7 @@
       velocity="20" />
   </joint>
   <link
-    name="Link5">
+    name="link5">
     <inertial>
       <origin
         xyz="0.00248530581728849 1.71803824630881E-05 0.0400785531860572"
@@ -308,7 +308,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/Link5.STL" />
+          filename="package://y1_description/meshes/link5.STL" />
       </geometry>
       <material
         name="">
@@ -322,20 +322,20 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/Link5.STL" />
+          filename="package://y1_description/meshes/link5.STL" />
       </geometry>
     </collision>
   </link>
   <joint
-    name="Joint5"
+    name="joint5"
     type="revolute">
     <origin
       xyz="0.0799999999999998 0.0519999999999981 0.000249997832942123"
       rpy="1.5707963267949 0 0" />
     <parent
-      link="Link4" />
+      link="link4" />
     <child
-      link="Link5" />
+      link="link5" />
     <axis
       xyz="0 0 1" />
     <limit
@@ -345,7 +345,7 @@
       velocity="20" />
   </joint>
   <link
-    name="Link6">
+    name="link6">
     <inertial>
       <origin
         xyz="0.0108106656274518 0.000127504395052592 0.00016010488602905"
@@ -366,7 +366,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/Link6.STL" />
+          filename="package://y1_description/meshes/link6.STL" />
       </geometry>
       <material
         name="">
@@ -380,20 +380,20 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/Link6.STL" />
+          filename="package://y1_description/meshes/link6.STL" />
       </geometry>
     </collision>
   </link>
   <joint
-    name="Joint6"
+    name="joint6"
     type="revolute">
     <origin
       xyz="0.0235 0 0.0440000000000001"
       rpy="-3.14159265330655 0 0" />
     <parent
-      link="Link5" />
+      link="link5" />
     <child
-      link="Link6" />
+      link="link6" />
     <axis
       xyz="1 0 0" />
     <limit

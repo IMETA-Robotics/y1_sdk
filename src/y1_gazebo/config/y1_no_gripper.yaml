@@ -1,7 +1,7 @@
 gazebo:
   joint_state_controller:
     type: joint_state_controller/JointStateController
-    publish_rate: 10
+    publish_rate: 200
 
   joint1_position_controller:
     type: position_controllers/JointPositionController
@@ -25,7 +25,7 @@ gazebo:
     pid: {p: 100.0, i: 0.01, d: 5.0}
   joint6_position_controller:
     type: position_controllers/JointPositionController
-    joint: J6_joint
+    joint: joint6
     pid: {p: 100.0, i: 0.01, d: 5.0}
   # joint7_position_controller:
   #   type: position_controllers/JointPositionController

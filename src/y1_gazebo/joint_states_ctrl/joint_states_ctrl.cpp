@@ -39,7 +39,7 @@ void jointStateCallback(const sensor_msgs::JointState::ConstPtr& msg)
             // joint8 = -joint7
             if (joint_positions.find("joint7") != joint_positions.end()) {
                 // position = -joint_positions["joint7"];
-                position = joint_positions["joint7"];
+                position = -joint_positions["joint7"];
             } else {
                 position = 0.0;
             }
@@ -59,7 +59,7 @@ void jointStateCallback(const sensor_msgs::JointState::ConstPtr& msg)
             std_msgs::Float64 cmd;
             cmd.data = position;
             publishers[joint_name].publish(cmd);
-            std::cout << "发布 " << joint_name << " 位置: " << position << std::endl;
+            // std::cout << "发布 " << joint_name << " 位置: " << position << std::endl;
             last_positions[joint_name] = position;
         }
     }

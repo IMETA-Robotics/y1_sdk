@@ -24,7 +24,9 @@ controller_list:
       - joint6
       - joint7
 initial:  # Define initial robot poses per group
+  - group: arm
+    pose: go_zero
   - group: gripper
-    pose: gripper_open
+    pose: gripper_close
   - group: y1
-    pose: zero
+    pose: go_zero
