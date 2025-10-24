@@ -33,11 +33,16 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
+# catkin_install_python(PROGRAMS
+#   scripts/joint_moveit_ctrl_server.py
+#   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+# )
+
 add_executable(joint_moveit_ctrl_server moveit_server/joint_moveit_ctrl_server.cpp)
 target_link_libraries(joint_moveit_ctrl_server ${catkin_LIBRARIES})
 
-add_executable(test_joint_moveit_ctrl moveit_server/joint_moveit_ctrl.cpp)
-target_link_libraries(test_joint_moveit_ctrl ${catkin_LIBRARIES})
+# add_executable(test_joint_moveit_ctrl moveit_server/joint_moveit_ctrl.cpp)
+# target_link_libraries(test_joint_moveit_ctrl ${catkin_LIBRARIES})
 
 # # 安装 Python 脚本
 # catkin_install_python(PROGRAMS

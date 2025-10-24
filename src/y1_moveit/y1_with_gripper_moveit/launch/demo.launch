@@ -68,4 +68,9 @@
     <!-- 启动 joint_moveit_ctrl_server 节点 -->
   <node pkg="y1_moveit_ctrl" type="joint_moveit_ctrl_server" name="joint_moveit_ctrl_server" output="screen" />
 
+    <!-- python test -->
+  <!-- 启动 joint_moveit_ctrl_server -->
+  <!-- <node name="joint_moveit_ctrl_server" pkg="moveit_ctrl" type="joint_moveit_ctrl_server.py"
+      output="screen" launch-prefix="python3"/> -->
+
 </launch>

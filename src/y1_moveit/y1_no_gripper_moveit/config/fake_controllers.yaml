@@ -11,4 +11,4 @@ controller_list:
       - joint6
 initial:  # Define initial robot poses per group
   - group: arm
-    pose: zero
+    pose: go_zero

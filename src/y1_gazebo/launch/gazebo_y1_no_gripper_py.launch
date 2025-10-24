@@ -18,14 +18,14 @@
   </include>
 
   <!-- Load the URDF into the ROS Parameter Server -->
-  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find y1_description)/urdf/y1.xacro'" /> 
+  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find y1_description)/urdf/y1_no_gripper.xacro'" /> 
 
   <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
   <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
 	args="-urdf -model arm -param robot_description"/>   
 
   <!-- load controllers -->
-  <rosparam file="$(find y1_gazebo)/config/y1.yaml" command="load"/>
+  <rosparam file="$(find y1_gazebo)/config/y1_no_gripper.yaml" command="load"/>
 
   <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
           output="screen" ns="/gazebo" args="joint_state_controller
@@ -33,7 +33,8 @@
                                           joint2_position_controller
                                           joint3_position_controller
                                           joint4_position_controller
-                                          joint5_position_controller"/> 
+                                          joint5_position_controller
+                                          joint6_position_controller"/> 
 
   <!-- 启动Gazebo controllers -->
   <!-- <include file="$(find y1_gazebo)/launch/y1_with_gripper/y1_gazebo_controller.launch" /> -->
@@ -41,6 +42,13 @@
   <!-- <include file="$(find y1_description)/launch/display.launch" /> -->
 
   <!-- 启动 joint_state_ctrl 节点 -->
-  <node pkg="y1_gazebo" type="joint_states_ctrl" name="joint_states_ctrl" output="screen" />
+  <!-- <node pkg="y1_gazebo" type="joint_states_ctrl" name="joint_states_ctrl" output="screen" /> -->
+
+  <!-- python test -->
+  <node name="joint_states_ctrl"
+        pkg="piper_gazebo"
+        type="joint_states_ctrl.py"
+        output="screen"
+        launch.prefix="python3" />
 
 </launch>
