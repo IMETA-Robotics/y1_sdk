@@ -10,6 +10,7 @@
 #include "y1_msg/ArmJointState.h"
 #include "ros/subscriber.h"
 #include "y1_sdk/y1_sdk_interface.h"
+#include "sensor_msgs/JointState.h"
 
 namespace imeta {
 namespace y1_controller {
@@ -48,6 +49,11 @@ class Y1Controller {
    */
   void ArmJointPositionControlCallback(
       const y1_msg::ArmJointPositionControl::ConstPtr& msg);
+
+  /**
+   * @brief arm receive joint position control command from rviz.
+   */
+  void GazeboControlCallback(const sensor_msgs::JointStateConstPtr &msg);
 
   /**
    * @brief publish arm joint states at a fixed frequency
