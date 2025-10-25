@@ -7,7 +7,9 @@
   <node
     name="joint_state_publisher_gui"
     pkg="joint_state_publisher_gui"
-    type="joint_state_publisher_gui" />
+    type="joint_state_publisher_gui">
+    <param name="rate" type="double" value="5.0" />
+  </node>
   <node
     name="$(anon robot_state_publisher)"
     pkg="robot_state_publisher"
