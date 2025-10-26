@@ -53,7 +53,7 @@ class Y1Controller {
   /**
    * @brief arm receive joint position control command from rviz.
    */
-  void GazeboControlCallback(const sensor_msgs::JointStateConstPtr &msg);
+  void SimPositionControlCallback(const sensor_msgs::JointStateConstPtr &msg);
 
   /**
    * @brief publish arm joint states at a fixed frequency

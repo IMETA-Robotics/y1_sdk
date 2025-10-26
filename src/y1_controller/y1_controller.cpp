@@ -29,6 +29,12 @@ bool Y1Controller::Init() {
   std::string arm_status_topic =
       nh_.param("arm_status_topic", std::string("/y1/arm_status"));
 
+  // whether is simulation
+  bool is_sim = nh_.param("is_sim", false);
+  // joint position control topic in simulation
+  std::string sim_joint_postion_control_topic = nh_.param(
+      "sim_joint_postion_control_topic", std::string("/joint_states"));
+
   // leader_arm(master), follower_arm(slave), default is follower_arm
   std::string arm_control_type =
       nh_.param("arm_control_type", std::string("follower_arm"));
@@ -93,8 +99,11 @@ bool Y1Controller::Init() {
     arm_joint_position_control_sub_ =
         nh_.subscribe(arm_joint_position_control_topic, 1,
                       &Y1Controller::ArmJointPositionControlCallback, this);
-    arm_joint_position_control_sub_ = nh_.subscribe(
-        "/joint_states", 1, &Y1Controller::GazeboControlCallback, this);
+    if (is_sim) {
+      arm_joint_position_control_sub_ =
+          nh_.subscribe(sim_joint_postion_control_topic, 1,
+                        &Y1Controller::SimPositionControlCallback, this);
+    }
 
   } else {
     ROS_ERROR("arm_control_type is %s , not supported",
@@ -154,29 +163,18 @@ void Y1Controller::ArmJointPositionControlCallback(
   y1_interface_->SetGripperStroke(msg->gripper_stroke, msg->gripper_velocity);
 }
 
-void Y1Controller::GazeboControlCallback(
+void Y1Controller::SimPositionControlCallback(
     const sensor_msgs::JointStateConstPtr &msg) {
   // arm joint position
   std::array<double, 6> arm_joint_position;
   for (int i = 0; i < 6; i++) {
     arm_joint_position[i] = msg->position[i];
   }
-  // LOG(INFO) << "TETS1";
   y1_interface_->SetArmJointPosition(arm_joint_position,6);
-  // LOG(INFO) << "TETS2";
 
-  //  LOG(INFO) << "msg->position.size(): " << msg->position.size();
   if (msg->position.size() >= 7) {
     y1_interface_->SetGripperStroke(-msg->position[6] * 2000,6);
   }
-
-  // arm joint velocity
-  // std::array<double, 6> arm_joint_velocity;
-  // for (int i = 0; i < 6; i++) {
-  //   arm_joint_velocity[i] = msg->velocity[i];
-  // }
-  // y1_interface_->SetArmJointVelocity(arm_joint_velocity);
-  // LOG(INFO) << "TETS3";
 }
 
 

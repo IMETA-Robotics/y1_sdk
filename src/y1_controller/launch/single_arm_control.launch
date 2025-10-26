@@ -22,6 +22,12 @@
     <param name="arm_joint_state_topic" value="/puppet_arm_right/joint_states"/>
     <!-- joint motor status feedback -->
     <param name="arm_status_topic" value="/puppet_arm_right/arm_status"/>
+    
+    <!-- whether to run in simulation -->
+    <param name="is_sim" value="false"/>
+    <!-- joint position control topic in simulation -->
+    <param name="sim_joint_postion_control_topic" value="/joint_states"/>
+
   </node>
 
 </launch>
