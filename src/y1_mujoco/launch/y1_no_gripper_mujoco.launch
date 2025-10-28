@@ -1,0 +1,6 @@
+<launch>
+    <node name="y1_mujoco_ros" pkg="y1_mujoco" type="y1_no_gripper_mujoco_ros.py" output="screen">
+        <param name="use_sim_time" value="true"/>
+        <remap from="/mujoco_joint_states_ctrl" to="/joint_states" />
+    </node>
+</launch>
