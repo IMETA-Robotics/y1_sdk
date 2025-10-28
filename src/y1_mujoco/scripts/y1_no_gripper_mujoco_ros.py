@@ -9,11 +9,7 @@ import glfw
 import subprocess
 from std_msgs.msg import Header
 from mujoco_py import MjSim, MjViewer
-from mujoco_py import GlfwContext
 from sensor_msgs.msg import JointState
-
-# 如果你希望显示渲染窗口，可以注释掉这一行
-# GlfwContext(offscreen=True)
 
 class Mujoco_Model():
     def __init__(self):
@@ -21,7 +17,7 @@ class Mujoco_Model():
         rospy.Subscriber("/mujoco_joint_states_ctrl", JointState, self.joint_state_callback)
 
         # 初始化 joint_targets 字典
-        self.joint_targets = {}  # ← 添加这行，防止 AttributeError
+        self.joint_targets = {}
 
         self.joint_state_pub = rospy.Publisher("/mujoco_joint_states_pub", JointState, queue_size=1,tcp_nodelay=True)
 
