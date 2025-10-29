@@ -3,7 +3,8 @@
      Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 <robot
-  name="y1">
+  name="y1"
+  xmlns:xacro="http://ros.org/wiki/xacro">
   <link name="world"/>
   <joint name="fixed_base_joint" type="fixed">
     <origin
@@ -402,4 +403,37 @@
       effort="10"
       velocity="20" />
   </joint>
+
+    <!-- controller -->
+  <xacro:macro name="transmission_block" params="tran_name joint_name motor_name">
+    <transmission name="${tran_name}">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="${joint_name}">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="$motor_name">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+  </xacro:macro>
+
+  <xacro:transmission_block tran_name="tran1" joint_name="joint1" motor_name="joint1_motor"/>
+  <xacro:transmission_block tran_name="tran2" joint_name="joint2" motor_name="joint2_motor"/>
+  <xacro:transmission_block tran_name="tran3" joint_name="joint3" motor_name="joint3_motor"/>
+  <xacro:transmission_block tran_name="tran4" joint_name="joint4" motor_name="joint4_motor"/>
+  <xacro:transmission_block tran_name="tran5" joint_name="joint5" motor_name="joint5_motor"/>
+  <xacro:transmission_block tran_name="tran6" joint_name="joint6" motor_name="joint6_motor"/>
+  <!-- <xacro:transmission_block tran_name="tran7" joint_name="joint7" motor_name="joint7_motor"/> -->
+  <!-- <xacro:transmission_block tran_name="tran8" joint_name="joint8" motor_name="joint8_motor"/> -->
+  
+  <!-- gazebo -->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+        <robotNamespace>/gazebo</robotNamespace>
+        <legacyModeNS>true</legacyModeNS>
+    </plugin>
+
+  </gazebo>
+  
 </robot>
