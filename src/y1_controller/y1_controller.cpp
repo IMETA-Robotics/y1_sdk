@@ -230,6 +230,11 @@ void Y1Controller::ArmInformationTimerCallback() {
     arm_joint_state.joint_effort.push_back(joint_effort.at(i));
   }
 
+  // get gripper joint position.
+  double gripper_joint_position = y1_interface_->GetGripperJointPosition();
+  // Notice: joint position size + 1
+  arm_joint_state.joint_position.push_back(gripper_joint_position);
+
   for (size_t i = 0; i < 6; i++) {
     arm_joint_state.end_pose.at(i) = arm_end_pose.at(i);
   }

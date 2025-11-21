@@ -71,6 +71,11 @@ class Y1SDKInterface {
   std::vector<double> GetJointPosition();
 
   /**
+   * @return gripper joint position.
+   */
+  double GetGripperJointPosition();
+
+  /**
    * @brief the interface of joint velocity.
    * @return 6 or 7(include gripper) joint velocity.
    */
