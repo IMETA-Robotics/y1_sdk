@@ -3,7 +3,8 @@
      Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 <robot
-  name="y1">
+  name="y1"
+  xmlns:xacro="http://ros.org/wiki/xacro">
   <link name="world"/>
   <joint name="fixed_base_joint" type="fixed">
     <origin
@@ -402,4 +403,206 @@
       effort="10"
       velocity="20" />
   </joint>
+  <link
+    name="gripper_base">
+    <inertial>
+      <origin
+        xyz="-0.00722300540551239 -2.86486663753245E-07 -0.0281150308975901"
+        rpy="0 0 0" />
+      <mass
+        value="0.436099620967633" />
+      <inertia
+        ixx="0.000287710583661291"
+        ixy="3.44385407705657E-08"
+        ixz="7.67912196951726E-07"
+        iyy="0.000225234897934958"
+        iyz="2.12149752062353E-10"
+        izz="0.000396215714285049" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://y1_description/meshes/gripper_base.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://y1_description/meshes/gripper_base.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="gripper_base"
+    type="fixed">
+    <origin
+      xyz="0.0758 0 0"
+      rpy="1.57079745225378 -1.57079631189374 1.57079520133601" />
+    <parent
+      link="link6" />
+    <child
+      link="gripper_base" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="link7">
+    <inertial>
+      <origin
+        xyz="-0.0155280903999977 -0.00524432955348172 0.0238751429212767"
+        rpy="0 0 0" />
+      <mass
+        value="0.0661690926183051" />
+      <inertia
+        ixx="1.90679558147809E-05"
+        ixy="-2.28252111619455E-11"
+        ixz="1.49447787556152E-06"
+        iyy="1.66105397877526E-05"
+        iyz="4.52087730748339E-07"
+        izz="8.26385767759474E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://y1_description/meshes/link7.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.647058823529412 0.619607843137255 0.588235294117647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://y1_description/meshes/link7.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint7"
+    type="prismatic">
+    <origin
+      xyz="0 -0.00275000000000102 0"
+      rpy="0 0 -1.5707963267949" />
+    <parent
+      link="gripper_base" />
+    <child
+      link="link7" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="-0.05"
+      upper="0"
+      effort="3"
+      velocity="5" />
+  </joint>
+  <link
+    name="link8">
+    <inertial>
+      <origin
+        xyz="0.0155280396672701 -0.00524432898166968 0.0241082219765203"
+        rpy="0 0 0" />
+      <mass
+        value="0.0661690929217921" />
+      <inertia
+        ixx="1.90679558239303E-05"
+        ixy="-2.28356194437162E-11"
+        ixz="-1.49447187113693E-06"
+        iyy="1.66105397928983E-05"
+        iyz="4.52088491262633E-07"
+        izz="8.26385768904911E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://y1_description/meshes/link8.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.647058823529412 0.619607843137255 0.588235294117647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://y1_description/meshes/link8.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint8"
+    type="prismatic">
+    <origin
+      xyz="0 0.00274999999999902 0"
+      rpy="0 0 -1.5707963267949" />
+    <parent
+      link="gripper_base" />
+    <child
+      link="link8" />
+    <axis
+      xyz="1 0 0" />
+    <mimic joint="joint7" multiplier="-1.0" offset="0.0"/>
+    <limit
+      lower="0"
+      upper="0.05"
+      effort="3"
+      velocity="5" />
+  </joint>
+
+  <!-- controller -->
+  <xacro:macro name="transmission_block" params="tran_name joint_name motor_name">
+    <transmission name="${tran_name}">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="${joint_name}">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="$motor_name">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+  </xacro:macro>
+
+  <xacro:transmission_block tran_name="tran1" joint_name="joint1" motor_name="joint1_motor"/>
+  <xacro:transmission_block tran_name="tran2" joint_name="joint2" motor_name="joint2_motor"/>
+  <xacro:transmission_block tran_name="tran3" joint_name="joint3" motor_name="joint3_motor"/>
+  <xacro:transmission_block tran_name="tran4" joint_name="joint4" motor_name="joint4_motor"/>
+  <xacro:transmission_block tran_name="tran5" joint_name="joint5" motor_name="joint5_motor"/>
+  <xacro:transmission_block tran_name="tran6" joint_name="joint6" motor_name="joint6_motor"/>
+  <xacro:transmission_block tran_name="tran7" joint_name="joint7" motor_name="joint7_motor"/>
+  <xacro:transmission_block tran_name="tran8" joint_name="joint8" motor_name="joint8_motor"/>
+  
+  <!-- gazebo -->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+        <robotNamespace>/gazebo</robotNamespace>
+        <legacyModeNS>true</legacyModeNS>
+    </plugin>
+  </gazebo>
+  
 </robot>
