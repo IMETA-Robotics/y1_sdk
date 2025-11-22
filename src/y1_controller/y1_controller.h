@@ -11,6 +11,7 @@
 #include "ros/subscriber.h"
 #include "y1_sdk/y1_sdk_interface.h"
 #include "sensor_msgs/JointState.h"
+#include "y1_msg/InteractionForce.h"
 
 namespace imeta {
 namespace y1_controller {
@@ -60,6 +61,16 @@ class Y1Controller {
    */
   void ArmInformationTimerCallback(const ros::TimerEvent&);
 
+  /**
+   * @brief master arm receive interaction force from follower arm.
+   */
+  void SlaveArmInteractionCallback(const y1_msg::InteractionForce::ConstPtr &msg);
+
+  /**
+   * @brief publish slave arm interaction force at a fixed frequency
+   */
+  void SlaveArmInteractionTimerCallback(const ros::TimerEvent&);
+
  private:
   ros::NodeHandle nh_;
   ros::Publisher arm_joint_state_pub_;
@@ -67,6 +78,10 @@ class Y1Controller {
   ros::Subscriber arm_end_pose_control_sub_;
   ros::Subscriber arm_joint_position_control_sub_;
 
+  ros::Publisher slave_arm_interaction_pub_;
+  ros::Subscriber slave_arm_interaction_sub_;
+
+  ros::Timer slave_arm_interaction_timer_;
   ros::Timer arm_information_timer_;
 
   std::shared_ptr<Y1SDKInterface> y1_interface_;

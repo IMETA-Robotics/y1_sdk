@@ -74,6 +74,12 @@ class Y1SDKInterface {
   std::vector<double> GetJointEffort();
 
   /**
+   * @brief the interface of gripper interaction force.
+   * @return gripper interaction force.
+   */
+  std::vector<double> GetGripperInteractionForce();
+
+  /**
    * @brief the interface of arm end pose.
    * @return 6 size (x y z roll pitch yaw)
    */
@@ -84,6 +90,14 @@ class Y1SDKInterface {
    * RT_JOINT_POSITION, 2: NRT_JOINT_POSITION)
    */
   void SetArmControlMode(const ControlMode& mode);
+
+  /**
+   * @brief the interface of gripper force feedback gain.
+   * @param gripper_feedback_enable true: enable, false: disable.
+   * @param strength_level 1 - 10
+   */
+  void SetGripperForceFeedback(bool gripper_feedback_enable,
+                                   int strength_level);
 
   /**
    * @brief set normal control arm joint position and velocity ratio.
@@ -99,6 +113,12 @@ class Y1SDKInterface {
    * @param arm_joint_position all joint position, include gripper
    */
   void SetArmJointPosition(const std::vector<double>& arm_joint_position);
+
+  /**
+   * @brief set arm joint velocity control command.
+   * @param arm_joint_velocity all joint velocity, include gripper
+   */
+  void SetArmJointVelocity(const std::vector<double>& arm_joint_velocity);
 
   /**
    * @brief set arm end pose control command. (x y z roll pitch yaw)
@@ -118,6 +138,12 @@ class Y1SDKInterface {
    * @param enable_arm true: enable, false: disable.
    */
   void SetEnableArm(bool enable_flag);
+
+  /**
+   * @brief set slave gripper interaction force.
+   */
+  void SetSlaveGripperInteractionForce(
+      const std::vector<double>& gripper_interaction_force);
 
   /**
    * @brief Save J6 joint zero position.

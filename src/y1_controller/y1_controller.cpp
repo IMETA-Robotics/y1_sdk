@@ -28,7 +28,12 @@ bool Y1Controller::Init() {
   // joint motor status feedback
   std::string arm_status_topic =
       nh_.param("arm_status_topic", std::string("/y1/arm_status"));
-
+  // gripper force feedback enable
+  bool gripper_force_feedback_enable =
+      nh_.param("gripper_force_feedback_enable", false);
+  // gripper force feedback gain
+  int gripper_force_feedback_gain =
+      nh_.param("gripper_force_feedback_gain", 10);
   // whether is simulation
   bool is_sim = nh_.param("is_sim", false);
   // joint position control topic in simulation
@@ -75,18 +80,36 @@ bool Y1Controller::Init() {
     // leader arm need gravity compensation
     y1_interface_->SetArmControlMode(
         Y1SDKInterface::ControlMode::GRAVITY_COMPENSATION);
-
+    if (gripper_force_feedback_enable) {
+      slave_arm_interaction_sub_ =
+          nh_.subscribe("/y1/slave_arm_interaction", 1,
+                        &Y1Controller::SlaveArmInteractionCallback, this);
+      y1_interface_->SetGripperForceFeedback(gripper_force_feedback_enable,
+                                                 gripper_force_feedback_gain);
+    }
   } else if (arm_control_type == "follower_arm") {
     y1_interface_->SetArmControlMode(
         Y1SDKInterface::ControlMode::RT_JOINT_POSITION);
     // subscriber. follower arm receive leader arm joint state as control
     // command.
+    
     arm_end_pose_control_sub_ =
         nh_.subscribe(arm_end_pose_control_topic, 1,
                       &Y1Controller::ArmEndPoseControlCallback, this);
     arm_joint_position_control_sub_ = nh_.subscribe(
         arm_joint_position_control_topic, 1,
         &Y1Controller::FollowArmJointPositionControlCallback, this);
+        
+    slave_arm_interaction_pub_ =
+        nh_.advertise<y1_msg::InteractionForce>("/y1/slave_arm_interaction", 1);
+    if (gripper_force_feedback_enable) {
+      y1_interface_->SetGripperForceFeedback(gripper_force_feedback_enable,
+                                                 gripper_force_feedback_gain);
+    }
+    // publish slave arm interaction force
+    slave_arm_interaction_timer_ =
+        nh_.createTimer(ros::Duration(1.0 / arm_feedback_rate),
+                        &Y1Controller::SlaveArmInteractionTimerCallback, this);
 
   } else if (arm_control_type == "normal_arm") {
     y1_interface_->SetArmControlMode(
@@ -144,6 +167,9 @@ void Y1Controller::FollowArmJointPositionControlCallback(
   if (msg->joint_position.size() >= 6) {
     // arm joint position
     y1_interface_->SetArmJointPosition(msg->joint_position);
+     
+    // arm joint velocity
+    y1_interface_->SetArmJointVelocity(msg->joint_velocity);
 
   } else {
     ROS_ERROR("follow arm receive joint control size < 6");
@@ -237,6 +263,24 @@ void Y1Controller::ArmInformationTimerCallback(const ros::TimerEvent&) {
   arm_joint_state_pub_.publish(arm_joint_state);
   arm_status_pub_.publish(arm_status);
 }
+
+void Y1Controller::SlaveArmInteractionTimerCallback(const ros::TimerEvent &) {
+  y1_msg::InteractionForce interaction_force;
+
+  interaction_force.header.stamp = ros::Time::now();
+  // interaction_force.arm_interaction_torque = y1_interface_->GetSlaveArmInteractionForce();
+
+  interaction_force.grip_interaction_torque = y1_interface_->GetGripperInteractionForce();
+
+  slave_arm_interaction_pub_.publish(interaction_force);
+}
+
+void Y1Controller::SlaveArmInteractionCallback(
+    const y1_msg::InteractionForce::ConstPtr &msg) {
+
+  y1_interface_->SetSlaveGripperInteractionForce(msg->grip_interaction_torque);
+}
+
 
 }  // namespace y1_controller
 }  // namespace imeta
