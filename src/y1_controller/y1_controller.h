@@ -40,6 +40,12 @@ class Y1Controller {
       const y1_msg::ArmJointState::ConstPtr& msg);
 
   /**
+   * @brief follow arm receive leader arm joint state as control command.
+   */
+  void FollowArmJointVelocityControlCallback(
+      const y1_msg::ArmJointState::ConstPtr& msg);
+
+  /**
    * @brief normal control arm receive end pose control command.
    */
   void ArmEndPoseControlCallback(
@@ -77,6 +83,7 @@ class Y1Controller {
   ros::Publisher arm_status_pub_;
   ros::Subscriber arm_end_pose_control_sub_;
   ros::Subscriber arm_joint_position_control_sub_;
+  ros::Subscriber arm_joint_velocity_control_sub_;
 
   ros::Publisher slave_arm_interaction_pub_;
   ros::Subscriber slave_arm_interaction_sub_;

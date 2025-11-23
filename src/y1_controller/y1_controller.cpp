@@ -80,6 +80,7 @@ bool Y1Controller::Init() {
     // leader arm need gravity compensation
     y1_interface_->SetArmControlMode(
         Y1SDKInterface::ControlMode::GRAVITY_COMPENSATION);
+    // gripper force feedback enable
     if (gripper_force_feedback_enable) {
       slave_arm_interaction_sub_ =
           nh_.subscribe("/y1/slave_arm_interaction", 1,
@@ -99,17 +100,24 @@ bool Y1Controller::Init() {
     arm_joint_position_control_sub_ = nh_.subscribe(
         arm_joint_position_control_topic, 1,
         &Y1Controller::FollowArmJointPositionControlCallback, this);
-        
+
     slave_arm_interaction_pub_ =
         nh_.advertise<y1_msg::InteractionForce>("/y1/slave_arm_interaction", 1);
+    
+    // gripper force feedback enable
     if (gripper_force_feedback_enable) {
+      arm_joint_velocity_control_sub_ = nh_.subscribe(
+          arm_joint_position_control_topic, 1,
+          &Y1Controller::FollowArmJointVelocityControlCallback, this);
+
       y1_interface_->SetGripperForceFeedback(gripper_force_feedback_enable,
-                                                 gripper_force_feedback_gain);
+                                             gripper_force_feedback_gain);
+
+      // publish slave arm interaction force
+      slave_arm_interaction_timer_ = nh_.createTimer(
+          ros::Duration(1.0 / arm_feedback_rate),
+          &Y1Controller::SlaveArmInteractionTimerCallback, this);
     }
-    // publish slave arm interaction force
-    slave_arm_interaction_timer_ =
-        nh_.createTimer(ros::Duration(1.0 / arm_feedback_rate),
-                        &Y1Controller::SlaveArmInteractionTimerCallback, this);
 
   } else if (arm_control_type == "normal_arm") {
     y1_interface_->SetArmControlMode(
@@ -167,12 +175,19 @@ void Y1Controller::FollowArmJointPositionControlCallback(
   if (msg->joint_position.size() >= 6) {
     // arm joint position
     y1_interface_->SetArmJointPosition(msg->joint_position);
-     
-    // arm joint velocity
-    y1_interface_->SetArmJointVelocity(msg->joint_velocity);
-
   } else {
     ROS_ERROR("follow arm receive joint control size < 6");
+  }
+}
+
+void Y1Controller::FollowArmJointVelocityControlCallback(
+    const y1_msg::ArmJointState::ConstPtr& msg) {
+  // for gripper force feedback
+  if (msg->joint_velocity.size() >= 6) {
+    // arm joint velocity
+    y1_interface_->SetArmJointVelocity(msg->joint_velocity);
+  } else {
+    ROS_ERROR("follow arm receive joint velocity size < 6");
   }
 }
 

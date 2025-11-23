@@ -15,7 +15,7 @@
     <param name="auto_enable" value="true"/>
 
     <!-- gripper force feedback -->
-    <param name="gripper_force_feedback_enable" value="false"/>
+    <param name="gripper_force_feedback_enable" value="true"/>
     <!-- gripper force feedback gain. from soft to hard: 1 to 10 -->
     <!-- <param name="gripper_force_feedback_gain" value="10"/> -->
 
