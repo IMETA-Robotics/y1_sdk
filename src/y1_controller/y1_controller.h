@@ -8,9 +8,11 @@
 #include "y1_msg/ArmEndPoseControl.h"
 #include "y1_msg/ArmJointPositionControl.h"
 #include "y1_msg/ArmJointState.h"
+#include "y1_msg/GripperControl.h"
 #include "ros/subscriber.h"
 #include "y1_sdk/y1_sdk_interface.h"
 #include "sensor_msgs/JointState.h"
+
 
 namespace imeta {
 namespace y1_controller {
@@ -44,6 +46,12 @@ class Y1Controller {
   void ArmEndPoseControlCallback(
       const y1_msg::ArmEndPoseControl::ConstPtr& msg);
 
+   /**
+   * @brief normal control arm receive end pose control command.
+   */
+  void GripperControlCallback(
+      const y1_msg::GripperControl::ConstPtr& msg);
+
   /**
    * @brief normal control arm receive joint position control command.
    */
@@ -66,6 +74,8 @@ class Y1Controller {
   ros::Publisher arm_status_pub_;
   ros::Subscriber arm_end_pose_control_sub_;
   ros::Subscriber arm_joint_position_control_sub_;
+  ros::Subscriber arm_single_joint_position_control_sub_;
+  ros::Subscriber gripper_control_sub_;
 
   ros::Timer arm_information_timer_;
 

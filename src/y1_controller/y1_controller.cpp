@@ -7,6 +7,7 @@
 
 #include "std_msgs/String.h"
 #include "y1_msg/ArmStatus.h"
+#include "y1_msg/GripperControl.h"
 
 namespace imeta {
 namespace y1_controller {
@@ -22,6 +23,10 @@ bool Y1Controller::Init() {
   std::string arm_joint_position_control_topic =
       nh_.param("arm_joint_position_control_topic",
                 std::string("/y1/arm_joint_position_control_topic"));
+  // joint position control mode
+  std::string gripper_control_topic =
+      nh_.param("gripper_control_topic",  
+                std::string("/y1/gripper_control_topic"));
   // joint state feedback
   std::string arm_joint_state_topic =
       nh_.param("arm_joint_state_topic", std::string("/y1/arm_joint_state"));
@@ -87,6 +92,9 @@ bool Y1Controller::Init() {
     arm_joint_position_control_sub_ = nh_.subscribe(
         arm_joint_position_control_topic, 1,
         &Y1Controller::FollowArmJointPositionControlCallback, this);
+    gripper_control_sub_ = nh_.subscribe(
+        gripper_control_topic, 1,
+        &Y1Controller::GripperControlCallback, this);
 
   } else if (arm_control_type == "normal_arm") {
     y1_interface_->SetArmControlMode(
@@ -128,13 +136,19 @@ bool Y1Controller::Init() {
 }
 
 void Y1Controller::ArmEndPoseControlCallback(
-    const y1_msg::ArmEndPoseControl::ConstPtr& msg) {
+    const y1_msg::ArmEndPoseControl::ConstPtr &msg) {
   // end pose
   std::array<double, 6> end_pose;
   for (int i = 0; i < 6; i++) {
     end_pose[i] = msg->end_pose[i];
   }
   y1_interface_->SetArmEndPose(end_pose);
+  // gripper stroke (mm)
+  // y1_interface_->SetGripperStroke(msg->gripper_stroke);
+}
+
+void Y1Controller::GripperControlCallback(
+    const y1_msg::GripperControl::ConstPtr &msg) {
   // gripper stroke (mm)
   y1_interface_->SetGripperStroke(msg->gripper_stroke);
 }
