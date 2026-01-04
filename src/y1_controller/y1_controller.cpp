@@ -128,19 +128,19 @@ bool Y1Controller::Init() {
 }
 
 void Y1Controller::ArmEndPoseControlCallback(
-    const y1_msg::ArmEndPoseControl::ConstPtr& msg) {
+    const y1_msg::ArmEndPoseControl::ConstPtr &msg) {
   // end pose
   std::array<double, 6> end_pose;
   for (int i = 0; i < 6; i++) {
     end_pose[i] = msg->end_pose[i];
   }
-  y1_interface_->SetArmEndPose(end_pose);
+  y1_interface_->SetArmEndPose(end_pose, msg->joint_velocity);
   // gripper stroke (mm)
-  y1_interface_->SetGripperStroke(msg->gripper_stroke);
+  y1_interface_->SetGripperStroke(msg->gripper_stroke, msg->gripper_velocity);
 }
 
 void Y1Controller::FollowArmJointPositionControlCallback(
-    const y1_msg::ArmJointState::ConstPtr& msg) {
+    const y1_msg::ArmJointState::ConstPtr &msg) {
   if (msg->joint_position.size() >= 6) {
     // arm joint position
     y1_interface_->SetArmJointPosition(msg->joint_position);
@@ -151,7 +151,7 @@ void Y1Controller::FollowArmJointPositionControlCallback(
 }
 
 void Y1Controller::ArmJointPositionControlCallback(
-    const y1_msg::ArmJointPositionControl::ConstPtr& msg) {
+    const y1_msg::ArmJointPositionControl::ConstPtr &msg) {
   // joint position and velocity
   std::array<double, 6> joint_position;
   for (int i = 0; i < 6; i++) {
@@ -170,15 +170,14 @@ void Y1Controller::SimPositionControlCallback(
   for (int i = 0; i < 6; i++) {
     arm_joint_position[i] = msg->position[i];
   }
-  y1_interface_->SetArmJointPosition(arm_joint_position,6);
+  y1_interface_->SetArmJointPosition(arm_joint_position, 6);
 
   if (msg->position.size() >= 7) {
-    y1_interface_->SetGripperStroke(-msg->position[6] * 2000,6);
+    y1_interface_->SetGripperStroke(-msg->position[6] * 2000, 6);
   }
 }
 
-
-void Y1Controller::ArmInformationTimerCallback(const ros::TimerEvent&) {
+void Y1Controller::ArmInformationTimerCallback(const ros::TimerEvent &) {
   // robotic arm joint state
   y1_msg::ArmJointState arm_joint_state;
   arm_joint_state.header.stamp = ros::Time::now();
@@ -238,5 +237,5 @@ void Y1Controller::ArmInformationTimerCallback(const ros::TimerEvent&) {
   arm_status_pub_.publish(arm_status);
 }
 
-}  // namespace y1_controller
-}  // namespace imeta
+} // namespace y1_controller
+} // namespace imeta

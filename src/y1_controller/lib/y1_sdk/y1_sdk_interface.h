@@ -9,10 +9,10 @@ namespace imeta {
 namespace y1_controller {
 
 class Y1SDKInterface {
- public:
+public:
   Y1SDKInterface() = delete;
-  explicit Y1SDKInterface(const std::string& can_id,
-                          const std::string& urdf_path, int arm_end_type,
+  explicit Y1SDKInterface(const std::string &can_id,
+                          const std::string &urdf_path, int arm_end_type,
                           bool enable_arm);
   ~Y1SDKInterface();
 
@@ -83,7 +83,7 @@ class Y1SDKInterface {
    * @brief set arm control mode. (0: GRAVITY_COMPENSATION, 1:
    * RT_JOINT_POSITION, 2: NRT_JOINT_POSITION)
    */
-  void SetArmControlMode(const ControlMode& mode);
+  void SetArmControlMode(const ControlMode &mode);
 
   /**
    * @brief set normal control arm joint position and velocity ratio.
@@ -91,23 +91,27 @@ class Y1SDKInterface {
    * @param velocity_ratio range:[1, 10], default is 5, 1 is slower, 10 is
    * faster.
    */
-  void SetArmJointPosition(const std::array<double, 6>& arm_joint_position,
+  void SetArmJointPosition(const std::array<double, 6> &arm_joint_position,
                            int velocity_ratio = 5);
 
   /**
    * @brief set follow arm joint position control command.
    * @param arm_joint_position all joint position, include gripper
    */
-  void SetArmJointPosition(const std::vector<double>& arm_joint_position);
+  void SetArmJointPosition(const std::vector<double> &arm_joint_position);
 
   /**
    * @brief set arm end pose control command. (x y z roll pitch yaw)
+   * @param arm_end_pose end pose command(x y z roll pitch yaw)
+   * @param velocity_ratio range:[1, 10], default is 5, 1 is slower, 10 is
+   * @return joint position calculated by ik, if ik failed, return zero array.
    */
-  void SetArmEndPose(const std::array<double, 6>& arm_end_pose);
+  std::array<double, 6> SetArmEndPose(const std::array<double, 6> &arm_end_pose,
+                                      int velocity_ratio = 5);
 
   /**
    * @brief set gripper stroke control command. Unit: mm
-   * @param gripper_stroke Unit: mm, range: [0, 80]
+   * @param gripper_stroke Unit: mm, range: [0, 100]
    * @param velocity_ratio range:[1, 10], default is 5, 1 is slower, 10 is
    * faster.
    */
@@ -126,10 +130,10 @@ class Y1SDKInterface {
   */
   void SaveJ6ZeroPosition();
 
- private:
+private:
   class Impl;
   std::unique_ptr<Impl> pimpl_;
 };
 
-}  // namespace y1_controller
-}  // namespace imeta
+} // namespace y1_controller
+} // namespace imeta
