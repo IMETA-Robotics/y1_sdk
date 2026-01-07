@@ -41,6 +41,16 @@ class Y1Controller {
       const y1_msg::ArmJointState::ConstPtr& msg);
 
   /**
+   * @brief vr control arm receive end pose control command.
+   */
+  void VrEndPoseControlCallback(const y1_msg::ArmEndPoseControl::ConstPtr &msg);
+
+  /**
+   * @brief vr control arm receive gripper control command.
+   */
+  void VrGripperControlCallback(const y1_msg::GripperControl::ConstPtr &msg);
+
+  /**
    * @brief normal control arm receive end pose control command.
    */
   void ArmEndPoseControlCallback(
@@ -75,7 +85,8 @@ class Y1Controller {
   ros::Subscriber arm_end_pose_control_sub_;
   ros::Subscriber arm_joint_position_control_sub_;
   ros::Subscriber arm_single_joint_position_control_sub_;
-  ros::Subscriber gripper_control_sub_;
+  ros::Subscriber vr_end_pose_control_sub_;
+  ros::Subscriber vr_gripper_control_sub_;
 
   ros::Timer arm_information_timer_;
 

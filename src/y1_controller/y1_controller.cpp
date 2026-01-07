@@ -16,6 +16,14 @@ bool Y1Controller::Init() {
   std::string can_id = nh_.param("arm_can_id", std::string("can1"));
   int arm_feedback_rate = nh_.param("arm_feedback_rate", 200);
 
+  // vr end pose control mode
+  std::string vr_end_pose_control_topic =
+      nh_.param("vr_end_pose_control_topic",
+                std::string("/y1/vr_end_pose_control"));
+  // vr gripper control
+  std::string vr_gripper_control_topic =
+      nh_.param("vr_gripper_control_topic",  
+                std::string("/y1/gripper_control_topic"));
   // end pose control mode
   std::string arm_end_pose_control_topic = nh_.param(
       "arm_end_pose_control_topic", std::string("/y1/arm_end_pose_control"));
@@ -23,10 +31,6 @@ bool Y1Controller::Init() {
   std::string arm_joint_position_control_topic =
       nh_.param("arm_joint_position_control_topic",
                 std::string("/y1/arm_joint_position_control_topic"));
-  // joint position control mode
-  std::string gripper_control_topic =
-      nh_.param("gripper_control_topic",  
-                std::string("/y1/gripper_control_topic"));
   // joint state feedback
   std::string arm_joint_state_topic =
       nh_.param("arm_joint_state_topic", std::string("/y1/arm_joint_state"));
@@ -92,9 +96,14 @@ bool Y1Controller::Init() {
     arm_joint_position_control_sub_ = nh_.subscribe(
         arm_joint_position_control_topic, 1,
         &Y1Controller::FollowArmJointPositionControlCallback, this);
-    gripper_control_sub_ = nh_.subscribe(
-        gripper_control_topic, 1,
-        &Y1Controller::GripperControlCallback, this);
+
+    // vr control arm receive end pose control command.
+    vr_end_pose_control_sub_ =
+        nh_.subscribe(vr_end_pose_control_topic, 1,
+                      &Y1Controller::VrEndPoseControlCallback, this);
+    vr_gripper_control_sub_ =
+        nh_.subscribe(vr_gripper_control_topic, 1,
+                      &Y1Controller::VrGripperControlCallback, this);
 
   } else if (arm_control_type == "normal_arm") {
     y1_interface_->SetArmControlMode(
@@ -135,6 +144,22 @@ bool Y1Controller::Init() {
   return true;
 }
 
+void Y1Controller::VrEndPoseControlCallback(
+    const y1_msg::ArmEndPoseControl::ConstPtr &msg) {
+  // vr end pose
+  std::array<double, 6> end_pose;
+  for (int i = 0; i < 6; i++) {
+    end_pose[i] = msg->end_pose[i];
+  }
+  y1_interface_->SetArmEndPose(end_pose);
+}
+
+void Y1Controller::VrGripperControlCallback(
+    const y1_msg::GripperControl::ConstPtr &msg) {
+  //vr gripper stroke (mm)
+  y1_interface_->SetGripperStroke(msg->gripper_stroke);
+}
+
 void Y1Controller::ArmEndPoseControlCallback(
     const y1_msg::ArmEndPoseControl::ConstPtr &msg) {
   // end pose
@@ -143,12 +168,6 @@ void Y1Controller::ArmEndPoseControlCallback(
     end_pose[i] = msg->end_pose[i];
   }
   y1_interface_->SetArmEndPose(end_pose);
-  // gripper stroke (mm)
-  // y1_interface_->SetGripperStroke(msg->gripper_stroke);
-}
-
-void Y1Controller::GripperControlCallback(
-    const y1_msg::GripperControl::ConstPtr &msg) {
   // gripper stroke (mm)
   y1_interface_->SetGripperStroke(msg->gripper_stroke);
 }
