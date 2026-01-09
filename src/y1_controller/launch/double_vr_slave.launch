@@ -10,14 +10,14 @@
                            normal_arm(normal control arm) -->
     <param name="arm_control_type" value="follower_arm"/>
     <!-- 0: nothing, 1: gripper, 2: teaching pendant, 3: gripper and steaching pendant -->
-    <param name="arm_end_type" value="0"/>
+    <param name="arm_end_type" value="3"/>
     <!-- whether to enable robotic arm -->
     <param name="auto_enable" value="true"/>
 
     <!-- vr end pose control arm -->
-    <param name="vr_end_pose_control_topic" value="/vr_right_end_pose_control"/>
+    <param name="vr_end_pose_control_topic" value="/vr_right/end_pose"/>
     <!-- vr gripper control -->
-    <param name="vr_gripper_control_topic" value="/vr_right_gripper_control"/>
+    <param name="vr_gripper_control_topic" value="/vr_right/gripper"/>
     <!-- joint position control arm -->
     <param name="arm_joint_position_control_topic" value="/master_arm_right/joint_states"/>
     <!-- end pose control arm -->
@@ -40,14 +40,14 @@
                            normal_arm(normal control arm) -->
     <param name="arm_control_type" value="follower_arm"/>
     <!-- 0: nothing, 1: gripper, 2: teaching pendant, 3: gripper and steaching pendant -->
-    <param name="arm_end_type" value="0"/>
+    <param name="arm_end_type" value="3"/>
     <!-- whether to enable robotic arm -->
     <param name="auto_enable" value="true"/>
 
     <!-- vr end pose control arm -->
-    <param name="vr_end_pose_control_topic" value="/vr_left_end_pose_control"/>
+    <param name="vr_end_pose_control_topic" value="/vr_left/end_pose"/>
     <!-- vr gripper control -->
-    <param name="vr_gripper_control_topic" value="/vr_left_gripper_control"/>
+    <param name="vr_gripper_control_topic" value="/vr_left/gripper"/>
     <!-- end pose control arm -->
     <param name="arm_end_pose_control_topic" value="/master_arm_left/end_pose_control"/>
     <!-- joint position control arm -->
