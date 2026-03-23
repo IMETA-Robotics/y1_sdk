@@ -20,6 +20,6 @@ right_normal_arm:
     arm_status_topic: '/puppet_arm_right/arm_status'
 
     # whether to run in simulation
-    is_sim: true
+    is_sim: false
     # joint position control topic in simulation
     sim_joint_position_control_topic: '/joint_states'

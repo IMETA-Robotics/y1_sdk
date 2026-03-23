@@ -6,6 +6,9 @@
 #include <iostream>
 #include <rclcpp/rclcpp.hpp>
 #include <vector>
+#include <array>
+#include <map>
+#include <cmath> // for std::abs, std::isnan
 
 #include "std_msgs/msg/string.hpp"
 #include "y1_msg/msg/arm_status.hpp"
@@ -46,10 +49,6 @@ Y1Controller::Y1Controller() : Node("y1_controller") {
   int arm_end_type = this->declare_parameter("arm_end_type", 0);
   // whether to enable robotic arm, default is true
   bool auto_enable = this->declare_parameter("auto_enable", false);
-
-  std::cout << "is_sim_ = " << is_sim_ << std::endl;
-  std::cout << "auto_enable = " << auto_enable << std::endl;
-  std::cout << "sim_joint_postion_control_topic = " << sim_joint_postion_control_topic_<< std::endl;
 
   // get urdf path
   std::string package_path =
@@ -108,18 +107,6 @@ bool Y1Controller::Init() {
   } else if (arm_control_type_ == "normal_arm") {
     y1_interface_->SetArmControlMode(
         Y1SDKInterface::ControlMode::NRT_JOINT_POSITION);
-    // subscriber
-    // normal control arm receive control command.
-    // arm_end_pose_control_sub_ =
-    //     this->create_subscription<y1_msg::msg::ArmEndPoseControl>(
-    //         arm_end_pose_control_topic_, 1,
-    //         std::bind(&Y1Controller::ArmEndPoseControlCallback, this,
-    //                   std::placeholders::_1));
-    // arm_joint_position_control_sub_ =
-    //     this->create_subscription<y1_msg::msg::ArmJointPositionControl>(
-    //         arm_joint_position_control_topic_, 1,
-    //         std::bind(&Y1Controller::ArmJointPositionControlCallback, this,
-    //                   std::placeholders::_1));
     std::cout << "is_sim_ = " << is_sim_ << std::endl;
     if (is_sim_) {
       sim_joint_position_control_sub_ =
