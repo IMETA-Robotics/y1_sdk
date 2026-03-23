@@ -1,0 +1,25 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: y1_description
+    relative_path: urdf/y1_with_gripper.urdf
+  srdf:
+    relative_path: config/y1.srdf
+  package_settings:
+    author_name: stitch
+    author_email: imeta_stitch@imeta.com
+    generated_timestamp: 1773807200
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
+  modified_urdf:
+    xacros:
+      - control_xacro
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity

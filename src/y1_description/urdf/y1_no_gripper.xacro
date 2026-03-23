@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
-     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
-     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! 
+     Modified for ROS 2 (gazebo_ros2_control) -->
 <robot
   name="y1"
   xmlns:xacro="http://ros.org/wiki/xacro">
+  
   <link name="world"/>
   <joint name="fixed_base_joint" type="fixed">
     <origin
@@ -15,8 +15,9 @@
     <axis
       xyz="0 0 1" />
   </joint>
-  <link
-    name="base_link">
+
+  <!-- ================= Base Link ================= -->
+  <link name="base_link">
     <inertial>
       <origin
         xyz="-9.09789029626031E-05 -1.00838762111356E-06 0.0341142783974825"
@@ -37,7 +38,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/base_link.STL" />
+          filename="file://$(find y1_description)/meshes/base_link.STL" />
       </geometry>
       <material
         name="">
@@ -51,12 +52,13 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/base_link.STL" />
+          filename="file://$(find y1_description)/meshes/base_link.STL" />
       </geometry>
     </collision>
   </link>
-  <link
-    name="link1">
+
+  <!-- ================= Joint 1 & Link 1 ================= -->
+  <link name="link1">
     <inertial>
       <origin
         xyz="0.000681166801672071 -0.00046232914455336 0.045774892481422"
@@ -77,7 +79,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/link1.STL" />
+          filename="file://$(find y1_description)/meshes/link1.STL" />
       </geometry>
       <material
         name="">
@@ -91,30 +93,26 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/link1.STL" />
+          filename="file://$(find y1_description)/meshes/link1.STL" />
       </geometry>
     </collision>
   </link>
-  <joint
-    name="joint1"
-    type="revolute">
+  <joint name="joint1" type="revolute">
     <origin
       xyz="0 0 0.06675"
       rpy="0 0 0" />
-    <parent
-      link="base_link" />
-    <child
-      link="link1" />
-    <axis
-      xyz="0 0 1" />
+    <parent link="base_link" />
+    <child link="link1" />
+    <axis xyz="0 0 1" />
     <limit
       lower="-2.79"
       upper="2.79"
       effort="30"
       velocity="5" />
   </joint>
-  <link
-    name="link2">
+
+  <!-- ================= Joint 2 & Link 2 ================= -->
+  <link name="link2">
     <inertial>
       <origin
         xyz="-0.18883363836199 -0.00103696749691735 -0.000652233498703338"
@@ -135,7 +133,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/link2.STL" />
+          filename="file://$(find y1_description)/meshes/link2.STL" />
       </geometry>
       <material
         name="">
@@ -149,30 +147,26 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/link2.STL" />
+          filename="file://$(find y1_description)/meshes/link2.STL" />
       </geometry>
     </collision>
   </link>
-  <joint
-    name="joint2"
-    type="revolute">
+  <joint name="joint2" type="revolute">
     <origin
       xyz="0.00075 0 0.055"
       rpy="1.5707963267949 0 0" />
-    <parent
-      link="link1" />
-    <child
-      link="link2" />
-    <axis
-      xyz="0 0 1" />
+    <parent link="link1" />
+    <child link="link2" />
+    <axis xyz="0 0 1" />
     <limit
       lower="-3.14"
       upper="0"
       effort="100"
       velocity="5" />
   </joint>
-  <link
-    name="link3">
+
+  <!-- ================= Joint 3 & Link 3 ================= -->
+  <link name="link3">
     <inertial>
       <origin
         xyz="0.133032369395304 0.0530016058529144 0.000290607464783963"
@@ -193,7 +187,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/link3.STL" />
+          filename="file://$(find y1_description)/meshes/link3.STL" />
       </geometry>
       <material
         name="">
@@ -207,30 +201,26 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/link3.STL" />
+          filename="file://$(find y1_description)/meshes/link3.STL" />
       </geometry>
     </collision>
   </link>
-  <joint
-    name="joint3"
-    type="revolute">
+  <joint name="joint3" type="revolute">
     <origin
       xyz="-0.28 0 0"
       rpy="0 0 0" />
-    <parent
-      link="link2" />
-    <child
-      link="link3" />
-    <axis
-      xyz="0 0 1" />
+    <parent link="link2" />
+    <child link="link3" />
+    <axis xyz="0 0 1" />
     <limit
       lower="0"
       upper="3.14"
       effort="30"
       velocity="5" />
   </joint>
-  <link
-    name="link4">
+
+  <!-- ================= Joint 4 & Link 4 ================= -->
+  <link name="link4">
     <inertial>
       <origin
         xyz="0.0666890671297201 0.061249505361484 0.00493164049114361"
@@ -251,7 +241,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/link4.STL" />
+          filename="file://$(find y1_description)/meshes/link4.STL" />
       </geometry>
       <material
         name="">
@@ -265,30 +255,26 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/link4.STL" />
+          filename="file://$(find y1_description)/meshes/link4.STL" />
       </geometry>
     </collision>
   </link>
-  <joint
-    name="joint4"
-    type="revolute">
+  <joint name="joint4" type="revolute">
     <origin
       xyz="0.215000000000004 0.0630000000000073 0"
       rpy="0 0 0" />
-    <parent
-      link="link3" />
-    <child
-      link="link4" />
-    <axis
-      xyz="0 0 1" />
+    <parent link="link3" />
+    <child link="link4" />
+    <axis xyz="0 0 1" />
     <limit
       lower="-2.145"
       upper="1.413"
       effort="10"
       velocity="20" />
   </joint>
-  <link
-    name="link5">
+
+  <!-- ================= Joint 5 & Link 5 ================= -->
+  <link name="link5">
     <inertial>
       <origin
         xyz="0.00248530581728849 1.71803824630881E-05 0.0400785531860572"
@@ -309,7 +295,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/link5.STL" />
+          filename="file://$(find y1_description)/meshes/link5.STL" />
       </geometry>
       <material
         name="">
@@ -323,30 +309,26 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/link5.STL" />
+          filename="file://$(find y1_description)/meshes/link5.STL" />
       </geometry>
     </collision>
   </link>
-  <joint
-    name="joint5"
-    type="revolute">
+  <joint name="joint5" type="revolute">
     <origin
       xyz="0.0799999999999998 0.0519999999999981 0.000249997832942123"
       rpy="1.5707963267949 0 0" />
-    <parent
-      link="link4" />
-    <child
-      link="link5" />
-    <axis
-      xyz="0 0 1" />
+    <parent link="link4" />
+    <child link="link5" />
+    <axis xyz="0 0 1" />
     <limit
       lower="-1.482"
       upper="1.482"
       effort="10"
       velocity="20" />
   </joint>
-  <link
-    name="link6">
+
+  <!-- ================= Joint 6 & Link 6 ================= -->
+  <link name="link6">
     <inertial>
       <origin
         xyz="0.0108106656274518 0.000127504395052592 0.00016010488602905"
@@ -367,7 +349,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/link6.STL" />
+          filename="file://$(find y1_description)/meshes/link6.STL" />
       </geometry>
       <material
         name="">
@@ -381,22 +363,17 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/link6.STL" />
+          filename="file://$(find y1_description)/meshes/link6.STL" />
       </geometry>
     </collision>
   </link>
-  <joint
-    name="joint6"
-    type="revolute">
+  <joint name="joint6" type="revolute">
     <origin
       xyz="0.0235 0 0.0440000000000001"
       rpy="-3.14159265330655 0 0" />
-    <parent
-      link="link5" />
-    <child
-      link="link6" />
-    <axis
-      xyz="1 0 0" />
+    <parent link="link5" />
+    <child link="link6" />
+    <axis xyz="1 0 0" />
     <limit
       lower="-2.529"
       upper="2.529"
@@ -404,36 +381,80 @@
       velocity="20" />
   </joint>
 
-    <!-- controller -->
-  <xacro:macro name="transmission_block" params="tran_name joint_name motor_name">
-    <transmission name="${tran_name}">
-        <type>transmission_interface/SimpleTransmission</type>
-        <joint name="${joint_name}">
-            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-        </joint>
-        <actuator name="$motor_name">
-            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-            <mechanicalReduction>1</mechanicalReduction>
-        </actuator>
-    </transmission>
-  </xacro:macro>
 
-  <xacro:transmission_block tran_name="tran1" joint_name="joint1" motor_name="joint1_motor"/>
-  <xacro:transmission_block tran_name="tran2" joint_name="joint2" motor_name="joint2_motor"/>
-  <xacro:transmission_block tran_name="tran3" joint_name="joint3" motor_name="joint3_motor"/>
-  <xacro:transmission_block tran_name="tran4" joint_name="joint4" motor_name="joint4_motor"/>
-  <xacro:transmission_block tran_name="tran5" joint_name="joint5" motor_name="joint5_motor"/>
-  <xacro:transmission_block tran_name="tran6" joint_name="joint6" motor_name="joint6_motor"/>
-  <!-- <xacro:transmission_block tran_name="tran7" joint_name="joint7" motor_name="joint7_motor"/> -->
-  <!-- <xacro:transmission_block tran_name="tran8" joint_name="joint8" motor_name="joint8_motor"/> -->
-  
-  <!-- gazebo -->
+  <ros2_control name="GazeboSystem" type="system">
+      <hardware>
+          <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+      </hardware>
+      <joint name="joint1">
+          <command_interface name="position">
+              <param name="min">-1</param>
+              <param name="max">1</param>
+          </command_interface>
+          <state_interface name="position">
+              <param name="initial_value">0.0</param>
+          </state_interface>
+          <state_interface name="velocity"/>
+      </joint>
+      <joint name="joint2">
+          <command_interface name="position">
+              <param name="min">-1</param>
+              <param name="max">1</param>
+          </command_interface>
+          <state_interface name="position">
+              <param name="initial_value">0.0</param>
+          </state_interface>
+          <state_interface name="velocity"/>
+      </joint>
+      <joint name="joint3">
+          <command_interface name="position">
+              <param name="min">-1</param>
+              <param name="max">1</param>
+          </command_interface>
+          <state_interface name="position">
+              <param name="initial_value">0.0</param>
+          </state_interface>
+          <state_interface name="velocity"/>
+      </joint>
+      <joint name="joint4">
+          <command_interface name="position">
+              <param name="min">-1</param>
+              <param name="max">1</param>
+          </command_interface>
+          <state_interface name="position">
+              <param name="initial_value">0.1</param>
+          </state_interface>
+          <state_interface name="velocity"/>
+      </joint>
+      <joint name="joint5">
+          <command_interface name="position">
+              <param name="min">-1</param>
+              <param name="max">1</param>
+          </command_interface>
+          <state_interface name="position">
+              <param name="initial_value">0.0</param>
+          </state_interface>
+          <state_interface name="velocity"/>
+      </joint>
+      <joint name="joint6">
+          <command_interface name="position">
+              <param name="min">-1</param>
+              <param name="max">1</param>
+          </command_interface>
+          <state_interface name="position">
+              <param name="initial_value">0.0</param>
+          </state_interface>
+          <state_interface name="velocity"/>
+      </joint>
+  </ros2_control>
+
+<!-- gazebo -->
   <gazebo>
-    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-        <robotNamespace>/gazebo</robotNamespace>
-        <legacyModeNS>true</legacyModeNS>
+    <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
+        <parameters>$(find y1_gazebo)/config/y1_no_gripper_controllers.yaml</parameters>
+        <robot_param_node>robot_state_publisher</robot_param_node>
     </plugin>
-
   </gazebo>
-  
+
+
 </robot>

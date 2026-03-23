@@ -3,8 +3,7 @@
      Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 <robot
-  name="y1"
-  xmlns:xacro="http://ros.org/wiki/xacro">
+  name="y1">
   <link name="world"/>
   <joint name="fixed_base_joint" type="fixed">
     <origin
@@ -37,7 +36,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/base_link.STL" />
+          filename="file://$(find y1_description)/meshes/base_link.STL" />
       </geometry>
       <material
         name="">
@@ -51,7 +50,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/base_link.STL" />
+          filename="file://$(find y1_description)/meshes/base_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -77,7 +76,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/link1.STL" />
+          filename="file://$(find y1_description)/meshes/link1.STL" />
       </geometry>
       <material
         name="">
@@ -91,7 +90,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/link1.STL" />
+          filename="file://$(find y1_description)/meshes/link1.STL" />
       </geometry>
     </collision>
   </link>
@@ -135,7 +134,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/link2.STL" />
+          filename="file://$(find y1_description)/meshes/link2.STL" />
       </geometry>
       <material
         name="">
@@ -149,7 +148,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/link2.STL" />
+          filename="file://$(find y1_description)/meshes/link2.STL" />
       </geometry>
     </collision>
   </link>
@@ -193,7 +192,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/link3.STL" />
+          filename="file://$(find y1_description)/meshes/link3.STL" />
       </geometry>
       <material
         name="">
@@ -207,7 +206,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/link3.STL" />
+          filename="file://$(find y1_description)/meshes/link3.STL" />
       </geometry>
     </collision>
   </link>
@@ -251,7 +250,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/link4.STL" />
+          filename="file://$(find y1_description)/meshes/link4.STL" />
       </geometry>
       <material
         name="">
@@ -265,7 +264,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/link4.STL" />
+          filename="file://$(find y1_description)/meshes/link4.STL" />
       </geometry>
     </collision>
   </link>
@@ -309,7 +308,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/link5.STL" />
+          filename="file://$(find y1_description)/meshes/link5.STL" />
       </geometry>
       <material
         name="">
@@ -323,7 +322,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/link5.STL" />
+          filename="file://$(find y1_description)/meshes/link5.STL" />
       </geometry>
     </collision>
   </link>
@@ -367,7 +366,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/link6.STL" />
+          filename="file://$(find y1_description)/meshes/link6.STL" />
       </geometry>
       <material
         name="">
@@ -381,7 +380,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/link6.STL" />
+          filename="file://$(find y1_description)/meshes/link6.STL" />
       </geometry>
     </collision>
   </link>
@@ -425,7 +424,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/gripper_base.STL" />
+          filename="file://$(find y1_description)/meshes/gripper_base.STL" />
       </geometry>
       <material
         name="">
@@ -439,7 +438,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/gripper_base.STL" />
+          filename="file://$(find y1_description)/meshes/gripper_base.STL" />
       </geometry>
     </collision>
   </link>
@@ -478,7 +477,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/link7.STL" />
+          filename="file://$(find y1_description)/meshes/link7.STL" />
       </geometry>
       <material
         name="">
@@ -492,7 +491,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/link7.STL" />
+          filename="file://$(find y1_description)/meshes/link7.STL" />
       </geometry>
     </collision>
   </link>
@@ -512,7 +511,7 @@
       lower="-0.05"
       upper="0"
       effort="3"
-      velocity="5" />
+      velocity="0" />
   </joint>
   <link
     name="link8">
@@ -536,7 +535,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/link8.STL" />
+          filename="file://$(find y1_description)/meshes/link8.STL" />
       </geometry>
       <material
         name="">
@@ -550,7 +549,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://y1_description/meshes/link8.STL" />
+          filename="file://$(find y1_description)/meshes/link8.STL" />
       </geometry>
     </collision>
   </link>
@@ -571,38 +570,103 @@
       lower="0"
       upper="0.05"
       effort="3"
-      velocity="5" />
+      velocity="0" />
   </joint>
 
-  <!-- controller -->
-  <xacro:macro name="transmission_block" params="tran_name joint_name motor_name">
-    <transmission name="${tran_name}">
-        <type>transmission_interface/SimpleTransmission</type>
-        <joint name="${joint_name}">
-            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-        </joint>
-        <actuator name="$motor_name">
-            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-            <mechanicalReduction>1</mechanicalReduction>
-        </actuator>
-    </transmission>
-  </xacro:macro>
+  <ros2_control name="GazeboSystem" type="system">
+    <hardware>
+        <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+    </hardware>
+    <joint name="joint1">
+        <command_interface name="position">
+            <param name="min">-1</param>
+            <param name="max">1</param>
+        </command_interface>
+        <state_interface name="position">
+            <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+    </joint>
+    <joint name="joint2">
+        <command_interface name="position">
+            <param name="min">-1</param>
+            <param name="max">1</param>
+        </command_interface>
+        <state_interface name="position">
+            <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+    </joint>
+    <joint name="joint3">
+        <command_interface name="position">
+            <param name="min">-1</param>
+            <param name="max">1</param>
+        </command_interface>
+        <state_interface name="position">
+            <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+    </joint>
+    <joint name="joint4">
+        <command_interface name="position">
+            <param name="min">-1</param>
+            <param name="max">1</param>
+        </command_interface>
+        <state_interface name="position">
+            <param name="initial_value">0.1</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+    </joint>
+    <joint name="joint5">
+        <command_interface name="position">
+            <param name="min">-1</param>
+            <param name="max">1</param>
+        </command_interface>
+        <state_interface name="position">
+            <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+    </joint>
+    <joint name="joint6">
+        <command_interface name="position">
+            <param name="min">-1</param>
+            <param name="max">1</param>
+        </command_interface>
+        <state_interface name="position">
+            <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+    </joint>
+    <joint name="joint7">
+        <command_interface name="position">
+            <param name="min">-1</param>
+            <param name="max">1</param>
+        </command_interface>
+        <state_interface name="position">
+            <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+    </joint>
+    <joint name="joint8">
+        <command_interface name="position">
+            <param name="min">-1</param>
+            <param name="max">1</param>
+        </command_interface>
+        <state_interface name="position">
+            <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+    </joint>
+</ros2_control>
 
-  <xacro:transmission_block tran_name="tran1" joint_name="joint1" motor_name="joint1_motor"/>
-  <xacro:transmission_block tran_name="tran2" joint_name="joint2" motor_name="joint2_motor"/>
-  <xacro:transmission_block tran_name="tran3" joint_name="joint3" motor_name="joint3_motor"/>
-  <xacro:transmission_block tran_name="tran4" joint_name="joint4" motor_name="joint4_motor"/>
-  <xacro:transmission_block tran_name="tran5" joint_name="joint5" motor_name="joint5_motor"/>
-  <xacro:transmission_block tran_name="tran6" joint_name="joint6" motor_name="joint6_motor"/>
-  <xacro:transmission_block tran_name="tran7" joint_name="joint7" motor_name="joint7_motor"/>
-  <xacro:transmission_block tran_name="tran8" joint_name="joint8" motor_name="joint8_motor"/>
-  
-  <!-- gazebo -->
-  <gazebo>
-    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-        <robotNamespace>/gazebo</robotNamespace>
-        <legacyModeNS>true</legacyModeNS>
-    </plugin>
-  </gazebo>
-  
+<!-- gazebo -->
+<gazebo>
+  <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
+      <parameters> $(find y1_gazebo)/config/y1_with_gripper_controllers.yaml </parameters>
+      <robot_param_node>robot_state_publisher</robot_param_node>
+  </plugin>
+</gazebo>
+
+
+
 </robot>

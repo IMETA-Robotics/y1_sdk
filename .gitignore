@@ -6,6 +6,7 @@ log/
 .vscode/
 .catkin_workspace
 src/CMakeLists.txt
+gazebo.log
 
 src/y1_controller/log/
 src/y1_controller/launch/__pycache__
