@@ -10,6 +10,8 @@
 #include "y1_msg/msg/arm_status.hpp"
 #include "y1_sdk/y1_sdk_interface.h"
 
+#include <sensor_msgs/msg/joint_state.hpp>
+
 namespace imeta {
 namespace y1_controller {
 
@@ -51,6 +53,11 @@ class Y1Controller : public rclcpp::Node {
       const y1_msg::msg::ArmJointPositionControl::SharedPtr msg);
 
   /**
+   * @brief arm receive joint position control command from rviz.
+   */
+  void SimPositionControlCallback(const sensor_msgs::msg::JointState::ConstSharedPtr& msg);
+
+  /**
    * @brief publish arm joint states at a fixed frequency
    */
   void ArmInformationTimerCallback();
@@ -64,6 +71,8 @@ class Y1Controller : public rclcpp::Node {
       master_arm_joint_position_sub_;
   rclcpp::Subscription<y1_msg::msg::ArmJointPositionControl>::SharedPtr
       arm_joint_position_control_sub_;
+  rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr
+      sim_joint_position_control_sub_;
 
   rclcpp::TimerBase::SharedPtr arm_information_timer_;
 
@@ -76,6 +85,9 @@ class Y1Controller : public rclcpp::Node {
   std::string arm_joint_state_topic_;
   std::string arm_status_topic_;
   std::string arm_control_type_;
+
+  bool is_sim_;
+  std::string sim_joint_postion_control_topic_;
 };
 
 }  // namespace y1_controller

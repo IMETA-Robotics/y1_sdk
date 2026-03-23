@@ -33,13 +33,23 @@ Y1Controller::Y1Controller() : Node("y1_controller") {
   arm_status_topic_ = this->declare_parameter("arm_status_topic",
                                               std::string("/y1/arm_status"));
 
+  // whether is simulation
+  is_sim_ = this->declare_parameter("is_sim", false);
+  // joint position control topic in simulation
+  sim_joint_postion_control_topic_ = this->declare_parameter(
+      "sim_joint_position_control_topic", std::string("/joint_states"));
+
   // leader_arm(master), follower_arm(slave), default is follower_arm
   arm_control_type_ =
       this->declare_parameter("arm_control_type", std::string("follower_arm"));
   // 0: nothing, 1: gripper, 2: teaching pendant, default is 0
   int arm_end_type = this->declare_parameter("arm_end_type", 0);
   // whether to enable robotic arm, default is true
-  bool auto_enable = this->declare_parameter("auto_enable", true);
+  bool auto_enable = this->declare_parameter("auto_enable", false);
+
+  std::cout << "is_sim_ = " << is_sim_ << std::endl;
+  std::cout << "auto_enable = " << auto_enable << std::endl;
+  std::cout << "sim_joint_postion_control_topic = " << sim_joint_postion_control_topic_<< std::endl;
 
   // get urdf path
   std::string package_path =
@@ -100,16 +110,36 @@ bool Y1Controller::Init() {
         Y1SDKInterface::ControlMode::NRT_JOINT_POSITION);
     // subscriber
     // normal control arm receive control command.
-    arm_end_pose_control_sub_ =
-        this->create_subscription<y1_msg::msg::ArmEndPoseControl>(
-            arm_end_pose_control_topic_, 1,
-            std::bind(&Y1Controller::ArmEndPoseControlCallback, this,
-                      std::placeholders::_1));
-    arm_joint_position_control_sub_ =
-        this->create_subscription<y1_msg::msg::ArmJointPositionControl>(
-            arm_joint_position_control_topic_, 1,
-            std::bind(&Y1Controller::ArmJointPositionControlCallback, this,
-                      std::placeholders::_1));
+    // arm_end_pose_control_sub_ =
+    //     this->create_subscription<y1_msg::msg::ArmEndPoseControl>(
+    //         arm_end_pose_control_topic_, 1,
+    //         std::bind(&Y1Controller::ArmEndPoseControlCallback, this,
+    //                   std::placeholders::_1));
+    // arm_joint_position_control_sub_ =
+    //     this->create_subscription<y1_msg::msg::ArmJointPositionControl>(
+    //         arm_joint_position_control_topic_, 1,
+    //         std::bind(&Y1Controller::ArmJointPositionControlCallback, this,
+    //                   std::placeholders::_1));
+    std::cout << "is_sim_ = " << is_sim_ << std::endl;
+    if (is_sim_) {
+      sim_joint_position_control_sub_ =
+          this->create_subscription<sensor_msgs::msg::JointState>(
+              sim_joint_postion_control_topic_, 1,
+              std::bind(&Y1Controller::SimPositionControlCallback, this,
+                        std::placeholders::_1));
+    } else {
+      // normal control arm receive control command.
+      arm_end_pose_control_sub_ =
+          this->create_subscription<y1_msg::msg::ArmEndPoseControl>(
+              arm_end_pose_control_topic_, 1,
+              std::bind(&Y1Controller::ArmEndPoseControlCallback, this,
+                        std::placeholders::_1));
+      arm_joint_position_control_sub_ =
+          this->create_subscription<y1_msg::msg::ArmJointPositionControl>(
+              arm_joint_position_control_topic_, 1,
+              std::bind(&Y1Controller::ArmJointPositionControlCallback, this,
+                        std::placeholders::_1));
+    }
 
   } else {
     RCLCPP_ERROR(this->get_logger(), "arm_control_type is %s , not supported",
@@ -168,6 +198,88 @@ void Y1Controller::ArmJointPositionControlCallback(
 
   // gripper stroke (mm)
   y1_interface_->SetGripperStroke(msg->gripper_stroke, msg->gripper_velocity);
+}
+
+void Y1Controller::SimPositionControlCallback(
+    const sensor_msgs::msg::JointState::ConstSharedPtr &msg) 
+{
+  
+  // 1.创建一个字典 (std::map) 来存储关节名称与位置的映射
+  // 对应 Python: joint_positions = {}
+  std::map<std::string, double> joint_positions_map;
+
+  // 用于存储夹爪关节的值
+  double gripper_pos_raw = 0.0;
+  bool gripper_found = false;
+
+  // 2. 遍历 msg->name 来映射位置
+  if (msg->name.size() != msg->position.size()) {
+    RCLCPP_ERROR(this->get_logger(), "JointState name and position size mismatch!");
+    return;
+  }
+
+  for (size_t i = 0; i < msg->name.size(); ++i) {
+    const std::string& name = msg->name[i];
+    double pos = msg->position[i];
+
+    // 存入字典
+    joint_positions_map[name] = pos;
+    
+    // 方案：优先信任索引6是夹爪（兼容旧逻辑），但也记录名字以便调试
+    if (i == 6) {
+      gripper_pos_raw = msg->position[i];
+      gripper_found = true;
+    }
+    
+    // 额外保险：如果有关节名叫 "gripper" 或 "joint7"，也视为夹爪
+    if (name.find("gripper") != std::string::npos || name == "joint7") {
+       gripper_pos_raw = msg->position[i];
+       gripper_found = true;
+    }
+  }
+
+  // 3. 使用关节名称来动态控制关节 (核心修复部分)
+  // 构建一个顺序正确的数组，确保索引0是joint1，索引1是joint2...
+  std::array<double, 6> arm_joint_position;
+  
+  // 定义期望的关节名称顺序
+  const std::vector<std::string> expected_names = {
+    "joint1", "joint2", "joint3", "joint4", "joint5", "joint6"
+  };
+
+  // bool all_joints_found = true;
+  for (int i = 0; i < 6; ++i) {
+    const std::string& target_name = expected_names[i];
+    
+    // 在 map 中查找
+    auto it = joint_positions_map.find(target_name);
+    if (it != joint_positions_map.end()) {
+      arm_joint_position[i] = it->second;
+    } else {
+      // 如果找不到该关节，报错并使用 0 (或者保持上一时刻的值，视安全策略而定)
+      RCLCPP_WARN_THROTTLE(this->get_logger(), *this->get_clock(), 1000, 
+                           "Joint '%s' not found in JointState message!", target_name.c_str());
+      arm_joint_position[i] = 0.0; 
+      // all_joints_found = false; // 如果缺少关节必须停止运动，可取消注释并添加返回逻辑
+    }
+  }
+
+  // 4. 下发机械臂控制指令
+  // 此时 arm_joint_position 的顺序已经强制对齐为 joint1~joint6
+  y1_interface_->SetArmJointPosition(arm_joint_position, 6);
+
+  // 5. 夹爪控制
+  if (gripper_found) {
+    double gripper_stroke = -gripper_pos_raw * 2000.0;
+    
+    // 可选：添加类似 Python 的 clip 或 NaN 检查
+    if (std::isnan(gripper_stroke)) {
+      gripper_stroke = 0.0; // 默认值
+      RCLCPP_WARN(this->get_logger(), "Gripper position is NaN, using default.");
+    }
+
+    y1_interface_->SetGripperStroke(gripper_stroke, 6);
+  }
 }
 
 void Y1Controller::ArmInformationTimerCallback() {

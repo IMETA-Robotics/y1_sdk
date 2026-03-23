@@ -10,7 +10,7 @@ fi
 
 idVendor=$(udevadm info -a -n /dev/ttyACM* | grep idVendor | awk 'NR==1 {print substr($0, 23,4)}')
 idProduct=$(udevadm info -a -n /dev/ttyACM* | grep idProduct | awk 'NR==1 {print substr($0, 24,4)}')
-serial_number=$(udevadm info -a -n /dev/ttyACM* | grep serial | awk 'NR==1 {print substr($0, 21,12)}')
+serial_number=$(udevadm info -a -n /dev/ttyACM* | grep serial | awk -F'"' 'NR==1 {print $2}')
 
 echo -e "SUBSYSTEM==\"tty\", ATTRS{idVendor}==\"$idVendor\", ATTRS{idProduct}==\"$idProduct\", ATTRS{serial}==\"$serial_number\", SYMLINK+=\"imeta_y1_can0\"" > imeta_y1_can.rules
 

@@ -11,4 +11,4 @@ udevadm info -a -n /dev/ttyACM* | grep idVendor | awk 'NR==1 {print substr($0, 1
 
 udevadm info -a -n /dev/ttyACM* | grep idProduct | awk 'NR==1 {print substr($0, 10,23)}'
 
-udevadm info -a -n /dev/ttyACM* | grep serial | awk 'NR==1 {print substr($0, 10,24)}'
+udevadm info -a -n /dev/ttyACM* | grep serial | awk 'NR==1 {print substr($0, 10)}'

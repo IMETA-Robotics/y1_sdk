@@ -33,13 +33,19 @@ def generate_launch_description():
     joint_state_publisher_node = Node(
         package='joint_state_publisher',
         executable='joint_state_publisher',
-        condition=UnlessCondition(LaunchConfiguration('gui'))
+        condition=UnlessCondition(LaunchConfiguration('gui')),
+        parameters=[{
+           'rate': 5.0  # 设置发布频率为5Hz
+        }]
     )
 
     joint_state_publisher_gui_node = Node(
         package='joint_state_publisher_gui',
         executable='joint_state_publisher_gui',
         condition=IfCondition(LaunchConfiguration('gui'))
+        parameters=[{
+           'rate': 5.0  # 设置发布频率为5Hz
+        }]
     )
 
     rviz_node = Node(
